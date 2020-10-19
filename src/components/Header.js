@@ -5,7 +5,7 @@ import { auth } from "../firebase/config";
 
 import "../style/header.css";
 
-const Header = ({ setAuth }) => {
+const Header = ({ setAuth, authStatus }) => {
   const user = useContext(UserContext);
 
   return (
@@ -37,14 +37,22 @@ const Header = ({ setAuth }) => {
                 to=""
                 className="header__menu--container__link"
                 onClick={() => {
-                  user ? auth.signOut() : setAuth(true);
+                  setAuth(true);
+                  authStatus("Login");
                 }}
               >
-                {user ? "Log Out" : "Sign Up"}
+                Sign In
               </Link>
             </li>
             <li>
-              <Link to="" className="header__menu--container__link--button">
+              <Link
+                to=""
+                className="header__menu--container__link--button"
+                onClick={() => {
+                  setAuth(true);
+                  authStatus("Signup");
+                }}
+              >
                 Get Started
               </Link>
             </li>

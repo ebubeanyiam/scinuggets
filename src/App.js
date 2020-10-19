@@ -8,12 +8,13 @@ import AuthModal from "./components/auth/AuthModal";
 
 const App = () => {
   const [authModal, setAuthModal] = useState(false);
+  const [authStatus, setAuthStatus] = useState(null);
 
   return (
     <UserProvider>
       <Router>
-        <Header setAuth={setAuthModal} />
-        {authModal && <AuthModal />}
+        <Header setAuth={setAuthModal} authStatus={setAuthStatus} />
+        {authModal && <AuthModal setAuth={setAuthModal} status={authStatus} />}
         <Switch>
           <Route path="/" component={HomePage} />
         </Switch>

@@ -1,7 +1,7 @@
 import React from "react";
 
 const SignupModal = () => {
-  return <div>SignUp Modal</div>;
+  return <div className="auth-modal__modal">SignUp Modal</div>;
 };
 
 export default SignupModal;

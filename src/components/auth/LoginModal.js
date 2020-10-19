@@ -1,7 +1,7 @@
 import React from "react";
 
 const LoginModal = () => {
-  return <div>Login Modal</div>;
+  return <div className="auth-modal__modal">Login Modal</div>;
 };
 
 export default LoginModal;
