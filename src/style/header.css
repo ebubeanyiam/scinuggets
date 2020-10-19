@@ -1,0 +1,34 @@
+.header__container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 70px;
+  padding: 20px 50px;
+  display: flex;
+  justify-content: center;
+}
+
+.header {
+  max-width: 1150px;
+  flex-grow: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.header__menu--container {
+  display: flex;
+}
+
+.header__menu--container__link,
+.header__menu--container__link--button {
+  margin: 0 20px;
+}
+
+.header__menu--container__link--button {
+  padding: 10px 15px;
+  color: var(--primary-white);
+  background: var(--primary-dark);
+  border-radius: 5px;
+}
