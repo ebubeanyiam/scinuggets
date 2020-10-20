@@ -1,10 +1,13 @@
-import React from "react";
+import React, { useState } from "react";
 import { AuthStatus } from "../../../context/AuthStatusContext";
 import { authFunction } from "./AuthProviders";
 import { authOptions } from "./AuthOptions";
+import MailAuth from "./MailAuth";
 
 const AuthTemplate = (props) => {
   const [, setAuthStatus] = AuthStatus();
+  const [mailAuth, setMailAuth] = useState(false);
+
   return (
     <div className="auth-template">
       <div className="auth-template__header">
@@ -19,7 +22,7 @@ const AuthTemplate = (props) => {
               className="auth-template__auth-option"
               onClick={() => {
                 if (!option.authProvider) {
-                  console.log("Mail was clicked");
+                  setMailAuth(true);
                 } else {
                   authFunction(option.authProvider, props.status);
                 }
@@ -58,6 +61,11 @@ const AuthTemplate = (props) => {
           acknowledge that Medium’s Privacy Policy applies to you.
         </p>
       </div>
+      {mailAuth && (
+        <div className="auth-template__mail-auth">
+          <MailAuth authStatus={props.status} />
+        </div>
+      )}
     </div>
   );
 };
