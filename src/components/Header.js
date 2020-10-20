@@ -1,12 +1,12 @@
-import React, { useContext } from "react";
-import { UserContext } from "../context/UserContext";
+import React from "react";
+import { AuthStatus } from "../context/AuthStatusContext";
 import { Link } from "react-router-dom";
 // import { auth } from "../firebase/config";
 
 import "../style/header.css";
 
-const Header = ({ setAuth, authStatus }) => {
-  const user = useContext(UserContext);
+const Header = ({ setAuth }) => {
+  const [, setAuthStatus] = AuthStatus();
 
   return (
     <div className="header__container">
@@ -38,7 +38,7 @@ const Header = ({ setAuth, authStatus }) => {
                 className="header__menu--container__link"
                 onClick={() => {
                   setAuth(true);
-                  authStatus("Login");
+                  setAuthStatus("Login");
                 }}
               >
                 Sign In
@@ -50,7 +50,7 @@ const Header = ({ setAuth, authStatus }) => {
                 className="header__menu--container__link--button"
                 onClick={() => {
                   setAuth(true);
-                  authStatus("Signup");
+                  setAuthStatus("Signup");
                 }}
               >
                 Get Started

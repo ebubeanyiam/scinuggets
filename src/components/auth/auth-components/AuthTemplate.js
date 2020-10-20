@@ -1,7 +1,8 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { AuthStatus } from "../../../context/AuthStatusContext";
 
 const AuthTemplate = (props) => {
+  const [, setAuthStatus] = AuthStatus();
   return (
     <div className="auth-template">
       <div className="auth-template__header">
@@ -18,7 +19,9 @@ const AuthTemplate = (props) => {
               >
                 {<option.icon />}
               </div>
-              <div>{option.text}</div>
+              <div className="auth-template__auth-option--text">
+                {option.text}
+              </div>
             </div>
           );
         })}
@@ -26,14 +29,20 @@ const AuthTemplate = (props) => {
 
       <div>
         <p>
-          {props.question}
-          <Link to="">{props.redirect}</Link>
+          {props.question}{" "}
+          <span
+            onClick={() => {
+              setAuthStatus(props.status === "Login" ? "Signup" : "Login");
+            }}
+          >
+            {props.redirect}
+          </span>
         </p>
       </div>
 
       <div>
         <p>
-          Click {props.text} to agree to Medium’s Terms of Service and
+          Click "{props.status}" to agree to Medium’s Terms of Service and
           acknowledge that Medium’s Privacy Policy applies to you.
         </p>
       </div>

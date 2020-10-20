@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { UserProvider } from "./context/UserContext";
+import { AuthStatusProvider } from "./context/AuthStatusContext";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
 import Header from "./components/Header";
@@ -8,13 +9,14 @@ import AuthModal from "./components/auth/AuthModal";
 
 const App = () => {
   const [authModal, setAuthModal] = useState(false);
-  const [authStatus, setAuthStatus] = useState(null);
 
   return (
     <UserProvider>
       <Router>
-        <Header setAuth={setAuthModal} authStatus={setAuthStatus} />
-        {authModal && <AuthModal setAuth={setAuthModal} status={authStatus} />}
+        <AuthStatusProvider>
+          <Header setAuth={setAuthModal} />
+          {authModal && <AuthModal setAuth={setAuthModal} />}
+        </AuthStatusProvider>
         <Switch>
           <Route path="/" component={HomePage} />
         </Switch>

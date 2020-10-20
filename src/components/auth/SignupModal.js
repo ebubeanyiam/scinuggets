@@ -11,7 +11,7 @@ const SignupModal = () => {
         authOptions={SignupOptions}
         question="Already have an account?"
         redirect="Login"
-        text="Sign up"
+        status="Sign up"
       />
     </>
   );

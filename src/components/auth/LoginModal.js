@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import AuthTemplate from "./auth-components/AuthTemplate";
 
 import { LoginOptions } from "./auth-components/AuthOptions";
@@ -11,7 +11,7 @@ const LoginModal = () => {
         authOptions={LoginOptions}
         question="No account?"
         redirect="Create One"
-        text="Login"
+        status="Login"
       />
     </>
   );
