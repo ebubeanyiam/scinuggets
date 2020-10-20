@@ -1,5 +1,7 @@
 import React from "react";
 import { AuthStatus } from "../../../context/AuthStatusContext";
+import { authFunction } from "./AuthProviders";
+import { authOptions } from "./AuthOptions";
 
 const AuthTemplate = (props) => {
   const [, setAuthStatus] = AuthStatus();
@@ -10,9 +12,19 @@ const AuthTemplate = (props) => {
       </div>
 
       <div className="auth-template__auth-options-container">
-        {props.authOptions.map((option, index) => {
+        {authOptions.map((option, index) => {
           return (
-            <div key={index} className="auth-template__auth-option">
+            <div
+              key={index}
+              className="auth-template__auth-option"
+              onClick={() => {
+                if (!option.authProvider) {
+                  console.log("Mail was clicked");
+                } else {
+                  authFunction(option.authProvider, props.status);
+                }
+              }}
+            >
               <div
                 className="auth-template__auth-option--icon"
                 style={{ color: option.color ? option.color : "" }}
@@ -20,7 +32,7 @@ const AuthTemplate = (props) => {
                 {<option.icon />}
               </div>
               <div className="auth-template__auth-option--text">
-                {option.text}
+                {props.status} {option.text}
               </div>
             </div>
           );
