@@ -3,6 +3,7 @@ import { AuthStatus } from "../../../context/AuthStatusContext";
 import { authFunction } from "./AuthProviders";
 import { authOptions } from "./AuthOptions";
 import MailAuth from "./MailAuth";
+import { Link } from "react-router-dom";
 
 const AuthTemplate = (props) => {
   const [, setAuthStatus] = AuthStatus();
@@ -42,10 +43,11 @@ const AuthTemplate = (props) => {
         })}
       </div>
 
-      <div>
-        <p>
+      <div className="auth-modal__auth-redirect">
+        <p className="auth-modal__auth-redirect--text">
           {props.question}{" "}
           <span
+            className="auth-modal__auth-redirect--text__link"
             onClick={() => {
               setAuthStatus(props.status === "Login" ? "Signup" : "Login");
             }}
@@ -55,15 +57,17 @@ const AuthTemplate = (props) => {
         </p>
       </div>
 
-      <div>
-        <p>
-          Click "{props.status}" to agree to Medium’s Terms of Service and
-          acknowledge that Medium’s Privacy Policy applies to you.
+      <div className="auth-modal__accept-terms">
+        <p className="auth-modal__accept-terms--text">
+          Click "{props.status}" to agree to Scinugget's{" "}
+          <Link>Terms of Service</Link> and acknowledge that Scinugget's{" "}
+          <Link>Privacy Policy</Link> applies to you.
         </p>
       </div>
+
       {mailAuth && (
         <div className="auth-template__mail-auth">
-          <MailAuth authStatus={props.status} />
+          <MailAuth authStatus={props.status} setMailAuth={setMailAuth} />
         </div>
       )}
     </div>
