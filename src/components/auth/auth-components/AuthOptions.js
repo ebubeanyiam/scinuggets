@@ -4,52 +4,33 @@ import { FaTwitter } from "react-icons/fa";
 import { AiOutlineMail } from "react-icons/ai";
 import { FaGithub } from "react-icons/fa";
 
-export const LoginOptions = [
-  {
-    icon: FcGoogle,
-    text: "Login with Google",
-  },
-  {
-    icon: IoLogoFacebook,
-    text: "Login with Facebook",
-    color: "#3B5997",
-  },
-  {
-    icon: FaTwitter,
-    text: "Login with Twitter",
-    color: "#55ACED",
-  },
-  {
-    icon: FaGithub,
-    text: "Login with Github",
-  },
-  {
-    icon: AiOutlineMail,
-    text: "Login with Mail",
-  },
-];
+import * as _ from "../../../firebase/config";
 
-export const SignupOptions = [
+export const authOptions = [
   {
     icon: FcGoogle,
-    text: "Sign up with Google",
+    text: "with Google",
+    authProvider: _.googleProvider,
   },
   {
     icon: IoLogoFacebook,
-    text: "Sign up with Facebook",
+    text: "with Facebook",
     color: "#3B5997",
+    authProvider: _.facebookProvider,
   },
   {
     icon: FaTwitter,
-    text: "Sign up with Twitter",
+    text: "with Twitter",
     color: "#55ACED",
+    authProvider: _.twitterProvider,
   },
   {
     icon: FaGithub,
-    text: "Sign up with Github",
+    text: "with Github",
+    authProvider: _.githubProvider,
   },
   {
     icon: AiOutlineMail,
-    text: "Sign up with Mail",
+    text: "with Mail",
   },
 ];

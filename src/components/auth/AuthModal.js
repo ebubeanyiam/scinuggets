@@ -1,11 +1,15 @@
 import React from "react";
+import { AiOutlineClose } from "react-icons/ai";
+import { AuthStatus } from "../../context/AuthStatusContext";
+
 import LoginModal from "./LoginModal";
 import SignupModal from "./SignupModal";
-import { AiOutlineClose } from "react-icons/ai";
 
 import "../../style/auth-modal.css";
 
-const AuthModal = ({ setAuth, status }) => {
+const AuthModal = ({ setAuth }) => {
+  const [authStatus] = AuthStatus();
+
   return (
     <div
       className="auth-modal"
@@ -15,13 +19,14 @@ const AuthModal = ({ setAuth, status }) => {
     >
       <div className="auth-modal__modal">
         <AiOutlineClose
+          className="auth-modal__modal__close-btn"
           onClick={() => {
             setAuth(false);
           }}
         />
-        {status === "Login" ? (
+        {authStatus === "Login" ? (
           <LoginModal />
-        ) : status === "Signup" ? (
+        ) : authStatus === "Signup" ? (
           <SignupModal />
         ) : (
           ""
