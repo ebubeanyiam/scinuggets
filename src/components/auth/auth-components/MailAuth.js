@@ -1,4 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
+import { BiArrowBack } from "react-icons/bi";
+import { AiOutlineRollback } from "react-icons/ai";
+
 import MailAuthForm from "./MailAuthForm";
 
 const MailAuth = ({ authStatus, setMailAuth }) => {
@@ -22,26 +25,32 @@ const MailAuth = ({ authStatus, setMailAuth }) => {
 };
 
 const MailAuthTemplate = ({ status, subHeading, setMailAuth }) => {
+  const [enterPassword, setEnterPassword] = useState(false);
+  const [formSubHeading, setFormSubHeading] = useState("");
   return (
     <>
       <div className="mail-auth-template__header">
         <h3>{status} with Email</h3>
       </div>
 
-      <div>
-        <p>{subHeading}</p>
+      <div className="mail-auth-template__subheader">
+        <p>{!enterPassword ? subHeading : formSubHeading}</p>
       </div>
 
-      <MailAuthForm status={status} />
+      <MailAuthForm
+        status={status}
+        setEnterPassword={setEnterPassword}
+        setFormSubHeading={setFormSubHeading}
+      />
 
-      <div>
-        <span
-          onClick={() => {
-            setMailAuth(false);
-          }}
-        >
-          All {status} options
-        </span>
+      <div
+        className="mail-auth-template__select-auth-option"
+        onClick={() => {
+          setMailAuth(false);
+        }}
+      >
+        {enterPassword ? <AiOutlineRollback /> : <BiArrowBack />}{" "}
+        <span>All {status} options</span>
       </div>
     </>
   );

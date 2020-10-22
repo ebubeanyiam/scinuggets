@@ -18,7 +18,10 @@ const App = () => {
           {authModal && <AuthModal setAuth={setAuthModal} />}
         </AuthStatusProvider>
         <Switch>
-          <Route path="/" component={HomePage} />
+          <Route path="/" exact component={HomePage} />
+          <AuthStatusProvider>
+            <Route path="/s/signin" render={() => <AuthModal />} />
+          </AuthStatusProvider>
         </Switch>
       </Router>
     </UserProvider>

@@ -99,10 +99,80 @@
   height: 100%;
   display: flex;
   flex-direction: column;
+  justify-content: center;
   align-items: center;
   background: var(--primary-white);
 }
 
 .mail-auth-template__header {
   margin-bottom: 30px;
+}
+
+.mail-auth-template__header h3 {
+  font-size: 25px;
+  font-weight: 300;
+}
+
+.mail-auth-template__subheader {
+  width: 315px;
+  text-align: center;
+  margin-bottom: 50px;
+}
+
+.mail-auth-form {
+  width: 315px;
+  margin-bottom: 20px;
+}
+
+.mail-auth-form__input-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.mail-auth-form__input-container input {
+  width: 100%;
+  border: none;
+  outline: none;
+  padding: 2px 0;
+  font-size: 16px;
+  margin-bottom: 50px;
+  border-bottom: 1px solid var(--primary-dark);
+}
+
+.mail-auth-form__input-container button {
+  padding: 10px 15px;
+  color: var(--primary-white);
+  background: var(--primary-dark);
+  border: none;
+  border-radius: 5px;
+  font-family: inherit;
+}
+
+.mail-auth-form__input-container--change-email {
+  display: flex;
+  align-items: center;
+  margin-top: 30px;
+  cursor: pointer;
+}
+
+.mail-auth-form__input-container p {
+  margin-left: 10px;
+}
+
+.mail-auth-form__error-message {
+  margin-top: 20px;
+  color: var(--primary-warning);
+  font-weight: bold;
+  text-align: center;
+}
+
+.mail-auth-template__select-auth-option {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.mail-auth-template__select-auth-option span {
+  margin-left: 10px;
 }
