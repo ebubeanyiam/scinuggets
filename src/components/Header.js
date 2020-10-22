@@ -1,7 +1,7 @@
 import React from "react";
 import { AuthStatus } from "../context/AuthStatusContext";
 import { Link } from "react-router-dom";
-// import { auth } from "../firebase/config";
+import { auth } from "../firebase/config";
 
 import "../style/header.css";
 
@@ -18,7 +18,11 @@ const Header = ({ setAuth }) => {
         <div className="header__menu">
           <ul className="header__menu--container">
             <li>
-              <Link to="" className="header__menu--container__link">
+              <Link
+                to=""
+                className="header__menu--container__link"
+                onClick={() => auth.signOut()}
+              >
                 Our story
               </Link>
             </li>

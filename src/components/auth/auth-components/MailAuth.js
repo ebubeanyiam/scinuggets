@@ -26,6 +26,7 @@ const MailAuth = ({ authStatus, setMailAuth }) => {
 
 const MailAuthTemplate = ({ status, subHeading, setMailAuth }) => {
   const [enterPassword, setEnterPassword] = useState(false);
+  const [formSubHeading, setFormSubHeading] = useState("");
   return (
     <>
       <div className="mail-auth-template__header">
@@ -33,14 +34,15 @@ const MailAuthTemplate = ({ status, subHeading, setMailAuth }) => {
       </div>
 
       <div className="mail-auth-template__subheader">
-        <p>
-          {!enterPassword
-            ? subHeading
-            : "Enter the password associated with ..."}
-        </p>
+        <p>{!enterPassword ? subHeading : formSubHeading}</p>
       </div>
 
-      <MailAuthForm status={status} setEnterPassword={setEnterPassword} />
+      <MailAuthForm
+        setMailAuth={setMailAuth}
+        status={status}
+        setEnterPassword={setEnterPassword}
+        setFormSubHeading={setFormSubHeading}
+      />
 
       <div
         className="mail-auth-template__select-auth-option"
