@@ -1,12 +1,14 @@
 import React from "react";
 import { AuthStatus } from "../context/AuthStatusContext";
+import { AuthModal } from "../context/AuthModalContext";
 import { Link } from "react-router-dom";
 import { auth } from "../firebase/config";
 
 import "../style/header.css";
 
-const Header = ({ setAuth }) => {
+const Header = () => {
   const [, setAuthStatus] = AuthStatus();
+  const [, setAuthModal] = AuthModal();
 
   return (
     <div className="header__container">
@@ -41,7 +43,7 @@ const Header = ({ setAuth }) => {
                 to=""
                 className="header__menu--container__link"
                 onClick={() => {
-                  setAuth(true);
+                  setAuthModal(true);
                   setAuthStatus("Login");
                 }}
               >
@@ -53,7 +55,7 @@ const Header = ({ setAuth }) => {
                 to=""
                 className="header__menu--container__link--button"
                 onClick={() => {
-                  setAuth(true);
+                  setAuthModal(true);
                   setAuthStatus("Signup");
                 }}
               >

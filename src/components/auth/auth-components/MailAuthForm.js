@@ -2,13 +2,10 @@ import React, { useState } from "react";
 import { BiArrowBack } from "react-icons/bi";
 
 import { auth } from "../../../firebase/config";
+import { AuthModal } from "../../../context/AuthModalContext";
 
-const MailAuthForm = ({
-  status,
-  setEnterPassword,
-  setFormSubHeading,
-  setMailAuth,
-}) => {
+const MailAuthForm = ({ status, setEnterPassword, setFormSubHeading }) => {
+  const [, setAuthModal] = AuthModal();
   const [loginStep, setLoginStep] = useState(0);
   const [emailLoginValue, setEmailLoginValue] = useState("");
   const [passwordLoginValue, setPasswordLoginValue] = useState("");
@@ -26,11 +23,11 @@ const MailAuthForm = ({
     if (status === "Login") {
       auth
         .signInWithEmailAndPassword(email, password)
-        .then((res) => res && setMailAuth(false));
+        .then((res) => res && setAuthModal(false));
     } else {
       auth
         .createUserWithEmailAndPassword(email, password)
-        .then((res) => res && setMailAuth(false));
+        .then((res) => res && setAuthModal(false));
     }
   };
 
@@ -83,16 +80,8 @@ const MailAuthForm = ({
               />
 
               <button
+                style={{ cursor: setErrorMessage ? "disabled" : "initial" }}
                 type="submit"
-                onClick={() => {
-                  if (passwordLoginValue.match(validPassword)) {
-                    setErrorMessage("");
-                  } else {
-                    setErrorMessage(
-                      "Password must be at least 8 characters long and should contain a number, uppercase and lowercase letter"
-                    );
-                  }
-                }}
               >
                 {status === "Login" ? "Log In" : "Sign up"}
               </button>
