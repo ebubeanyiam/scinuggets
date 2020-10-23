@@ -23,7 +23,8 @@
 
 .header__menu--container__link,
 .header__menu--container__link--button {
-  margin: 0 20px;
+  margin: 0 15px;
+  font-size: 14px;
 }
 
 .header__menu--container__link--button {

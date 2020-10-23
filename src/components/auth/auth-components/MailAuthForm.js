@@ -1,34 +1,38 @@
 import React, { useState } from "react";
 import { BiArrowBack } from "react-icons/bi";
 
-import { auth } from "../../../firebase/config";
+import * as _ from "./AuthProviders";
 import { AuthModal } from "../../../context/AuthModalContext";
 
 const MailAuthForm = ({ status, setEnterPassword, setFormSubHeading }) => {
-  const [, setAuthModal] = AuthModal();
   const [loginStep, setLoginStep] = useState(0);
   const [emailLoginValue, setEmailLoginValue] = useState("");
   const [passwordLoginValue, setPasswordLoginValue] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
 
-  const validEmail = /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/;
-  const validPassword = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/;
+  const [, setAuthModal] = AuthModal();
+
+  const props = {
+    status,
+    emailLoginValue,
+    passwordLoginValue,
+    setLoginStep,
+    setErrorMessage,
+    setEnterPassword,
+    setFormSubHeading,
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    mailAuthFunction(emailLoginValue, passwordLoginValue, status);
-  };
-
-  const mailAuthFunction = (email, password, status) => {
-    if (status === "Login") {
-      auth
-        .signInWithEmailAndPassword(email, password)
-        .then((res) => res && setAuthModal(false));
-    } else {
-      auth
-        .createUserWithEmailAndPassword(email, password)
-        .then((res) => res && setAuthModal(false));
+    if (errorMessage || !passwordLoginValue) {
+      return;
     }
+    _.mailAuthFunction(
+      emailLoginValue,
+      passwordLoginValue,
+      setAuthModal,
+      status
+    );
   };
 
   return (
@@ -46,22 +50,7 @@ const MailAuthForm = ({ status, setEnterPassword, setFormSubHeading }) => {
               />
               <button
                 onClick={() => {
-                  if (emailLoginValue.match(validEmail)) {
-                    setLoginStep(1);
-                    setErrorMessage("");
-                    setEnterPassword(true);
-                    setFormSubHeading(
-                      status === "Login"
-                        ? "Enter the password associated with ...."
-                        : "Create a new password for ..."
-                    );
-                  } else {
-                    setErrorMessage(
-                      emailLoginValue.length < 1
-                        ? "You haven't typed in an Email"
-                        : "Invalid Email"
-                    );
-                  }
+                  _.checkEmail(props);
                 }}
               >
                 Check
@@ -77,14 +66,17 @@ const MailAuthForm = ({ status, setEnterPassword, setFormSubHeading }) => {
                 onChange={(e) => {
                   setPasswordLoginValue(e.target.value);
                 }}
+                onKeyUp={() => {
+                  _.checkPassword(props);
+                }}
               />
 
-              <button
-                style={{ cursor: setErrorMessage ? "disabled" : "initial" }}
-                type="submit"
-              >
-                {status === "Login" ? "Log In" : "Sign up"}
-              </button>
+              {passwordLoginValue.match(_.validPassword) && (
+                <button type="submit">
+                  {status === "Login" ? "Log In" : "Sign up"}
+                </button>
+              )}
+
               <div className="mail-auth-form__input-container--change-email">
                 <BiArrowBack />
                 <p

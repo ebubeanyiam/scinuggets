@@ -147,6 +147,7 @@
   border: none;
   border-radius: 5px;
   font-family: inherit;
+  cursor: pointer;
 }
 
 .mail-auth-form__input-container--change-email {
@@ -163,7 +164,7 @@
 .mail-auth-form__error-message {
   margin-top: 20px;
   color: var(--primary-warning);
-  font-weight: bold;
+  font-weight: 300;
   text-align: center;
 }
 
