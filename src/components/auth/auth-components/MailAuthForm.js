@@ -1,16 +1,28 @@
 import React, { useState } from "react";
 import { BiArrowBack } from "react-icons/bi";
 
+import * as _ from "./AuthProviders";
+import { AuthModal } from "../../../context/AuthModalContext";
+
 const MailAuthForm = ({ status, setEnterPassword, setFormSubHeading }) => {
   const [loginStep, setLoginStep] = useState(0);
   const [emailLoginValue, setEmailLoginValue] = useState("");
+  const [passwordLoginValue, setPasswordLoginValue] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
 
-  const validEmail = /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/;
+  const [, setAuthModal] = AuthModal();
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("Form was submitted");
+    if (errorMessage) {
+      return;
+    }
+    _.mailAuthFunction(
+      emailLoginValue,
+      passwordLoginValue,
+      setAuthModal,
+      status
+    );
   };
 
   return (
@@ -28,14 +40,14 @@ const MailAuthForm = ({ status, setEnterPassword, setFormSubHeading }) => {
               />
               <button
                 onClick={() => {
-                  if (emailLoginValue.match(validEmail)) {
+                  if (emailLoginValue.match(_.validEmail)) {
                     setLoginStep(1);
                     setErrorMessage("");
                     setEnterPassword(true);
                     setFormSubHeading(
                       status === "Login"
                         ? "Enter the password associated with ...."
-                        : "Almost done, Just a few more steps"
+                        : "Create a new password for ..."
                     );
                   } else {
                     setErrorMessage(
@@ -53,16 +65,31 @@ const MailAuthForm = ({ status, setEnterPassword, setFormSubHeading }) => {
 
           {loginStep === 1 && (
             <>
-              {status === "Login" ? (
-                <input type="password" />
-              ) : (
-                <p>
-                  We've sent an email to your mailbox, click on it to complete
-                  your registration
-                </p>
+              <input
+                type="password"
+                value={passwordLoginValue}
+                onChange={(e) => {
+                  setPasswordLoginValue(e.target.value);
+                }}
+                onKeyUp={() => {
+                  if (status === "Sign up") {
+                    if (!passwordLoginValue.match(_.validPassword)) {
+                      setErrorMessage(
+                        "Password must be at least 8 characters and contain an uppercase letter, lowercase letter and a number "
+                      );
+                    } else {
+                      setErrorMessage("");
+                    }
+                  }
+                }}
+              />
+
+              {passwordLoginValue.match(_.validPassword) && (
+                <button type="submit">
+                  {status === "Login" ? "Log In" : "Sign up"}
+                </button>
               )}
 
-              {status === "Login" && <button>Sign In</button>}
               <div className="mail-auth-form__input-container--change-email">
                 <BiArrowBack />
                 <p
@@ -84,7 +111,4 @@ const MailAuthForm = ({ status, setEnterPassword, setFormSubHeading }) => {
   );
 };
 
-// {status === "Login" && (
-
-// )}
 export default MailAuthForm;

@@ -38,6 +38,7 @@ const MailAuthTemplate = ({ status, subHeading, setMailAuth }) => {
       </div>
 
       <MailAuthForm
+        setMailAuth={setMailAuth}
         status={status}
         setEnterPassword={setEnterPassword}
         setFormSubHeading={setFormSubHeading}

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { UserProvider } from "./context/UserContext";
 import { AuthStatusProvider } from "./context/AuthStatusContext";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
@@ -6,9 +6,10 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Header from "./components/Header";
 import HomePage from "./components/HomePage";
 import AuthModal from "./components/auth/AuthModal";
+import { AuthModal as AuthModalFunction } from "./context/AuthModalContext";
 
 const App = () => {
-  const [authModal, setAuthModal] = useState(false);
+  const [authModal, setAuthModal] = AuthModalFunction();
 
   return (
     <UserProvider>
