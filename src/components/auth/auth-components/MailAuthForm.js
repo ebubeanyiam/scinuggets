@@ -12,9 +12,19 @@ const MailAuthForm = ({ status, setEnterPassword, setFormSubHeading }) => {
 
   const [, setAuthModal] = AuthModal();
 
+  const props = {
+    status,
+    emailLoginValue,
+    passwordLoginValue,
+    setLoginStep,
+    setErrorMessage,
+    setEnterPassword,
+    setFormSubHeading,
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (errorMessage) {
+    if (errorMessage || !passwordLoginValue) {
       return;
     }
     _.mailAuthFunction(
@@ -40,22 +50,7 @@ const MailAuthForm = ({ status, setEnterPassword, setFormSubHeading }) => {
               />
               <button
                 onClick={() => {
-                  if (emailLoginValue.match(_.validEmail)) {
-                    setLoginStep(1);
-                    setErrorMessage("");
-                    setEnterPassword(true);
-                    setFormSubHeading(
-                      status === "Login"
-                        ? "Enter the password associated with ...."
-                        : "Create a new password for ..."
-                    );
-                  } else {
-                    setErrorMessage(
-                      emailLoginValue.length < 1
-                        ? "You haven't typed in an Email"
-                        : "Invalid Email"
-                    );
-                  }
+                  _.checkEmail(props);
                 }}
               >
                 Check
@@ -72,15 +67,7 @@ const MailAuthForm = ({ status, setEnterPassword, setFormSubHeading }) => {
                   setPasswordLoginValue(e.target.value);
                 }}
                 onKeyUp={() => {
-                  if (status === "Sign up") {
-                    if (!passwordLoginValue.match(_.validPassword)) {
-                      setErrorMessage(
-                        "Password must be at least 8 characters and contain an uppercase letter, lowercase letter and a number "
-                      );
-                    } else {
-                      setErrorMessage("");
-                    }
-                  }
+                  _.checkPassword(props);
                 }}
               />
 

@@ -34,7 +34,7 @@ const Header = () => {
               </Link>
             </li>
             <li>
-              <Link to="" className="header__menu--container__link">
+              <Link to="/new-story" className="header__menu--container__link">
                 Write
               </Link>
             </li>
