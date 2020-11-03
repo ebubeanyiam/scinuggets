@@ -3,8 +3,8 @@ import { UserProvider } from "./context/UserContext";
 import { AuthStatusProvider } from "./context/AuthStatusContext";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
-import Header from "./components/Header";
 import HomePage from "./components/HomePage";
+import Write from "./components/Write";
 import AuthModal from "./components/auth/AuthModal";
 import { AuthModal as AuthModalFunction } from "./context/AuthModalContext";
 
@@ -14,14 +14,12 @@ const App = () => {
   return (
     <UserProvider>
       <Router>
-        <AuthStatusProvider>
-          <Header setAuth={setAuthModal} />
-          {authModal && <AuthModal setAuth={setAuthModal} />}
-        </AuthStatusProvider>
         <Switch>
-          <Route path="/" exact component={HomePage} />
           <AuthStatusProvider>
-            <Route path="/s/signin" render={() => <AuthModal />} />
+            {authModal && <AuthModal setAuth={setAuthModal} />}
+            <Route path="/" exact component={HomePage} />
+            <Route path="/s/signin" exact render={() => <AuthModal />} />
+            <Route path="/new-story" exact component={Write} />
           </AuthStatusProvider>
         </Switch>
       </Router>
