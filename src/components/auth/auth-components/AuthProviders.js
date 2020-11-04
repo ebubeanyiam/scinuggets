@@ -6,11 +6,11 @@ export const validPassword = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}
 export const authFunction = (provider, status) => {
   console.log(status);
   auth.signInWithRedirect(provider).then((res) => {
-    console.log(res, "worked");
+    console.log(res);
   });
 };
 
-export const mailAuthFunction = (email, password, status, setAuthModal) => {
+export const mailAuthFunction = (email, password, setAuthModal, status) => {
   if (status === "Login") {
     auth
       .signInWithEmailAndPassword(email, password)
@@ -27,7 +27,6 @@ export const checkEmail = async (props) => {
   if (props.emailLoginValue.match(validEmail)) {
     if (props.status === "Sign up") {
       emailRef.get().then((res) => {
-        console.log(res);
         if (res.exists) {
           props.setErrorMessage("That email is already registered");
           return;
@@ -43,25 +42,12 @@ export const checkEmail = async (props) => {
         }
       });
     } else {
-      emailRef.get().then((res) => {
-        console.log(res);
-        if (!res.exists) {
-          props.setErrorMessage("Can't seem to find an account for that email");
-          return;
-        } else {
-          props.setLoginStep(1);
-          props.setErrorMessage("");
-          props.setEnterPassword(true);
-          props.setFormSubHeading("Enter the password for ...");
-        }
-      });
+      props.setErrorMessage(
+        props.emailLoginValue.length < 1
+          ? "You haven't typed in an Email"
+          : "Invalid Email"
+      );
     }
-  } else {
-    props.setErrorMessage(
-      props.emailLoginValue.length < 1
-        ? "You haven't typed in an Email"
-        : "Invalid Email"
-    );
   }
 };
 

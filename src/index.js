@@ -4,12 +4,15 @@ import "./index.css";
 import App from "./App";
 import * as serviceWorker from "./serviceWorker";
 
+import { UserProvider } from "./context/UserContext";
 import { AuthModalProvider } from "./context/AuthModalContext";
 
 ReactDOM.render(
   <AuthModalProvider>
     <React.StrictMode>
-      <App />
+      <UserProvider>
+        <App />
+      </UserProvider>
     </React.StrictMode>
   </AuthModalProvider>,
   document.getElementById("root")

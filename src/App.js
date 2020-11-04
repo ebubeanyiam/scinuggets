@@ -1,33 +1,42 @@
-import React from "react";
-import { UserProvider } from "./context/UserContext";
+import React, { useEffect, useState } from "react";
 import { AuthStatusProvider } from "./context/AuthStatusContext";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
-import Header from "./components/Header";
 import HomePage from "./components/HomePage";
-import AuthModal from "./components/auth/AuthModal";
 import Write from "./components/Write";
+import UserSetup from "./components/UserSetup";
+import { User } from "./context/UserContext";
+import AuthModal from "./components/auth/AuthModal";
 import { AuthModal as AuthModalFunction } from "./context/AuthModalContext";
 
 const App = () => {
+  const user = User();
   const [authModal, setAuthModal] = AuthModalFunction();
+  const [userVerified, setUserVerified] = useState(null);
+
+  useEffect(() => {
+    if (user) {
+      setUserVerified(user.emailVerified);
+    }
+  }, [user]);
+
+  if (user === "") {
+    return "Loading";
+  } else if (userVerified === false) {
+    return <UserSetup />;
+  }
 
   return (
-    <UserProvider>
-      <Router>
+    <Router>
+      <Switch>
         <AuthStatusProvider>
-          <Header setAuth={setAuthModal} />
           {authModal && <AuthModal setAuth={setAuthModal} />}
-        </AuthStatusProvider>
-        <Switch>
           <Route path="/" exact component={HomePage} />
-          <AuthStatusProvider>
-            <Route path="/s/signin" render={() => <AuthModal />} />
-          </AuthStatusProvider>
+          <Route path="/s/signin" exact render={() => <AuthModal />} />
           <Route path="/new-story" exact component={Write} />
-        </Switch>
-      </Router>
-    </UserProvider>
+        </AuthStatusProvider>
+      </Switch>
+    </Router>
   );
 };
 

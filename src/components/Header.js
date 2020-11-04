@@ -1,69 +1,32 @@
 import React from "react";
-import { AuthStatus } from "../context/AuthStatusContext";
-import { AuthModal } from "../context/AuthModalContext";
 import { Link } from "react-router-dom";
-import { auth } from "../firebase/config";
+
+import { User } from "../context/UserContext";
+import { getTime } from "./static/functions";
+import LoggedInHeader from "./header-components/LoggedInHeader";
+import LoggedOutHeader from "./header-components/LoggedOutheader";
 
 import "../style/header.css";
 
 const Header = () => {
-  const [, setAuthStatus] = AuthStatus();
-  const [, setAuthModal] = AuthModal();
+  const user = User();
 
   return (
     <div className="header__container">
       <nav className="header">
         <div className="header__logo">
-          <h1>Scinuggets</h1>
+          <Link to="/">
+            <h1>Scinuggets</h1>
+          </Link>
+
+          {user && (
+            <div className="header__logo--greeting">
+              <h1>{getTime()}</h1>
+            </div>
+          )}
         </div>
 
-        <div className="header__menu">
-          <ul className="header__menu--container">
-            <li>
-              <Link
-                to=""
-                className="header__menu--container__link"
-                onClick={() => auth.signOut()}
-              >
-                Our story
-              </Link>
-            </li>
-            <li>
-              <Link to="" className="header__menu--container__link">
-                Membership
-              </Link>
-            </li>
-            <li>
-              <Link to="/new-story" className="header__menu--container__link">
-                Write
-              </Link>
-            </li>
-            <li>
-              <Link
-                to=""
-                className="header__menu--container__link"
-                onClick={() => {
-                  setAuthModal(true);
-                  setAuthStatus("Login");
-                }}
-              >
-                Sign In
-              </Link>
-            </li>
-            <li>
-              <Link
-                to=""
-                className="header__menu--container__link--button"
-                onClick={() => {
-                  setAuthModal(true);
-                  setAuthStatus("Signup");
-                }}
-              >
-                Get Started
-              </Link>
-            </li>
-          </ul>
-        </div>
+        {!user ? <LoggedOutHeader /> : <LoggedInHeader />}
       </nav>
     </div>
   );
