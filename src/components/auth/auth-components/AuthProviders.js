@@ -10,15 +10,24 @@ export const authFunction = (provider, status) => {
   });
 };
 
-export const mailAuthFunction = (email, password, status, setAuthModal) => {
+export const mailAuthFunction = (email, password, setAuthModal, status) => {
   if (status === "Login") {
     auth
       .signInWithEmailAndPassword(email, password)
       .then((res) => res && setAuthModal(false));
   } else {
-    auth
-      .createUserWithEmailAndPassword(email, password)
-      .then((res) => res && setAuthModal(false));
+    auth.createUserWithEmailAndPassword(email, password).then((res) => {
+      res && setAuthModal(false);
+      if (res.additionalUserInfo.isNewUser) {
+        console.log("new user");
+        auth.currentUser
+          .sendEmailVerification()
+          .then(() => {
+            console.log("Email sent");
+          })
+          .catch((e) => console.log(e));
+      }
+    });
   }
 };
 
@@ -27,7 +36,6 @@ export const checkEmail = async (props) => {
   if (props.emailLoginValue.match(validEmail)) {
     if (props.status === "Sign up") {
       emailRef.get().then((res) => {
-        console.log(res);
         if (res.exists) {
           props.setErrorMessage("That email is already registered");
           return;

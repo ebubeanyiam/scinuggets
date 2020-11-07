@@ -1,0 +1,55 @@
+.user-setup {
+  display: flex;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--primary-modal-background);
+  z-index: 2;
+}
+
+.user-setup__svg {
+  width: 100px;
+  height: 100px;
+}
+
+.user-setup__modal {
+  position: relative;
+  max-width: 680px;
+  height: calc(700px - 5vh);
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-radius: 3px;
+  background-color: var(--primary-white);
+  box-shadow: rgba(0, 0, 0, 0.15) 0px 2px 10px;
+}
+
+.user-setup__modal h1 {
+  font-weight: 300;
+  margin-bottom: 30px;
+}
+
+.user-setup__modal h1:first-child {
+  font-weight: 300;
+  margin-bottom: 70px;
+}
+
+.user-setup__modal p {
+  margin-bottom: 20px;
+}
+.user-setup__cta {
+  color: #4aa2ff;
+  cursor: pointer;
+}
+
+.svg_taken {
+  position: absolute;
+  top: 20px;
+  left: 10px;
+}

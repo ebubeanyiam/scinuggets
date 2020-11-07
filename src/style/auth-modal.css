@@ -8,6 +8,7 @@
   align-items: center;
   justify-content: center;
   background-color: var(--primary-modal-background);
+  z-index: 2;
 }
 
 .auth-modal__modal {
