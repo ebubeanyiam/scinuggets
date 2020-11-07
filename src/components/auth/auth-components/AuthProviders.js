@@ -16,9 +16,18 @@ export const mailAuthFunction = (email, password, setAuthModal, status) => {
       .signInWithEmailAndPassword(email, password)
       .then((res) => res && setAuthModal(false));
   } else {
-    auth
-      .createUserWithEmailAndPassword(email, password)
-      .then((res) => res && setAuthModal(false));
+    auth.createUserWithEmailAndPassword(email, password).then((res) => {
+      res && setAuthModal(false);
+      if (res.additionalUserInfo.isNewUser) {
+        console.log("new user");
+        auth.currentUser
+          .sendEmailVerification()
+          .then(() => {
+            console.log("Email sent");
+          })
+          .catch((e) => console.log(e));
+      }
+    });
   }
 };
 
