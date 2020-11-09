@@ -1,7 +1,7 @@
 // Get Time
-const hours = new Date().getHours();
-
 export const getTime = () => {
+  const hours = new Date().getHours();
+
   if (hours < 12) {
     return "Good Morning";
   } else if (hours < 16) {

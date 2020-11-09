@@ -6,12 +6,15 @@ import * as serviceWorker from "./serviceWorker";
 
 import { UserProvider } from "./context/UserContext";
 import { AuthModalProvider } from "./context/AuthModalContext";
+import { ToastNotificationProvider } from "./context/ToastNotificationContext";
 
 ReactDOM.render(
   <AuthModalProvider>
     <React.StrictMode>
       <UserProvider>
-        <App />
+        <ToastNotificationProvider>
+          <App />
+        </ToastNotificationProvider>
       </UserProvider>
     </React.StrictMode>
   </AuthModalProvider>,
