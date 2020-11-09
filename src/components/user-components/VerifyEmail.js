@@ -1,16 +1,20 @@
 import React from "react";
+import { useEffect } from "react";
 
 import { auth } from "../../firebase/config";
 
 const VerifyEmail = ({ actionCode }) => {
-  auth
-    .applyActionCode(actionCode)
-    .then((res) => {
-      console.log(res, "Email has been verified");
-    })
-    .catch((e) => {
-      console.log(e.message);
-    });
+  useEffect(() => {
+    auth
+      .applyActionCode(actionCode)
+      .then((res) => {
+        alert("Email Verified");
+      })
+      .catch((e) => {
+        e && alert("Email Not Verified");
+      });
+  }, [actionCode]);
+
   return <div>Verify your mail</div>;
 };
 

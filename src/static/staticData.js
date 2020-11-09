@@ -11,3 +11,7 @@ export const getTime = () => {
   }
 };
 // ///// //
+
+export const Toast = (status, message) => {
+  return { status, message };
+};

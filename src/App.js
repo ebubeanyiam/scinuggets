@@ -9,6 +9,7 @@ import { User } from "./context/UserContext";
 import AuthModal from "./components/auth/AuthModal";
 import { AuthModal as AuthModalFunction } from "./context/AuthModalContext";
 import UserManagement from "./components/UserManagement";
+import ToastNotification from "./components/ToastNotification";
 
 const App = () => {
   const user = User();
@@ -24,23 +25,24 @@ const App = () => {
 
   if (user === "") {
     return "Loading";
-  } else if (
-    userVerified === false &&
-    window.location.pathname !== userActionUrl
-  ) {
-    return <UserSetup />;
   }
-
-  console.log(userVerified);
 
   return (
     <Router>
+      <ToastNotification />
+      {userVerified === false && window.location.pathname !== userActionUrl && (
+        <UserSetup />
+      )}
       <Switch>
         <AuthStatusProvider>
-          {authModal && <AuthModal setAuth={setAuthModal} />}
-          <Route path="/" exact component={HomePage} />
-          <Route path="/s/signin" exact render={() => <AuthModal />} />
-          <Route path="/new-story" exact component={Write} />
+          {userVerified !== false && (
+            <>
+              {authModal && <AuthModal setAuth={setAuthModal} />}
+              <Route path="/" exact component={HomePage} />
+              <Route path="/s/signin" exact render={() => <AuthModal />} />
+              <Route path="/new-story" exact component={Write} />
+            </>
+          )}
           <Route
             path="/user/action"
             exact
