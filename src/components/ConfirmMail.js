@@ -1,17 +1,28 @@
 import React from "react";
 
 import { auth } from "../firebase/config";
-import { Toast } from "../static/staticData";
+import { ToastOpen } from "../context/ToastNotificationContext";
 
 import "../style/user-setup.css";
 import svg_Taken from "../assets/svg/undraw_Taken_re_yn20.svg";
 import svg_Mail from "../assets/svg/undraw_Mail_sent_re_0ofv.svg";
 
-const UserSetup = () => {
+const ConfirmMail = () => {
+  const [, setToastOpen, , setToastStatus, , setToastMessage] = ToastOpen();
+
   const resendEmail = () => {
-    auth.currentUser.sendEmailVerification().then(() => {
-      alert("Email resent");
-    });
+    auth.currentUser
+      .sendEmailVerification()
+      .then(() => {
+        setToastOpen(true);
+        setToastStatus("success");
+        setToastMessage("Email Sent");
+      })
+      .catch((e) => {
+        setToastOpen(true);
+        setToastStatus("error");
+        setToastMessage(e.message);
+      });
   };
 
   return (
@@ -42,10 +53,9 @@ const UserSetup = () => {
           <span
             className="user-setup__cta"
             onClick={() => {
-              // auth.signOut().then(() => {
-              //   window.location.replace("/");
-              // });
-              Toast("success", "message");
+              auth.signOut().then(() => {
+                window.location.replace("/");
+              });
             }}
           >
             Sign Out
@@ -57,4 +67,4 @@ const UserSetup = () => {
   );
 };
 
-export default UserSetup;
+export default ConfirmMail;

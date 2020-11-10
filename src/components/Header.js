@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 import { User } from "../context/UserContext";
-import { getTime } from "./static/functions";
+import { getTime } from "../static/staticData";
 import LoggedInHeader from "./header-components/LoggedInHeader";
 import LoggedOutHeader from "./header-components/LoggedOutheader";
 

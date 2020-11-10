@@ -20,6 +20,7 @@
   position: relative;
   max-width: 680px;
   height: calc(700px - 5vh);
+  padding: 10px;
   flex: 1;
   display: flex;
   flex-direction: column;
@@ -52,4 +53,48 @@
   position: absolute;
   top: 20px;
   left: 10px;
+}
+
+.verify-email {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.verify-email div {
+  margin: 0 10px;
+}
+
+.verify-email img {
+  position: absolute;
+  top: 20px;
+  left: 50px;
+  width: 100px;
+}
+
+.verify-image__text h1 {
+  font-weight: 400;
+  margin-bottom: 15px;
+}
+.verify-image__text p {
+  margin-bottom: 20px;
+}
+.verify-image__text span {
+  color: #4aa2ff;
+  margin: 100px 10px 0 0;
+  cursor: pointer;
+}
+
+@media screen and (max-width: 720px) {
+  .user-setup__modal {
+    max-width: 90%;
+  }
+}
+
+@media screen and (max-height: 675px) {
+  .user-setup__modal {
+    height: 90%;
+    overflow: auto;
+  }
 }
