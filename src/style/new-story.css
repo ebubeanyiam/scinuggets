@@ -1,0 +1,13 @@
+.new-story__editor {
+  max-width: 650px;
+  margin: 0 auto;
+  margin-top: 100px;
+}
+
+.new-story__editor .codex-editor__redactor {
+  padding-bottom: 20px !important;
+}
+
+.new-story__editor .cdx-block::placeholder {
+  font-size: 30px;
+}

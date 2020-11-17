@@ -1,30 +1,24 @@
-import EditorJS from "@editorjs/editorjs";
+// tools.js
 import Header from "@editorjs/header";
 import Embed from "@editorjs/embed";
 import List from "@editorjs/list";
-import SimpleImage from "@editorjs/simple-image";
-import Code from "@editorjs/code";
-import Raw from "@editorjs/raw";
 
-export const editor = new EditorJS({
-  tools: {
-    header: {
-      class: Header,
-    },
-    list: {
-      class: List,
-      inlineToolbar: true,
-    },
-    embed: {
-      class: Embed,
-      config: {
-        services: {
-          youtube: true,
-          coub: true,
-          twitter: true,
-          instagram: true,
-        },
-      },
-    },
-  },
-});
+import Table from "@editorjs/table";
+import Code from "@editorjs/code";
+import LinkTool from "@editorjs/link";
+
+// import Image from "@editorjs/image";
+import Raw from "@editorjs/raw";
+import SimpleImage from "@editorjs/simple-image";
+
+export const EDITOR_JS_TOOLS = {
+  embed: Embed,
+  table: Table,
+  list: List,
+  code: Code,
+  linkTool: LinkTool,
+  // image: Image,
+  raw: Raw,
+  header: Header,
+  simpleImage: SimpleImage,
+};
