@@ -37,10 +37,14 @@ const App = () => {
         <AuthStatusProvider>
           {userVerified !== false && (
             <>
-              {authModal && <AuthModal setAuth={setAuthModal} />}
               <Route path="/" exact component={HomePage} />
+              {authModal && <AuthModal setAuth={setAuthModal} />}
               <Route path="/s/signin" exact render={() => <AuthModal />} />
               <Route path="/new-story" exact component={NewStory} />
+              <Route
+                path="/p/:id"
+                render={(props) => <NewStory {...props} />}
+              />
             </>
           )}
           <Route

@@ -18,6 +18,9 @@ export const mailAuthFunction = (email, password, setAuthModal, status) => {
   } else {
     auth.createUserWithEmailAndPassword(email, password).then((res) => {
       res && setAuthModal(false);
+      db.collection("registeredEmails").doc(email).set({
+        userID: res.user.uid,
+      });
       if (res.additionalUserInfo.isNewUser) {
         console.log("new user");
         auth.currentUser
@@ -32,8 +35,10 @@ export const mailAuthFunction = (email, password, setAuthModal, status) => {
 };
 
 export const checkEmail = async (props) => {
-  const emailRef = db.collection("registeredEmails").doc(props.emailLoginValue);
   if (props.emailLoginValue.match(validEmail)) {
+    const emailRef = db
+      .collection("registeredEmails")
+      .doc(props.emailLoginValue);
     if (props.status === "Sign up") {
       emailRef.get().then((res) => {
         if (res.exists) {
@@ -43,20 +48,29 @@ export const checkEmail = async (props) => {
           props.setLoginStep(1);
           props.setErrorMessage("");
           props.setEnterPassword(true);
-          props.setFormSubHeading(
-            props.status === "Login"
-              ? "Enter the password associated with ...."
-              : "Create a new password for ..."
-          );
+          props.setFormSubHeading("Create a new password for your account");
         }
       });
-    } else {
-      props.setErrorMessage(
-        props.emailLoginValue.length < 1
-          ? "You haven't typed in an Email"
-          : "Invalid Email"
-      );
     }
+    if (props.status === "Login") {
+      emailRef.get().then((res) => {
+        if (res.exists) {
+          props.setLoginStep(1);
+          props.setErrorMessage("");
+          props.setEnterPassword(true);
+          props.setFormSubHeading("Enter the password associated with ....");
+          return;
+        } else {
+          props.setErrorMessage("Email isn't registered");
+        }
+      });
+    }
+  } else {
+    props.setErrorMessage(
+      props.emailLoginValue.length < 1
+        ? "You haven't typed in an Email"
+        : "Invalid Email"
+    );
   }
 };
 

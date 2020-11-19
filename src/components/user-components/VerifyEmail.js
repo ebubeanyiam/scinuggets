@@ -33,14 +33,18 @@ const VerifyEmail = ({ actionCode }) => {
   }, []);
 
   return (
-    <div className="verify-email">
-      <img
-        src={toastStatus === "success" ? svg_orderConfirmed : svg_accessDenied}
-        alt="svg"
-      />
+    <div>
+      <div>
+        <img
+          src={
+            toastStatus === "success" ? svg_orderConfirmed : svg_accessDenied
+          }
+          alt="svg"
+        />
+      </div>
 
-      <div className="verify-image__text">
-        <h1>Oops,</h1>
+      <div>
+        <h1>Scinuggets</h1>
 
         <p>
           {toastStatus === "success"
@@ -48,21 +52,7 @@ const VerifyEmail = ({ actionCode }) => {
             : "Unfortunately we could not verify your Email at the moment"}
         </p>
 
-        <span
-          onClick={() => {
-            window.location.replace("/");
-          }}
-        >
-          Home
-        </span>
-
-        <span
-          onClick={() => {
-            auth.signOut();
-          }}
-        >
-          Signout
-        </span>
+        <span onClick={window.location.replace("/")}>Go back home</span>
       </div>
     </div>
   );

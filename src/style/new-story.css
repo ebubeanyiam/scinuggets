@@ -1,0 +1,57 @@
+.new-story {
+  padding: 0 10px;
+}
+
+.new-story__editor {
+  max-width: 650px;
+  margin: 0 auto;
+  margin-top: 100px;
+}
+
+.new-story__editor .codex-editor__redactor {
+  padding: 5px 10px !important;
+  margin-bottom: 10px;
+  border-radius: 3px;
+}
+
+.new-story__editor--save-btn-container {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.new-story__editor--save-btn {
+  padding: 5px 10px;
+  color: var(--primary-white);
+  background: #008000;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.new-story__editor--header input {
+  width: 100%;
+  padding: 5px 10px;
+  margin-top: 20px;
+  border: none;
+  outline: none;
+  font-size: 25px;
+}
+
+.new-story__editor--header input::placeholder {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-size: 25px;
+}
+
+.new-story__publish {
+  position: fixed;
+  top: 0;
+  left: 0;
+  background: var(--primary-white);
+  width: 100%;
+  height: 100vh;
+  z-index: 2;
+}
