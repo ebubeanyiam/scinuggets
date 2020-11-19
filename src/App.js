@@ -3,14 +3,13 @@ import { AuthStatusProvider } from "./context/AuthStatusContext";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
 import HomePage from "./components/HomePage";
-import Write from "./components/NewStory";
+import NewStory from "./components/NewStory";
 import ConfirmMail from "./components/ConfirmMail";
 import { User } from "./context/UserContext";
 import AuthModal from "./components/auth/AuthModal";
 import { AuthModal as AuthModalFunction } from "./context/AuthModalContext";
 import UserManagement from "./components/UserManagement";
 import ToastNotification from "./components/ToastNotification";
-import NewStory from "./components/NewStory";
 
 const App = () => {
   const user = User();
@@ -31,17 +30,21 @@ const App = () => {
   return (
     <Router>
       <ToastNotification />
-      {userVerified !== true && window.location.pathname !== userActionUrl && (
+      {userVerified === false && window.location.pathname !== userActionUrl && (
         <ConfirmMail />
       )}
       <Switch>
         <AuthStatusProvider>
-          {userVerified === true && (
+          {userVerified !== false && (
             <>
-              {authModal && <AuthModal setAuth={setAuthModal} />}
               <Route path="/" exact component={HomePage} />
+              {authModal && <AuthModal setAuth={setAuthModal} />}
               <Route path="/s/signin" exact render={() => <AuthModal />} />
               <Route path="/new-story" exact component={NewStory} />
+              <Route
+                path="/p/:id"
+                render={(props) => <NewStory {...props} />}
+              />
             </>
           )}
           <Route
