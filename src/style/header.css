@@ -70,7 +70,7 @@
 
 .header__menu--dropdown {
   position: absolute;
-  top: 30px;
+  top: 40px;
   right: 0;
   width: 200px;
   color: var(--primary-faded);
@@ -89,9 +89,12 @@
   border-bottom: none;
 }
 
-.header__menu--dropdown div a {
+.header__menu--dropdown div a,
+.header__menu--dropdown div span,
+.header__menu--dropdown div form {
   font-size: 13px;
   margin-bottom: 15px;
+  cursor: pointer;
 }
 
 .header__menu--dropdown div a:last-child {

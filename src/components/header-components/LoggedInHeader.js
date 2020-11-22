@@ -11,19 +11,13 @@ const LoggedInHeader = () => {
   return (
     <div className="header__menu">
       <ul className="header__menu--container">
-        <li>
-          <Link to="" className="header__menu--container__link">
+        {window.location.pathname === "/" && (
+          <li className="header__menu--container__link">
             <AiOutlineSearch className="header__menu--container__link--icon" />
-          </Link>
-        </li>
-        <li>
-          <Link
-            to=""
-            className="header__menu--container__link"
-            onClick={() => auth.signOut()}
-          >
-            <AiOutlineBell className="header__menu--container__link--icon" />
-          </Link>
+          </li>
+        )}
+        <li className="header__menu--container__link">
+          <AiOutlineBell className="header__menu--container__link--icon" />
         </li>
         <li>
           <Link
@@ -33,9 +27,8 @@ const LoggedInHeader = () => {
             Upgrade
           </Link>
         </li>
-        <li>
+        <li className="header__menu--container__link">
           <span
-            className="header__menu--container__link"
             onClick={() => {
               setDropDown(!dropDown);
             }}

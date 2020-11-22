@@ -1,18 +1,15 @@
-import React, { useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Editorjs from "react-editor-js";
-import slugify from "slugify";
-
-import { db, timestamp } from "../firebase/config";
 
 import { User } from "../context/UserContext";
 import { AuthModal as AM } from "../context/AuthModalContext";
 import Header from "./new-story-components/Header";
 import { EDITOR_JS_TOOLS } from "../editor/editorConfig";
+import Publish from "./new-story-components/Publish";
 import AuthModal from "./auth/AuthModal";
+import { getDraft, saveDraft } from "./new-story-components/FunctionProvider";
 
 import "../style/new-story.css";
-import { useState } from "react";
-import { useEffect } from "react";
 
 const NewStory = (props) => {
   const user = User();
@@ -25,72 +22,31 @@ const NewStory = (props) => {
   const [draftId, setDraftId] = useState(props.match.params.id);
   const [onChangeCount, setOnChangeCount] = useState(0);
 
+  const [file, setFile] = useState(null);
+  const [postImage, setPostImage] = useState(null);
+
   const [publish, setPublish] = useState(false);
 
-  const saveDraft = async () => {
-    setSaving(true);
-    const savedData = await instanceRef.current.save();
-    if (newPost) {
-      db.collection("drafts")
-        .add({
-          title,
-          savedData,
-        })
-        .then((res) => {
-          setSaving(false);
-          setNewPost(false);
-          setDraftId(res.id);
-          window.history.pushState({}, "", `/p/${res.id}`);
-        });
-    } else {
-      db.collection("drafts")
-        .doc(draftId)
-        .set({
-          title,
-          savedData,
-        })
-        .then(() => {
-          setSaving(false);
-        });
-    }
-  };
-
-  const handleSave = async () => {
-    const slug = slugify(title, {
-      lower: true,
-    });
-    window.history.pushState({}, `${title}`, `/${slug}`);
-    const savedData = await instanceRef.current.save();
-    db.collection("posts").add({
-      title,
-      slug,
-      savedData,
-      timestamp,
-      postedBy: user.uid,
-    });
+  const pageProps = {
+    setSaving,
+    newPost,
+    setNewPost,
+    draftId,
+    setDraftId,
+    title,
+    setTitle,
+    setEditorData,
+    instanceRef,
   };
 
   useEffect(() => {
     if (onChangeCount > 0 && onChangeCount % 5 === 0 && title !== "") {
-      saveDraft();
+      saveDraft(pageProps, title);
     }
   }, [onChangeCount]);
 
   useEffect(() => {
-    if (draftId) {
-      setNewPost(false);
-      db.collection("drafts")
-        .doc(draftId)
-        .get()
-        .then((doc) => {
-          if (doc) {
-            setTitle(doc.data().title);
-            setEditorData(doc.data().savedData);
-          }
-        });
-    } else {
-      setEditorData("");
-    }
+    getDraft(pageProps);
   }, []);
 
   if (!user) {
@@ -98,18 +54,24 @@ const NewStory = (props) => {
   }
   return (
     <div className="new-story">
-      {publish && <Publish />}
-      <Header saving={saving} />
+      {publish && (
+        <Publish user={user} setPublish={setPublish} pageProps={pageProps} />
+      )}
+      <Header saving={saving} setFile={setFile} setPostImage={setPostImage} />
+
       <div className="new-story__editor">
         <div className="new-story__editor--save-btn-container">
-          <button
-            className="new-story__editor--save-btn"
-            onClick={() => {
-              setPublish(true);
-            }}
-          >
-            Publish
-          </button>
+          {title && (
+            <button
+              className="new-story__editor--save-btn"
+              onClick={() => {
+                setPublish(true);
+                saveDraft(pageProps, title);
+              }}
+            >
+              Publish
+            </button>
+          )}
         </div>
 
         <div className="new-story__editor--header">
@@ -122,6 +84,12 @@ const NewStory = (props) => {
             }}
           />
         </div>
+
+        {postImage && (
+          <div className="new-story__editor--featured-image">
+            <img src={postImage} alt="Featured" />
+          </div>
+        )}
 
         <div className="new-story__editor--body">
           {editorData !== null && (
@@ -139,10 +107,6 @@ const NewStory = (props) => {
       </div>
     </div>
   );
-};
-
-const Publish = ({ setPublish }) => {
-  return <div className="new-story__publish">Hello World</div>;
 };
 
 export default NewStory;
