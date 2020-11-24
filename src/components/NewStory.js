@@ -1,19 +1,15 @@
-import React, { useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Editorjs from "react-editor-js";
-import slugify from "slugify";
-import { AiOutlineClose } from "react-icons/ai";
-
-import { db, timestamp } from "../firebase/config";
 
 import { User } from "../context/UserContext";
 import { AuthModal as AM } from "../context/AuthModalContext";
 import Header from "./new-story-components/Header";
 import { EDITOR_JS_TOOLS } from "../editor/editorConfig";
+import Publish from "./new-story-components/Publish";
 import AuthModal from "./auth/AuthModal";
+import { getDraft, saveDraft } from "./new-story-components/FunctionProvider";
 
 import "../style/new-story.css";
-import { useState } from "react";
-import { useEffect } from "react";
 
 const NewStory = (props) => {
   const user = User();
@@ -26,72 +22,31 @@ const NewStory = (props) => {
   const [draftId, setDraftId] = useState(props.match.params.id);
   const [onChangeCount, setOnChangeCount] = useState(0);
 
+  const [file, setFile] = useState(null);
+  const [postImage, setPostImage] = useState(null);
+
   const [publish, setPublish] = useState(false);
 
-  const saveDraft = async () => {
-    setSaving(true);
-    const savedData = await instanceRef.current.save();
-    if (newPost) {
-      db.collection("drafts")
-        .add({
-          title,
-          savedData,
-        })
-        .then((res) => {
-          setSaving(false);
-          setNewPost(false);
-          setDraftId(res.id);
-          window.history.pushState({}, "", `/p/${res.id}`);
-        });
-    } else {
-      db.collection("drafts")
-        .doc(draftId)
-        .set({
-          title,
-          savedData,
-        })
-        .then(() => {
-          setSaving(false);
-        });
-    }
-  };
-
-  const handleSave = async () => {
-    const slug = slugify(title, {
-      lower: true,
-    });
-    window.history.pushState({}, `${title}`, `/${slug}`);
-    const savedData = await instanceRef.current.save();
-    db.collection("posts").add({
-      title,
-      slug,
-      savedData,
-      timestamp,
-      postedBy: user.uid,
-    });
+  const pageProps = {
+    setSaving,
+    newPost,
+    setNewPost,
+    draftId,
+    setDraftId,
+    title,
+    setTitle,
+    setEditorData,
+    instanceRef,
   };
 
   useEffect(() => {
     if (onChangeCount > 0 && onChangeCount % 5 === 0 && title !== "") {
-      saveDraft();
+      saveDraft(pageProps, title);
     }
   }, [onChangeCount]);
 
   useEffect(() => {
-    if (draftId) {
-      setNewPost(false);
-      db.collection("drafts")
-        .doc(draftId)
-        .get()
-        .then((doc) => {
-          if (doc) {
-            setTitle(doc.data().title);
-            setEditorData(doc.data().savedData);
-          }
-        });
-    } else {
-      setEditorData("");
-    }
+    getDraft(pageProps);
   }, []);
 
   if (!user) {
@@ -99,18 +54,30 @@ const NewStory = (props) => {
   }
   return (
     <div className="new-story">
-      {publish && <Publish setPublish={setPublish} />}
-      <Header saving={saving} />
+      {publish && (
+        <Publish
+          user={user}
+          setPublish={setPublish}
+          pageProps={pageProps}
+          file={file}
+          postImage={postImage}
+        />
+      )}
+      <Header saving={saving} setFile={setFile} setPostImage={setPostImage} />
+
       <div className="new-story__editor">
         <div className="new-story__editor--save-btn-container">
-          <button
-            className="new-story__editor--save-btn"
-            onClick={() => {
-              setPublish(true);
-            }}
-          >
-            Publish
-          </button>
+          {title && (
+            <button
+              className="new-story__editor--save-btn"
+              onClick={() => {
+                setPublish(true);
+                saveDraft(pageProps, title);
+              }}
+            >
+              Publish
+            </button>
+          )}
         </div>
 
         <div className="new-story__editor--header">
@@ -124,6 +91,12 @@ const NewStory = (props) => {
           />
         </div>
 
+        {postImage && (
+          <div className="new-story__editor--featured-image">
+            <img src={postImage} alt="Featured" />
+          </div>
+        )}
+
         <div className="new-story__editor--body">
           {editorData !== null && (
             <Editorjs
@@ -136,51 +109,6 @@ const NewStory = (props) => {
               tools={EDITOR_JS_TOOLS}
             />
           )}
-        </div>
-      </div>
-    </div>
-  );
-};
-
-const Publish = ({ setPublish }) => {
-  return (
-    <div className="new-story__publish">
-      <div className="new-story__publish--settings">
-        <AiOutlineClose
-          onClick={() => {
-            setPublish(false);
-          }}
-        />
-        <div className="new-story__story--preview">
-          <h3>Article Preview</h3>
-
-          <div
-            className="new-story__image--preview"
-            data-placeholder="Edit me"
-          ></div>
-        </div>
-
-        <div>
-          <input type="text" />
-          <input type="text" />
-          <p>
-            <b>Note</b>: Changes here will affect how your story appears in
-            public places like Scinuggets’s homepage — not the story itself.
-          </p>
-        </div>
-
-        <div>
-          <h5>
-            Publishing to <b></b>
-          </h5>
-          <p>
-            Add or change tags (up to 5) so readers know what your story is
-            about
-          </p>
-        </div>
-
-        <div>
-          <button>Publish</button>
         </div>
       </div>
     </div>

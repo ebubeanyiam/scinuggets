@@ -1,19 +1,22 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useState } from "react";
 
-import { User } from "../../context/UserContext";
+import { BsThreeDots } from "react-icons/bs";
+
+import { changeHandler } from "./FunctionProvider";
 import LoggedInHeader from "../header-components/LoggedInHeader";
-import LoggedOutHeader from "../header-components/LoggedOutheader";
-
 import "../../style/header.css";
-import { useEffect } from "react";
-import { useState } from "react";
 
-const Header = ({ saving }) => {
-  const user = User();
+const Header = ({ saving, setFile, setPostImage }) => {
+  const [dropDown, setDropDown] = useState(false);
+
+  const styles = {
+    display: "flex",
+    alignItems: "center",
+    position: "relative",
+  };
 
   return (
-    <div className="header__container">
+    <div className="header__container" ref>
       <nav className="header">
         <div className="header__logo">
           <h1>Drafts</h1>
@@ -25,8 +28,51 @@ const Header = ({ saving }) => {
           )}
         </div>
 
-        {!user ? <LoggedOutHeader /> : <LoggedInHeader />}
+        <div style={styles}>
+          <div>
+            <BsThreeDots
+              style={{ cursor: "pointer" }}
+              onClick={() => {
+                setDropDown(!dropDown);
+              }}
+            />
+            {dropDown && (
+              <DropDown setFile={setFile} setPostImage={setPostImage} />
+            )}
+          </div>
+          <LoggedInHeader />
+        </div>
       </nav>
+    </div>
+  );
+};
+
+const DropDown = ({ setFile, setPostImage }) => {
+  return (
+    <div className="header__menu--dropdown">
+      <div className="header__menu--dropdown--user-options">
+        <span>Add to series</span>
+        <span>Share draft link</span>
+        <form className="upload-form">
+          <label>
+            <input
+              type="file"
+              onChange={(e) => {
+                changeHandler(e, setFile, setPostImage);
+              }}
+              accept="image/*"
+              style={{ display: "none" }}
+            />
+            <span>Select featured Image</span>
+          </label>
+        </form>
+        <span>Change title/subtitle</span>
+      </div>
+
+      <div className="header__menu--dropdown--user--others">
+        <span to="">Become a Member</span>
+        <span to="">Help</span>
+      </div>
     </div>
   );
 };

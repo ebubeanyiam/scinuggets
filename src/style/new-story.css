@@ -2,6 +2,13 @@
   padding: 0 10px;
 }
 
+.new-story p {
+  font-size: 13px;
+  margin-top: 15px;
+  line-height: 20px;
+  width: 80%;
+}
+
 .new-story__editor {
   max-width: 650px;
   margin: 0 auto;
@@ -38,12 +45,13 @@
 }
 
 .new-story__editor--header input::placeholder {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
-    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
   font-size: 25px;
+}
+
+.new-story__editor--featured-image img {
+  width: 600px;
+  max-height: 500px;
+  object-fit: cover;
 }
 
 .new-story__publish {
@@ -61,4 +69,66 @@
 .new-story__publish--settings {
   max-width: 900px;
   margin: 0 auto;
+  display: flex;
+  position: relative;
+  padding: 50px 0;
+}
+
+.new-story__publish--settings__close-btn {
+  position: absolute;
+  top: 0;
+  right: 0;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.new-story__image--preview {
+  width: 80%;
+  height: 200px;
+  background: #f1f1f1;
+  margin: 15px 0;
+  display: grid;
+  place-items: center;
+  text-align: center;
+  font-size: 11px;
+  position: relative;
+}
+
+.new-story__image--preview img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.new-story__story--title input {
+  display: block;
+  border: none;
+  border-bottom: 1px solid #e4e4e4;
+  padding: 10px 5px;
+  width: 80%;
+  outline: none;
+  font-size: 16px;
+  margin-bottom: 5px;
+}
+
+.new-story__story--title input::placeholder {
+  font-size: 16px;
+}
+
+.new-story__publish--publish-info h5 {
+  font-weight: 300;
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+.new-story__publish--publish-btn {
+  padding: 10px 15px;
+  color: var(--primary-white);
+  background: var(--primary-dark);
+  border-radius: 5px;
+  border: none;
+  margin-top: 20px;
 }
