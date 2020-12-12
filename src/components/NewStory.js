@@ -3,7 +3,8 @@ import Editorjs from "react-editor-js";
 
 import { User } from "../context/UserContext";
 import { AuthModal as AM } from "../context/AuthModalContext";
-import Header from "./new-story-components/Header";
+// import Header from "./new-story-components/Header";
+import Header from "./new-story-components/Test";
 import { EDITOR_JS_TOOLS } from "../editor/editorConfig";
 import Publish from "./new-story-components/Publish";
 import AuthModal from "./auth/AuthModal";
@@ -18,6 +19,7 @@ const NewStory = (props) => {
   const [title, setTitle] = useState("");
   const [saving, setSaving] = useState(false);
   const [newPost, setNewPost] = useState(true);
+  const [dropDown, setDropDown] = useState(false);
   const [editorData, setEditorData] = useState(null);
   const [draftId, setDraftId] = useState(props.match.params.id);
   const [onChangeCount, setOnChangeCount] = useState(0);
@@ -53,11 +55,30 @@ const NewStory = (props) => {
     return <AuthModal setAuth={setAuthModal} />;
   }
   return (
-    <div className="new-story">
+    <div
+      className="new-story"
+      onClick={(e) => {
+        !e.target.classList.contains("header__menu--dropdown") &&
+          dropDown &&
+          setDropDown(false);
+      }}
+    >
       {publish && (
-        <Publish user={user} setPublish={setPublish} pageProps={pageProps} />
+        <Publish
+          user={user}
+          setPublish={setPublish}
+          pageProps={pageProps}
+          file={file}
+          postImage={postImage}
+        />
       )}
-      <Header saving={saving} setFile={setFile} setPostImage={setPostImage} />
+      <Header
+        dropDown={dropDown}
+        setDropDown={setDropDown}
+        saving={saving}
+        setFile={setFile}
+        setPostImage={setPostImage}
+      />
 
       <div className="new-story__editor">
         <div className="new-story__editor--save-btn-container">

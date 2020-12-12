@@ -5,11 +5,14 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import HomePage from "./components/HomePage";
 import NewStory from "./components/NewStory";
 import ConfirmMail from "./components/ConfirmMail";
+import Blog from "./components/Blog";
 import { User } from "./context/UserContext";
 import AuthModal from "./components/auth/AuthModal";
 import { AuthModal as AuthModalFunction } from "./context/AuthModalContext";
 import UserManagement from "./components/UserManagement";
 import ToastNotification from "./components/ToastNotification";
+import PageNotFound from "./components/PageNotFound";
+import ScreenLoader from "./components/ScreenLoader";
 
 const App = () => {
   const user = User();
@@ -24,7 +27,7 @@ const App = () => {
   }, [user]);
 
   if (user === "") {
-    return "Loading";
+    return <ScreenLoader />;
   }
 
   return (
@@ -47,12 +50,14 @@ const App = () => {
               />
             </>
           )}
+          <Route path="/:id" render={(props) => <Blog {...props} />} />
           <Route
             path="/user/action"
             exact
             render={(props) => <UserManagement {...props} />}
           />
         </AuthStatusProvider>
+        <Route path="" component={PageNotFound} />
       </Switch>
     </Router>
   );

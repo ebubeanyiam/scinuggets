@@ -3,7 +3,7 @@ import { AiOutlineClose } from "react-icons/ai";
 
 import { saveArticle } from "./FunctionProvider";
 
-const Publish = ({ user, setPublish, pageProps }) => {
+const Publish = ({ user, setPublish, pageProps, file, postImage }) => {
   const [title, setTitle] = useState(pageProps.title);
   const [subTitle, setSubTitle] = useState("");
 
@@ -24,6 +24,7 @@ const Publish = ({ user, setPublish, pageProps }) => {
               className="new-story__image--preview"
               data-placeholder="Edit me"
             >
+              {postImage && <img src={postImage} alt="Featured" />}
               Include a high-quality image in your story to make it more
               inviting to readers.
             </div>
@@ -67,7 +68,7 @@ const Publish = ({ user, setPublish, pageProps }) => {
             <button
               className="new-story__publish--publish-btn"
               onClick={() => {
-                saveArticle(user, pageProps, title, subTitle);
+                saveArticle(user, pageProps, title, subTitle, file);
               }}
             >
               Publish

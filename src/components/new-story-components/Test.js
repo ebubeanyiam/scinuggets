@@ -2,7 +2,7 @@ import React from "react";
 
 import { BsThreeDots } from "react-icons/bs";
 
-import { InputModel } from "./InputModel";
+import { addFeaturedImage } from "./FunctionProvider";
 
 import LoggedInHeader from "../header-components/LoggedInHeader";
 import "../../style/header.css";
@@ -35,7 +35,7 @@ const Header = ({ dropDown, setDropDown, saving, setFile, setPostImage }) => {
                 setDropDown(!dropDown);
               }}
             />
-            {dropDown && (
+            {!dropDown && (
               <DropDown setFile={setFile} setPostImage={setPostImage} />
             )}
           </div>
@@ -52,7 +52,21 @@ const DropDown = ({ setFile, setPostImage }) => {
       <div className="header__menu--dropdown--user-options">
         <span>Add to series</span>
         <span>Share draft link</span>
-        <InputModel setFile={setFile} setPostImage={setPostImage} />
+        <form>
+          <label>
+            <span>Select featured Image</span>
+            <input
+              type="file"
+              accept="image/*"
+              onChange={(e) => {
+                console.log("here");
+                addFeaturedImage(e, setFile, setPostImage);
+              }}
+              style={{ display: "none" }}
+            />
+          </label>
+        </form>
+
         <span>Change title/subtitle</span>
       </div>
 

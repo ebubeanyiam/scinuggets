@@ -1,4 +1,4 @@
-import { db, timestamp } from "../../firebase/config";
+import { db, store, timestamp } from "../../firebase/config";
 import slugify from "slugify";
 
 export const getDraft = (props) => {
@@ -46,25 +46,49 @@ export const saveDraft = async (props, title) => {
   }
 };
 
-export const saveArticle = async (user, props, title, subtitle) => {
-  const slugifyRes = slugify(title, {
-    lower: true,
-  });
-  const slug = `${slugifyRes}-${props.draftId}`;
-  const savedData = await props.instanceRef.current.save();
+export const saveArticle = async (user, props, title, subtitle, file) => {
+  let featuredImage;
 
-  db.collection("posts").doc(slug).set({
-    title,
-    subtitle,
-    slug,
-    savedData,
-    timestamp,
-    postedBy: user.uid,
-  });
+  const saveData = async () => {
+    const slugifyRes = slugify(title, {
+      lower: true,
+    });
+    const slug = `${slugifyRes}-${props.draftId}`;
+    const savedData = await props.instanceRef.current.save();
+
+    db.collection("posts").doc(slug).set({
+      title,
+      subtitle,
+      slug,
+      savedData,
+      timestamp,
+      postedBy: user.uid,
+      featuredImage,
+    });
+  };
+
+  if (file) {
+    store
+      .ref(file.name)
+      .put(file)
+      .then(async (snapshot) => {
+        await snapshot.ref.getDownloadURL().then((res) => {
+          featuredImage = res;
+        });
+        saveData();
+      });
+  } else {
+    saveData();
+  }
 };
 
-export const changeHandler = (e, setFile, setPostImage) => {
-  const types = ["image/png", "image/jpeg", "image/jpg, image/gif, image/svg"];
+export const addFeaturedImage = (e, setFile, setPostImage) => {
+  const types = [
+    "image/png",
+    "image/jpeg",
+    "image/jpg, image/gif, image/svg",
+    "image/webp",
+  ];
 
   let selectedFile = e.target.files[0];
 
@@ -77,6 +101,50 @@ export const changeHandler = (e, setFile, setPostImage) => {
     };
     reader.readAsDataURL(e.target.files[0]);
   } else {
-    console.log("file type not supported");
+    alert("File type not supported");
   }
+};
+
+export const editorImageFile = async (file) => {
+  let response;
+
+  await store
+    .ref(file.name)
+    .put(file)
+    .then(async (snapshot) => {
+      await snapshot.ref.getDownloadURL().then((res) => {
+        response = res;
+      });
+    });
+
+  return {
+    success: 1,
+    file: {
+      url: response,
+    },
+  };
+};
+
+export const editorImageUrl = async (url) => {
+  return {
+    success: 1,
+    file: {
+      url: url,
+    },
+  };
+};
+
+export const getPostById = (id, postData, loading) => {
+  db.collection("posts")
+    .doc(id)
+    .get()
+    .then((doc) => {
+      if (doc.data()) {
+        postData(doc.data());
+        loading(false);
+      } else {
+        postData(false);
+        loading(false);
+      }
+    });
 };
