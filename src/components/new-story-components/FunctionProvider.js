@@ -8,13 +8,18 @@ export const getDraft = (props) => {
       .doc(props.draftId)
       .get()
       .then((doc) => {
-        if (doc) {
+        if (doc && doc.data().author === props.user.uid) {
           props.setTitle(doc.data().title);
           props.setEditorData(doc.data().savedData);
+          props.setLoading(false);
+        } else {
+          props.setUserDraft(false);
+          props.setLoading(false);
         }
       });
   } else {
     props.setEditorData("");
+    props.setLoading(false);
   }
 };
 
@@ -26,6 +31,7 @@ export const saveDraft = async (props, title) => {
       .add({
         title,
         savedData,
+        author: props.user.uid,
       })
       .then((res) => {
         props.setSaving(false);
@@ -39,6 +45,7 @@ export const saveDraft = async (props, title) => {
       .set({
         title,
         savedData,
+        author: props.user.uid,
       })
       .then(() => {
         props.setSaving(false);
@@ -47,7 +54,7 @@ export const saveDraft = async (props, title) => {
 };
 
 export const saveArticle = async (user, props, title, subtitle, file) => {
-  let featuredImage;
+  let featuredImage = "";
 
   const saveData = async () => {
     const slugifyRes = slugify(title, {
@@ -92,7 +99,6 @@ export const addFeaturedImage = (e, setFile, setPostImage) => {
 
   let selectedFile = e.target.files[0];
 
-  console.log(selectedFile);
   if (selectedFile && types.includes(selectedFile.type)) {
     const reader = new FileReader();
     reader.onload = () => {

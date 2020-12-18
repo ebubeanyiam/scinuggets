@@ -6,7 +6,7 @@ const ScreenLoader = () => {
   return (
     <div className="screen-loader-box__parent">
       <div className="screen-loader-box">
-        <span>Scinuggets</span>
+        <span>S</span>
       </div>
     </div>
   );

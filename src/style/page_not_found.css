@@ -1,0 +1,33 @@
+.page-not-found {
+  margin-top: 70px;
+  padding: 100px;
+}
+
+.page-not-found__error-warning,
+.page-not-found__error-response,
+.page-not-found__error-header {
+  margin-bottom: 20px;
+}
+
+.page-not-found__error-warning h3 {
+  font-weight: 300;
+}
+
+.page-not-found__error-response h1 {
+  font-weight: 500;
+  font-size: 100px;
+  color: #b2b2b2;
+}
+
+.page-not-found__error-header h2 {
+  font-weight: 600;
+}
+
+.page-not-found__error-message p {
+  line-height: 30px;
+}
+
+.page-not-found__error-message p a {
+  color: #b2b2b2;
+  font-weight: 700;
+}
