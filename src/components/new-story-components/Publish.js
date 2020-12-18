@@ -2,11 +2,19 @@ import React, { useState } from "react";
 import { AiOutlineClose } from "react-icons/ai";
 import { BiImageAdd } from "react-icons/bi";
 
+import { User } from "../../context/UserContext";
+import { ProfileReg } from "../../context/CompleteProfileContext";
 import { saveArticle, addFeaturedImage } from "./FunctionProvider";
 
 const Publish = (props) => {
+  const user = User();
+  const [, setOpenProfileReg] = ProfileReg();
   const [title, setTitle] = useState(props.pageProps.title);
   const [subTitle, setSubTitle] = useState("");
+
+  if (!user.displayName) {
+    setOpenProfileReg(true);
+  }
 
   return (
     <div className="new-story__publish">

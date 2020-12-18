@@ -1,0 +1,16 @@
+.completeregpopup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 100vw;
+  z-index: 3;
+  display: grid;
+  place-items: center;
+}
+
+.completeregpopup__modal {
+  min-width: 200px;
+  min-height: 200px;
+  background: #fff;
+}

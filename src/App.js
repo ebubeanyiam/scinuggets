@@ -1,21 +1,26 @@
 import React, { useEffect, useState } from "react";
-import { AuthStatusProvider } from "./context/AuthStatusContext";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
 import HomePage from "./components/HomePage";
 import NewStory from "./components/NewStory";
 import ConfirmMail from "./components/ConfirmMail";
 import Blog from "./components/Blog";
-import { User } from "./context/UserContext";
 import AuthModal from "./components/auth/AuthModal";
-import { AuthModal as AuthModalFunction } from "./context/AuthModalContext";
-import UserManagement from "./components/UserManagement";
-import ToastNotification from "./components/ToastNotification";
-import PageNotFound from "./components/PageNotFound";
 import ScreenLoader from "./components/ScreenLoader";
+import PageNotFound from "./components/PageNotFound";
+import UserManagement from "./components/UserManagement";
+import CompleteRegPopUp from "./components/CompleteRegPopUp";
+import ToastNotification from "./components/ToastNotification";
+
+// Contexts
+import { User } from "./context/UserContext";
+import { ProfileReg } from "./context/CompleteProfileContext";
+import { AuthStatusProvider } from "./context/AuthStatusContext";
+import { AuthModal as AuthModalFunction } from "./context/AuthModalContext";
 
 const App = () => {
   const user = User();
+  const [profileReg] = ProfileReg();
   const userActionUrl = "/user/action";
   const [authModal, setAuthModal] = AuthModalFunction();
   const [userVerified, setUserVerified] = useState(null);
@@ -36,6 +41,9 @@ const App = () => {
       {userVerified === false && window.location.pathname !== userActionUrl && (
         <ConfirmMail />
       )}
+
+      {profileReg && <CompleteRegPopUp />}
+
       <Switch>
         <AuthStatusProvider>
           {userVerified !== false && (
@@ -57,7 +65,7 @@ const App = () => {
             render={(props) => <UserManagement {...props} />}
           />
         </AuthStatusProvider>
-        {/* <Route path="" component={PageNotFound} /> */}
+        <Route path="" component={PageNotFound} />
       </Switch>
     </Router>
   );
