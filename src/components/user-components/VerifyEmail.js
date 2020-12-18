@@ -52,7 +52,7 @@ const VerifyEmail = ({ actionCode }) => {
             : "Unfortunately we could not verify your Email at the moment"}
         </p>
 
-        <span onClick={window.location.replace("/")}>Go back home</span>
+        <span onClick={() => window.location.replace("/")}>Go back home</span>
       </div>
     </div>
   );

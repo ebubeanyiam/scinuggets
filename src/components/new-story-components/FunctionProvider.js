@@ -3,18 +3,26 @@ import slugify from "slugify";
 
 export const getDraft = (props) => {
   if (props.draftId) {
+    console.log("====================================");
+    console.log(props.user.uid);
+    console.log("====================================");
     props.setNewPost(false);
     db.collection("drafts")
       .doc(props.draftId)
       .get()
       .then((doc) => {
-        if (doc) {
+        if (doc && doc.data().author === props.user.uid) {
           props.setTitle(doc.data().title);
           props.setEditorData(doc.data().savedData);
+          props.setLoading(false);
+        } else {
+          props.setUserDraft(false);
+          props.setLoading(false);
         }
       });
   } else {
     props.setEditorData("");
+    props.setLoading(false);
   }
 };
 
@@ -26,6 +34,7 @@ export const saveDraft = async (props, title) => {
       .add({
         title,
         savedData,
+        author: props.user.uid,
       })
       .then((res) => {
         props.setSaving(false);
@@ -39,6 +48,7 @@ export const saveDraft = async (props, title) => {
       .set({
         title,
         savedData,
+        author: props.user.uid,
       })
       .then(() => {
         props.setSaving(false);
@@ -47,7 +57,7 @@ export const saveDraft = async (props, title) => {
 };
 
 export const saveArticle = async (user, props, title, subtitle, file) => {
-  let featuredImage;
+  let featuredImage = "";
 
   const saveData = async () => {
     const slugifyRes = slugify(title, {
@@ -82,7 +92,7 @@ export const saveArticle = async (user, props, title, subtitle, file) => {
   }
 };
 
-export const changeHandler = (e, setFile, setPostImage) => {
+export const addFeaturedImage = (e, setFile, setPostImage) => {
   const types = [
     "image/png",
     "image/jpeg",
@@ -92,7 +102,6 @@ export const changeHandler = (e, setFile, setPostImage) => {
 
   let selectedFile = e.target.files[0];
 
-  console.log(selectedFile);
   if (selectedFile && types.includes(selectedFile.type)) {
     const reader = new FileReader();
     reader.onload = () => {
@@ -103,4 +112,48 @@ export const changeHandler = (e, setFile, setPostImage) => {
   } else {
     alert("File type not supported");
   }
+};
+
+export const editorImageFile = async (file) => {
+  let response;
+
+  await store
+    .ref(file.name)
+    .put(file)
+    .then(async (snapshot) => {
+      await snapshot.ref.getDownloadURL().then((res) => {
+        response = res;
+      });
+    });
+
+  return {
+    success: 1,
+    file: {
+      url: response,
+    },
+  };
+};
+
+export const editorImageUrl = async (url) => {
+  return {
+    success: 1,
+    file: {
+      url: url,
+    },
+  };
+};
+
+export const getPostById = (id, postData, loading) => {
+  db.collection("posts")
+    .doc(id)
+    .get()
+    .then((doc) => {
+      if (doc.data()) {
+        postData(doc.data());
+        loading(false);
+      } else {
+        postData(false);
+        loading(false);
+      }
+    });
 };

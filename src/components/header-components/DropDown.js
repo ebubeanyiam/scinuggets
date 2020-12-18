@@ -12,7 +12,7 @@ const DropDown = () => {
       </div>
 
       <div className="header__menu--dropdown--user-options">
-        <Link to="/new-story">New Story</Link>
+        <Link to="/m/new-story">New Story</Link>
         <Link to="">Stories</Link>
         <Link to="">Stats</Link>
         <Link to="">Settings</Link>

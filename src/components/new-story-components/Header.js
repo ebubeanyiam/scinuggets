@@ -52,7 +52,7 @@ const DropDown = ({ setFile, setPostImage }) => {
     <div className="header__menu--dropdown">
       <div className="header__menu--dropdown--user-options">
         <span>Add to series</span>
-        <span>Share draft link</span>
+        <span>Share draftttt link</span>
         <form className="upload-form">
           <label>
             <input

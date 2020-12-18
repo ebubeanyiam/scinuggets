@@ -1,0 +1,33 @@
+.screen-loader-box__parent {
+  position: fixed;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  display: grid;
+  place-items: center;
+  background: #f7f7f7;
+}
+
+.screen-loader-box {
+  font-family: "Light Wandals";
+  position: absolute;
+  background: #fff;
+  height: 50px;
+  width: fit-content;
+  padding: 10px;
+  border-radius: 5px;
+  animation: 1s ease-in-out alternate infinite shadows;
+}
+
+.screen-loader-box span {
+  font-size: 12px;
+}
+
+@keyframes shadows {
+  0% {
+    box-shadow: none;
+  }
+  100% {
+    box-shadow: 9px 16px 8px rgb(227, 227, 227);
+  }
+}

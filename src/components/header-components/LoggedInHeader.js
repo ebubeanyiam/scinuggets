@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { AiOutlineSearch, AiOutlineBell, AiOutlineUser } from "react-icons/ai";
 
-import { auth } from "../../firebase/config";
+// import { auth } from "../../firebase/config";
 import DropDown from "./DropDown";
 
 const LoggedInHeader = () => {

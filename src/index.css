@@ -8,6 +8,12 @@
   --primary-warning: #ff0000;
 }
 
+@font-face {
+  font-family: "Light Wandals";
+  src: URL("./assets/fonts/LightWandalsElementPersonal-9JKy.ttf")
+    format("truetype");
+}
+
 * {
   margin: 0;
   padding: 0;

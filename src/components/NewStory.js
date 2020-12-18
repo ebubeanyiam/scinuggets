@@ -3,13 +3,15 @@ import Editorjs from "react-editor-js";
 
 import { User } from "../context/UserContext";
 import { AuthModal as AM } from "../context/AuthModalContext";
-import Header from "./new-story-components/Header";
+import Header from "./new-story-components/Header_";
 import { EDITOR_JS_TOOLS } from "../editor/editorConfig";
 import Publish from "./new-story-components/Publish";
 import AuthModal from "./auth/AuthModal";
 import { getDraft, saveDraft } from "./new-story-components/FunctionProvider";
 
 import "../style/new-story.css";
+import PageNotFound from "./PageNotFound";
+import ScreenLoader from "./ScreenLoader";
 
 const NewStory = (props) => {
   const user = User();
@@ -18,6 +20,7 @@ const NewStory = (props) => {
   const [title, setTitle] = useState("");
   const [saving, setSaving] = useState(false);
   const [newPost, setNewPost] = useState(true);
+  const [dropDown, setDropDown] = useState(false);
   const [editorData, setEditorData] = useState(null);
   const [draftId, setDraftId] = useState(props.match.params.id);
   const [onChangeCount, setOnChangeCount] = useState(0);
@@ -26,8 +29,11 @@ const NewStory = (props) => {
   const [postImage, setPostImage] = useState(null);
 
   const [publish, setPublish] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [userDraft, setUserDraft] = useState(null);
 
   const pageProps = {
+    user,
     setSaving,
     newPost,
     setNewPost,
@@ -35,7 +41,9 @@ const NewStory = (props) => {
     setDraftId,
     title,
     setTitle,
+    setUserDraft,
     setEditorData,
+    setLoading,
     instanceRef,
   };
 
@@ -52,8 +60,26 @@ const NewStory = (props) => {
   if (!user) {
     return <AuthModal setAuth={setAuthModal} />;
   }
+  if (loading) {
+    return <ScreenLoader />;
+  }
+  if (!newPost && userDraft === false) {
+    return (
+      <PageNotFound
+        warning="We can't seem to find that article among your treasures"
+        response="Oops"
+      />
+    );
+  }
   return (
-    <div className="new-story">
+    <div
+      className="new-story"
+      onClick={(e) => {
+        !e.target.classList.contains("header__menu--dropdown") &&
+          dropDown &&
+          setDropDown(false);
+      }}
+    >
       {publish && (
         <Publish
           user={user}
@@ -61,9 +87,11 @@ const NewStory = (props) => {
           pageProps={pageProps}
           file={file}
           postImage={postImage}
+          setFile={setFile}
+          setPostImage={setPostImage}
         />
       )}
-      <Header saving={saving} setFile={setFile} setPostImage={setPostImage} />
+      <Header dropDown={dropDown} setDropDown={setDropDown} saving={saving} />
 
       <div className="new-story__editor">
         <div className="new-story__editor--save-btn-container">
@@ -97,7 +125,10 @@ const NewStory = (props) => {
           </div>
         )}
 
-        <div className="new-story__editor--body">
+        <div
+          className="new-story__editor--body"
+          style={{ zIndex: dropDown ? -1 : 1 }}
+        >
           {editorData !== null && (
             <Editorjs
               onChange={() => {
