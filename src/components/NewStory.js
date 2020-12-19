@@ -66,7 +66,7 @@ const NewStory = (props) => {
   if (!newPost && userDraft === false) {
     return (
       <PageNotFound
-        warning="We can't seem to find that article"
+        warning="We can't seem to find that article among your treasures"
         response="Oops"
       />
     );
@@ -87,15 +87,11 @@ const NewStory = (props) => {
           pageProps={pageProps}
           file={file}
           postImage={postImage}
+          setFile={setFile}
+          setPostImage={setPostImage}
         />
       )}
-      <Header
-        dropDown={dropDown}
-        setDropDown={setDropDown}
-        saving={saving}
-        setFile={setFile}
-        setPostImage={setPostImage}
-      />
+      <Header dropDown={dropDown} setDropDown={setDropDown} saving={saving} />
 
       <div className="new-story__editor">
         <div className="new-story__editor--save-btn-container">
@@ -129,7 +125,10 @@ const NewStory = (props) => {
           </div>
         )}
 
-        <div className="new-story__editor--body">
+        <div
+          className="new-story__editor--body"
+          style={{ zIndex: dropDown ? -1 : 1 }}
+        >
           {editorData !== null && (
             <Editorjs
               onChange={() => {

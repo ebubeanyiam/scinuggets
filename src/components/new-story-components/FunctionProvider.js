@@ -3,6 +3,9 @@ import slugify from "slugify";
 
 export const getDraft = (props) => {
   if (props.draftId) {
+    console.log("====================================");
+    console.log(props.user.uid);
+    console.log("====================================");
     props.setNewPost(false);
     db.collection("drafts")
       .doc(props.draftId)

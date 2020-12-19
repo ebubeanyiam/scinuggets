@@ -7,6 +7,8 @@
   padding: 20px 50px;
   display: flex;
   justify-content: center;
+  z-index: 2;
+  background: #ffffff;
 }
 
 .header {

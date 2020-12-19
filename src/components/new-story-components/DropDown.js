@@ -6,18 +6,6 @@ const DropDown = ({ setFile, setPostImage }) => {
       <div className="header__menu--dropdown--user-options">
         <span>Add to series</span>
         <span>Share draft link</span>
-        <form>
-          <label>
-            <span>Select featured Image</span>
-            <input
-              type="file"
-              accept="image/*"
-              onChange={(e) => console.log("df kjdn")}
-              style={{ display: "none" }}
-            />
-          </label>
-        </form>
-
         <span>Change title/subtitle</span>
       </div>
 
