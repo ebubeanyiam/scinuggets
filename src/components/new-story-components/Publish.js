@@ -1,6 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { AiOutlineClose } from "react-icons/ai";
 import { BiImageAdd } from "react-icons/bi";
+
+import { db } from "../../firebase/config";
 
 import { User } from "../../context/UserContext";
 import { ProfileReg } from "../../context/CompleteProfileContext";
@@ -11,10 +13,18 @@ const Publish = (props) => {
   const [, setOpenProfileReg] = ProfileReg();
   const [title, setTitle] = useState(props.pageProps.title);
   const [subTitle, setSubTitle] = useState("");
+  const [publishing, setPublishing] = useState(false);
 
-  if (!user.displayName) {
-    setOpenProfileReg(true);
-  }
+  useEffect(() => {
+    db.collection("users")
+      .doc(user.uid)
+      .get()
+      .then((doc) => {
+        if (!doc.data()) {
+          setOpenProfileReg(true);
+        }
+      });
+  }, [user, setOpenProfileReg]);
 
   return (
     <div className="new-story__publish">
@@ -25,6 +35,10 @@ const Publish = (props) => {
           }}
           className="new-story__publish--settings__close-btn"
         />
+        <div
+          style={{ width: publishing ? "95%" : 0 }}
+          className="new-story__publish--progress-bar"
+        ></div>
         <div className="new-story__story--preview">
           <div>
             <h3>Article Preview</h3>
@@ -95,7 +109,8 @@ const Publish = (props) => {
                   props.pageProps,
                   title,
                   subTitle,
-                  props.file
+                  props.file,
+                  setPublishing
                 );
               }}
             >

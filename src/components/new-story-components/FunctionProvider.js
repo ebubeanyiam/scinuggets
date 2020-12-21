@@ -56,7 +56,8 @@ export const saveDraft = async (props, title) => {
   }
 };
 
-export const saveArticle = async (user, props, title, subtitle, file) => {
+export const saveArticle = async (user, props, title, subtitle, file, p) => {
+  p(true);
   let featuredImage = "";
 
   const saveData = async () => {
@@ -66,15 +67,24 @@ export const saveArticle = async (user, props, title, subtitle, file) => {
     const slug = `${slugifyRes}-${props.draftId}`;
     const savedData = await props.instanceRef.current.save();
 
-    db.collection("posts").doc(slug).set({
-      title,
-      subtitle,
-      slug,
-      savedData,
-      timestamp,
-      postedBy: user.uid,
-      featuredImage,
-    });
+    await db
+      .collection("posts")
+      .doc(slug)
+      .set({
+        title,
+        subtitle,
+        slug,
+        savedData,
+        timestamp,
+        postedBy: user.uid,
+        featuredImage,
+      })
+      .then((res) => {
+        window.location.replace(`/${slug}`);
+      })
+      .catch((e) => {
+        alert(e.message);
+      });
   };
 
   if (file) {
