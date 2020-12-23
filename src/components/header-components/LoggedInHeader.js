@@ -5,9 +5,7 @@ import { AiOutlineSearch, AiOutlineBell, AiOutlineUser } from "react-icons/ai";
 // import { auth } from "../../firebase/config";
 import DropDown from "./DropDown";
 
-const LoggedInHeader = () => {
-  const [dropDown, setDropDown] = useState(false);
-
+const LoggedInHeader = ({ dropDown, setDropDown }) => {
   return (
     <div className="header__menu">
       <ul className="header__menu--container">

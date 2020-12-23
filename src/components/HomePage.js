@@ -1,5 +1,6 @@
-import React, { useContext } from "react";
-import { UserContext } from "../context/UserContext";
+import React, { useState } from "react";
+
+import { User } from "../context/UserContext";
 
 import Hero from "./Hero";
 import Header from "./Header";
@@ -7,11 +8,19 @@ import Header from "./Header";
 import "../style/homepage.css";
 
 const HomePage = () => {
-  const user = useContext(UserContext);
+  const user = User();
+  const [dropDown, setDropDown] = useState(false);
 
   return (
-    <div className="homepage">
-      <Header />
+    <div
+      className="homepage"
+      onClick={(e) => {
+        !e.target.classList.contains("header__menu--dropdown") &&
+          dropDown &&
+          setDropDown(false);
+      }}
+    >
+      <Header dropDown={dropDown} setDropDown={setDropDown} />
       {user === "" ? "Loading" : user === null ? <Hero /> : "For you"}
     </div>
   );

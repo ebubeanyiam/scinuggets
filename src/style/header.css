@@ -16,12 +16,12 @@
   flex-grow: 1;
   display: flex;
   align-items: center;
-  justify-content: space-between;
 }
 
 .header__logo {
   display: flex;
   align-items: center;
+  flex: 1;
 }
 
 .header__logo h1 {
@@ -41,6 +41,7 @@
 
 .header__menu--container {
   display: flex;
+  margin-right: 30px;
 }
 
 .header__menu--container__link,

@@ -7,8 +7,9 @@ import LoggedInHeader from "./header-components/LoggedInHeader";
 import LoggedOutHeader from "./header-components/LoggedOutheader";
 
 import "../style/header.css";
+import ToggleModeSwitch from "./ToggleModeSwitch";
 
-const Header = () => {
+const Header = ({ dropDown, setDropDown }) => {
   const user = User();
 
   return (
@@ -26,7 +27,13 @@ const Header = () => {
           )}
         </div>
 
-        {!user ? <LoggedOutHeader /> : <LoggedInHeader />}
+        {!user ? (
+          <LoggedOutHeader />
+        ) : (
+          <LoggedInHeader dropDown={dropDown} setDropDown={setDropDown} />
+        )}
+
+        {user && <ToggleModeSwitch />}
       </nav>
     </div>
   );
