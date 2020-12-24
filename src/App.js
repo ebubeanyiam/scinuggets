@@ -18,6 +18,7 @@ import { ProfileReg } from "./context/CompleteProfileContext";
 import { AuthStatusProvider } from "./context/AuthStatusContext";
 import { AuthModal as AuthModalFunction } from "./context/AuthModalContext";
 import { Theme } from "./context/ThemeContext";
+import ProfileSettings from "./components/user-components/ProfileSettings";
 
 const App = () => {
   const user = User();
@@ -54,6 +55,7 @@ const App = () => {
                 {authModal && <AuthModal setAuth={setAuthModal} />}
                 <Route path="/s/signin" exact render={() => <AuthModal />} />
                 <Route path="/m/new-story" exact component={NewStory} />
+                <Route path="/me/settings" exact component={ProfileSettings} />
                 <Route
                   path="/p/:id"
                   render={(props) => <NewStory {...props} />}
