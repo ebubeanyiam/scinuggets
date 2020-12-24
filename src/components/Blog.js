@@ -1,6 +1,11 @@
 import React, { useEffect, useState } from "react";
+import Moment from "react-moment";
 import readingTime from "reading-time";
 import { Link } from "react-router-dom";
+import { BiUserCircle } from "react-icons/bi";
+
+import { db } from "../firebase/config";
+
 import { getPostById } from "./new-story-components/FunctionProvider";
 
 import PageNotFound from "./PageNotFound";
@@ -12,8 +17,7 @@ const Blog = (props) => {
   const [postData, setPostData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [htmlData, setHtmlData] = useState("");
-
-  console.log(postData);
+  const [photoUrl, setPhotoUrl] = useState("");
 
   useEffect(() => {
     getPostById(props.match.params.id, setPostData, setLoading);
@@ -23,9 +27,22 @@ const Blog = (props) => {
     if (postData) {
       getHTMLData(postData);
     }
-  }, [postData]);
 
-  console.log(readingTime(htmlData).text);
+    const photoUrl = async (uid) => {
+      await db
+        .collection("users")
+        .doc(uid)
+        .get()
+        .then((doc) => {
+          if (doc.data()) {
+            setPhotoUrl(doc.data().photoUrl);
+          }
+        });
+    };
+    if (postData) {
+      photoUrl(postData.postedBy);
+    }
+  }, [postData]);
 
   const getHTMLData = (postData) => {
     let html = "";
@@ -69,7 +86,7 @@ const Blog = (props) => {
   } else {
     return (
       <>
-        <div className="blog">
+        <div className={`${props.darkMode && "bg-mode--dark"} blog`}>
           <div className="blog__header">
             <div className="profile">
               <Link to="/">
@@ -88,6 +105,29 @@ const Blog = (props) => {
 
             <div className="blog__article-subtitle">
               <h3>{postData.subtitle}</h3>
+            </div>
+
+            <div className="blog__article-details">
+              <div className="blog__article-details--user">
+                <div className="user-image">
+                  {photoUrl ? (
+                    <img src={photoUrl} alt="author" />
+                  ) : (
+                    <BiUserCircle />
+                  )}
+                </div>
+                <div className="article-time-details">
+                  <span>
+                    {
+                      <Moment fromNow>
+                        {new Date(postData.timestamp.seconds * 1000)}
+                      </Moment>
+                    }
+                  </span>
+                  <span>{readingTime(htmlData).text}</span>
+                </div>
+              </div>
+              <div className="blog__article-details--social"></div>
             </div>
 
             <div className="blog__article-featured-image">

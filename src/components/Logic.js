@@ -1,4 +1,4 @@
-import { store } from "../firebase/config";
+import { db, store } from "../firebase/config";
 export const selectImage = (e, setFile, setPostImage) => {
   const types = [
     "image/png",
@@ -25,13 +25,28 @@ export const updateProfile = async (user, name, file, setUpdated) => {
   let photoUrl = "";
 
   const runUpdate = () => {
-    user
-      .updateProfile({
-        displayName: name,
-        photoUrl,
-      })
-      .then(() => {
-        setUpdated(true);
+    user.updateProfile({
+      displayName: name,
+      photoUrl,
+    });
+
+    db.collection("users")
+      .doc(user.uid)
+      .get()
+      .then(async (doc) => {
+        if (doc.data()) {
+          await db.collection("users").doc(user.uid).update({
+            displayName: name,
+            photoUrl,
+          });
+          setUpdated(true);
+        } else {
+          await db.collection("users").doc(user.uid).set({
+            displayName: name,
+            photoUrl,
+          });
+          setUpdated(true);
+        }
       });
   };
 

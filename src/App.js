@@ -17,11 +17,13 @@ import { User } from "./context/UserContext";
 import { ProfileReg } from "./context/CompleteProfileContext";
 import { AuthStatusProvider } from "./context/AuthStatusContext";
 import { AuthModal as AuthModalFunction } from "./context/AuthModalContext";
+import { Theme } from "./context/ThemeContext";
 
 const App = () => {
   const user = User();
   const [profileReg] = ProfileReg();
   const userActionUrl = "/user/action";
+  const [darkMode] = Theme();
   const [authModal, setAuthModal] = AuthModalFunction();
   const [userVerified, setUserVerified] = useState(null);
 
@@ -36,38 +38,39 @@ const App = () => {
   }
 
   return (
-    <Router>
-      <ToastNotification />
-      {userVerified === false && window.location.pathname !== userActionUrl && (
-        <ConfirmMail />
-      )}
+    <div className={darkMode && "bg-mode--dark"}>
+      <Router>
+        <ToastNotification />
+        {userVerified === false &&
+          window.location.pathname !== userActionUrl && <ConfirmMail />}
 
-      {profileReg && <CompleteRegPopUp />}
+        {profileReg && <CompleteRegPopUp />}
 
-      <Switch>
-        <AuthStatusProvider>
-          {userVerified !== false && (
-            <>
-              <Route path="/" exact component={HomePage} />
-              {authModal && <AuthModal setAuth={setAuthModal} />}
-              <Route path="/s/signin" exact render={() => <AuthModal />} />
-              <Route path="/m/new-story" exact component={NewStory} />
-              <Route
-                path="/p/:id"
-                render={(props) => <NewStory {...props} />}
-              />
-            </>
-          )}
-          <Route path="/:id" exact render={(props) => <Blog {...props} />} />
-          <Route
-            path="/user/action"
-            exact
-            render={(props) => <UserManagement {...props} />}
-          />
-        </AuthStatusProvider>
-        <Route path="" component={PageNotFound} />
-      </Switch>
-    </Router>
+        <Switch>
+          <AuthStatusProvider>
+            {userVerified !== false && (
+              <>
+                <Route path="/" exact component={HomePage} />
+                {authModal && <AuthModal setAuth={setAuthModal} />}
+                <Route path="/s/signin" exact render={() => <AuthModal />} />
+                <Route path="/m/new-story" exact component={NewStory} />
+                <Route
+                  path="/p/:id"
+                  render={(props) => <NewStory {...props} />}
+                />
+              </>
+            )}
+            <Route path="/:id" exact render={(props) => <Blog {...props} />} />
+            <Route
+              path="/user/action"
+              exact
+              render={(props) => <UserManagement {...props} />}
+            />
+          </AuthStatusProvider>
+          <Route path="" component={PageNotFound} />
+        </Switch>
+      </Router>
+    </div>
   );
 };
 

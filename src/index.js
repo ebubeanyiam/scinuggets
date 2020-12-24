@@ -5,6 +5,7 @@ import App from "./App";
 import * as serviceWorker from "./serviceWorker";
 
 import { UserProvider } from "./context/UserContext";
+import { ThemeProvider } from "./context/ThemeContext";
 import { AuthModalProvider } from "./context/AuthModalContext";
 import { CompleteProfileProvider } from "./context/CompleteProfileContext";
 import { ToastNotificationProvider } from "./context/ToastNotificationContext";
@@ -15,7 +16,9 @@ ReactDOM.render(
       <UserProvider>
         <ToastNotificationProvider>
           <CompleteProfileProvider>
-            <App />
+            <ThemeProvider>
+              <App />
+            </ThemeProvider>
           </CompleteProfileProvider>
         </ToastNotificationProvider>
       </UserProvider>

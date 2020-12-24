@@ -84,6 +84,14 @@
   padding: 10px;
 }
 
+.new-story__publish--progress-bar {
+  height: 3px;
+  background: #008000;
+  position: absolute;
+  top: 0;
+  transition: 1s ease-in-out all;
+}
+
 .new-story__publish--settings {
   max-width: 900px;
   margin: 0 auto;
@@ -94,7 +102,7 @@
 
 .new-story__publish--settings__close-btn {
   position: absolute;
-  top: 0;
+  top: 5px;
   right: 0;
   font-size: 20px;
   cursor: pointer;
@@ -161,4 +169,5 @@
   border-radius: 5px;
   border: none;
   margin-top: 20px;
+  cursor: pointer;
 }

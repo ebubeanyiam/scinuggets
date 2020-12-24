@@ -1,6 +1,8 @@
 :root {
   --primary-white: #ffffff;
+  --theme-white: #c9d1d9;
   --primary-dark: #222;
+  --theme-dark: #0d1117;
   --primary-modal-background: #ffffff94;
   --primary-faded: #757575;
   --secondary-faded: #bebebe;
@@ -49,4 +51,9 @@ input::placeholder {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+.bg-mode--dark {
+  background: var(--theme-dark);
+  color: var(--theme-white);
 }

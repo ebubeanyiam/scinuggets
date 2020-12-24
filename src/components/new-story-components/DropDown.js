@@ -1,6 +1,6 @@
 import React from "react";
 
-const DropDown = ({ setFile, setPostImage }) => {
+const DropDown = () => {
   return (
     <div className="header__menu--dropdown">
       <div className="header__menu--dropdown--user-options">
