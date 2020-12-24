@@ -20,7 +20,7 @@ const Header = ({ dropDown, setDropDown }) => {
             <h1>Scinuggets</h1>
           </Link>
 
-          {user && (
+          {user && window.location.pathname === "/" && (
             <div className="header__logo--greeting">
               <h1>{getTime()}</h1>
             </div>
