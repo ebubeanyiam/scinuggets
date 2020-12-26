@@ -21,6 +21,7 @@ const NewStory = (props) => {
   const [saving, setSaving] = useState(false);
   const [newPost, setNewPost] = useState(true);
   const [dropDown, setDropDown] = useState(false);
+  const [menuDropDown, setMenuDropDown] = useState(false);
   const [editorData, setEditorData] = useState(null);
   const [draftId, setDraftId] = useState(props.match.params.id);
   const [onChangeCount, setOnChangeCount] = useState(0);
@@ -91,7 +92,14 @@ const NewStory = (props) => {
           setPostImage={setPostImage}
         />
       )}
-      <Header dropDown={dropDown} setDropDown={setDropDown} saving={saving} />
+
+      <Header
+        dropDown={dropDown}
+        setDropDown={setDropDown}
+        menuDropDown={menuDropDown}
+        setMenuDropDown={setMenuDropDown}
+        saving={saving}
+      />
 
       <div className="new-story__editor">
         <div className="new-story__editor--save-btn-container">

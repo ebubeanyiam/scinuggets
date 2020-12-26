@@ -6,8 +6,9 @@ import DropDown from "./DropDown";
 import LoggedInHeader from "../header-components/LoggedInHeader";
 
 import "../../style/header.css";
+import ToggleModeSwitch from "../ToggleModeSwitch";
 
-const Header = ({ dropDown, setDropDown, saving, setFile, setPostImage }) => {
+const Header = (props) => {
   const styles = {
     display: "flex",
     alignItems: "center",
@@ -20,7 +21,7 @@ const Header = ({ dropDown, setDropDown, saving, setFile, setPostImage }) => {
         <div className="header__logo">
           <h1>Drafts</h1>
 
-          {saving && (
+          {props.saving && (
             <div className="header__logo--greeting">
               <h1>Saving</h1>
             </div>
@@ -32,14 +33,16 @@ const Header = ({ dropDown, setDropDown, saving, setFile, setPostImage }) => {
             <BsThreeDots
               style={{ cursor: "pointer" }}
               onClick={() => {
-                setDropDown(!dropDown);
+                props.setDropDown(!props.dropDown);
               }}
             />
-            {dropDown && (
-              <DropDown setFile={setFile} setPostImage={setPostImage} />
-            )}
+            {props.dropDown && <DropDown />}
           </div>
-          <LoggedInHeader />
+          <LoggedInHeader
+            dropDown={props.menuDropDown}
+            setDropDown={props.setMenuDropDown}
+          />
+          <ToggleModeSwitch />
         </div>
       </nav>
     </div>

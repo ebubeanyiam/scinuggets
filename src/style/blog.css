@@ -68,6 +68,7 @@
   width: 40px;
   height: 40px;
   border-radius: 50%;
+  object-fit: cover;
 }
 
 .blog__article-featured-image img {

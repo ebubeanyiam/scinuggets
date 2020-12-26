@@ -6,7 +6,17 @@ export const validPassword = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}
 export const authFunction = (provider, status) => {
   console.log(status);
   auth.signInWithRedirect(provider).then((res) => {
-    console.log(res);
+    if (res.additionalUserInfo.isNewUser) {
+      db.collection("registeredEmails").doc(res.user.email).set({
+        userID: res.user.uid,
+      });
+      db.collection("users").doc(res.user.uid).set({
+        displayName: "",
+        bio: "",
+        username: "",
+        photoUrl: "",
+      });
+    }
   });
 };
 
@@ -20,6 +30,12 @@ export const mailAuthFunction = (email, password, setAuthModal, status) => {
       res && setAuthModal(false);
       db.collection("registeredEmails").doc(email).set({
         userID: res.user.uid,
+      });
+      db.collection("users").doc(res.user.uid).set({
+        displayName: "",
+        bio: "",
+        username: "",
+        photoUrl: "",
       });
       if (res.additionalUserInfo.isNewUser) {
         console.log("new user");

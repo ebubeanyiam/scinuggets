@@ -1,6 +1,7 @@
 .new-story {
   padding: 0 10px;
-  min-height: 500px;
+  min-height: calc(100vh - 70px);
+  margin-top: 70px;
 }
 
 .new-story p {
@@ -13,7 +14,7 @@
 .new-story__editor {
   max-width: 650px;
   margin: 0 auto;
-  margin-top: 100px;
+  padding-top: 70px;
 }
 
 .new-story__editor .codex-editor__redactor {
@@ -51,6 +52,11 @@
   border: none;
   outline: none;
   font-size: 25px;
+}
+
+.bg-mode--dark .new-story__editor--header input {
+  color: var(--theme-white);
+  background: none;
 }
 
 .new-story__editor--header input::placeholder {
