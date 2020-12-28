@@ -54,6 +54,7 @@
   padding: 10px 0;
   font-size: 16px;
   color: inherit;
+  font-family: "Segoe UI";
 }
 
 .profile__settings--profile__comp-fields textarea {

@@ -1,11 +1,21 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { AiOutlineCamera } from "react-icons/ai";
+
+import { User } from "../../context/UserContext";
+import { db } from "../../firebase/config";
 
 import DefaultUserImage from "../../assets/images/default_profile-img.png";
 
 const ProfileSettingsPhoto = () => {
+  const user = User();
   const [editable, setEditable] = useState(false);
   const inputEl = useRef(null);
+  const [file, setFile] = useState(null);
+  const [photoUrl, setPhotoUrl] = useState("");
+
+  useEffect(() => {
+    setPhotoUrl(user.photoURL);
+  }, [user]);
 
   return (
     <div className="profile__settings--profile__component">
@@ -21,7 +31,7 @@ const ProfileSettingsPhoto = () => {
         </span>
         <label style={{ pointerEvents: !editable && "none" }}>
           {editable && <AiOutlineCamera />}
-          <img src={DefaultUserImage} alt="you" />
+          <img src={photoUrl ? photoUrl : DefaultUserImage} alt="you" />
           <input ref={inputEl} type="file" style={{ display: "none" }} />
         </label>
       </div>
