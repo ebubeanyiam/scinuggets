@@ -85,6 +85,9 @@
 
 .profile__settings--profile__comp-fields label img {
   border-radius: 50%;
+  width: 70px;
+  height: 70px;
+  object-fit: cover;
 }
 
 .profile__settings--profile__comp-fields label svg {

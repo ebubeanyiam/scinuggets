@@ -151,11 +151,60 @@
 
 .blog__author-card {
   margin-bottom: 20px;
-  height: 400px;
+  min-height: 200px;
   width: 300px;
-  border-radius: 5px;
+  /* border-radius: 10px; */
   /* background: rgba(249, 249, 249, 1); */
   box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.05);
+}
+
+.blog__author-card--header {
+  display: flex;
+  align-items: baseline;
+}
+
+.blog__author-card--header > * {
+  z-index: 2;
+}
+
+.author__details::before {
+  content: "";
+  height: 30px;
+  width: 100%;
+  display: block;
+  background: #251544;
+  position: absolute;
+  top: 0;
+  z-index: 1;
+}
+
+.author__details div {
+  padding: 10px;
+}
+
+.blog__author-card--header img {
+  /* margin: 10px 10px 0px; */
+  margin-right: 10px;
+  border-radius: 50%;
+  object-fit: cover;
+  width: 50px;
+  height: 50px;
+}
+
+.blog__author-card--desc {
+  font-size: 10px;
+  margin-bottom: 5px;
+  letter-spacing: 2px;
+}
+
+.blog__author-card--follow button {
+  width: 100%;
+  padding: 10px 10px;
+  background: #251544;
+  color: var(--primary-white);
+  border-radius: 5px;
+  border: none;
+  outline: none;
 }
 
 /* 

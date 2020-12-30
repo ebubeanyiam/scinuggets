@@ -2,7 +2,8 @@ import React, { useRef, useState, useEffect } from "react";
 import { AiOutlineCamera } from "react-icons/ai";
 
 import { User } from "../../context/UserContext";
-import { db } from "../../firebase/config";
+import { db, store } from "../../firebase/config";
+import { selectImage } from "../Logic";
 
 import DefaultUserImage from "../../assets/images/default_profile-img.png";
 
@@ -32,7 +33,14 @@ const ProfileSettingsPhoto = () => {
         <label style={{ pointerEvents: !editable && "none" }}>
           {editable && <AiOutlineCamera />}
           <img src={photoUrl ? photoUrl : DefaultUserImage} alt="you" />
-          <input ref={inputEl} type="file" style={{ display: "none" }} />
+          <input
+            ref={inputEl}
+            type="file"
+            onChange={(e) => {
+              selectImage(e, setFile, setPhotoUrl);
+            }}
+            style={{ display: "none" }}
+          />
         </label>
       </div>
 
@@ -51,9 +59,26 @@ const ProfileSettingsPhoto = () => {
         {editable && (
           <>
             <button
-              onClick={() => {
-                // setEditable(true);
-                // inputEl.current.focus();
+              className="profile__settings--profile__comp-edit__save-btn"
+              onClick={async () => {
+                if (file) {
+                  await store
+                    .ref(file.name)
+                    .put(file)
+                    .then(async (snapshot) => {
+                      await snapshot.ref.getDownloadURL().then((res) => {
+                        setPhotoUrl(res);
+                      });
+                    });
+                }
+                db.collection("users")
+                  .doc(user.uid)
+                  .update({
+                    photoUrl: photoUrl,
+                  })
+                  .then(() => {
+                    setEditable(false);
+                  });
               }}
             >
               Save
@@ -61,6 +86,7 @@ const ProfileSettingsPhoto = () => {
             <button
               onClick={() => {
                 setEditable(false);
+                setPhotoUrl(user.photoURL);
               }}
             >
               Cancel

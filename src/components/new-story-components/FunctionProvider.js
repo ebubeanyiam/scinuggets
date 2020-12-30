@@ -3,15 +3,12 @@ import slugify from "slugify";
 
 export const getDraft = (props) => {
   if (props.draftId) {
-    console.log("====================================");
-    console.log(props.user.uid);
-    console.log("====================================");
     props.setNewPost(false);
     db.collection("drafts")
       .doc(props.draftId)
       .get()
       .then((doc) => {
-        if (doc && doc.data().author === props.user.uid) {
+        if (doc.data() && doc.data().author === props.user.uid) {
           props.setTitle(doc.data().title);
           props.setEditorData(doc.data().savedData);
           props.setLoading(false);

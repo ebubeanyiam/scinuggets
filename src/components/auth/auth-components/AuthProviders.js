@@ -1,4 +1,4 @@
-import { auth, db } from "../../../firebase/config";
+import { auth, db, timestamp } from "../../../firebase/config";
 
 export const validEmail = /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/;
 export const validPassword = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/;
@@ -15,6 +15,8 @@ export const authFunction = (provider, status) => {
         bio: "",
         username: "",
         photoUrl: "",
+        website: "",
+        timestamp,
       });
     }
   });
@@ -36,6 +38,8 @@ export const mailAuthFunction = (email, password, setAuthModal, status) => {
         bio: "",
         username: "",
         photoUrl: "",
+        website: "",
+        timestamp,
       });
       if (res.additionalUserInfo.isNewUser) {
         console.log("new user");

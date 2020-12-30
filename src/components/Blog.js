@@ -7,8 +7,11 @@ import { BsBookmark } from "react-icons/bs";
 import { VscComment } from "react-icons/vsc";
 
 import { db } from "../firebase/config";
+import { getAuthorDetails } from "./Logic";
 
 import { getPostById } from "./new-story-components/FunctionProvider";
+
+import { User } from "../context/UserContext";
 
 import PageNotFound from "./PageNotFound";
 import ScreenLoader from "./ScreenLoader";
@@ -19,12 +22,13 @@ import "../style/blog.css";
 import Header from "./Header";
 
 const Blog = (props) => {
+  const user = User();
   const [dropDown, setDropDown] = useState(false);
   const [postData, setPostData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [htmlData, setHtmlData] = useState("");
-  const [author, setAuthor] = useState("");
-  const [photoUrl, setPhotoUrl] = useState("");
+
+  const [authorDetails, setAuthorDetails] = useState({});
 
   useEffect(() => {
     getPostById(props.match.params.id, setPostData, setLoading);
@@ -33,22 +37,7 @@ const Blog = (props) => {
   useEffect(() => {
     if (postData) {
       getHTMLData(postData);
-    }
-
-    const photoUrl = async (uid) => {
-      await db
-        .collection("users")
-        .doc(uid)
-        .get()
-        .then((doc) => {
-          if (doc.data()) {
-            setPhotoUrl(doc.data().photoUrl);
-            setAuthor(doc.data().displayName);
-          }
-        });
-    };
-    if (postData) {
-      photoUrl(postData.postedBy);
+      getAuthorDetails(postData.postedBy, setAuthorDetails);
     }
   }, [postData]);
 
@@ -110,9 +99,11 @@ const Blog = (props) => {
                   <h1>Category</h1>
                 </Link>
               </div>
-              <div className="header__actions">
-                <span>Hello</span>
-              </div>
+              {user && postData.postedBy === user.uid && (
+                <div className="header__actions">
+                  <button>Edit</button>
+                </div>
+              )}
             </div>
           </div>
 
@@ -148,15 +139,17 @@ const Blog = (props) => {
               <div className="blog__article-details">
                 <div className="blog__article-details--user">
                   <div className="user-image">
-                    {photoUrl ? (
-                      <img src={photoUrl} alt="author" />
+                    {authorDetails.photoUrl ? (
+                      <img src={authorDetails.photoUrl} alt="author" />
                     ) : (
                       <img src={DefaultProfile} alt="author" />
                     )}
                   </div>
                   <div className="article-time-details">
                     <div className="article-time-details--author">
-                      <span>{author}</span>
+                      <span>
+                        {authorDetails.displayName && authorDetails.displayName}
+                      </span>
                     </div>
                     <div className="article-time-details--time">
                       <span>
@@ -189,8 +182,45 @@ const Blog = (props) => {
 
             <aside className="blog__author-component">
               <div className="blog__author-card-container">
-                <div className="blog__author-card">
-                  <div className="blog__author-card--header"></div>
+                <div className="blog__author-card author__details">
+                  <div className="blog__author-card--header">
+                    {authorDetails.photoUrl ? (
+                      <img src={authorDetails.photoUrl} alt="author" />
+                    ) : (
+                      <img src={DefaultProfile} alt="author" />
+                    )}
+                    <h3>
+                      {authorDetails.displayName && authorDetails.displayName}
+                    </h3>
+                  </div>
+
+                  <div className="blog__author-card--bio">
+                    <span>{authorDetails.bio && authorDetails.bio}</span>
+                  </div>
+
+                  <div className="blog__author-card--follow">
+                    <button>Follow</button>
+                  </div>
+
+                  <div className="blog__author-card--website">
+                    <h4 className="blog__author-card--desc">WEBSITE</h4>
+                    <span>
+                      {authorDetails.website && (
+                        <a
+                          href={authorDetails.website}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          {authorDetails.website}
+                        </a>
+                      )}
+                    </span>
+                  </div>
+
+                  <div className="blog__author-card--date-joined">
+                    <h4 className="blog__author-card--desc">JOINED</h4>
+                    <span>Some Date</span>
+                  </div>
                 </div>
                 <div className="blog__author-card">
                   <div className="blog__author-card--header"></div>

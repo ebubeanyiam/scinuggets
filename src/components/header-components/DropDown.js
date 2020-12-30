@@ -15,7 +15,7 @@ const DropDown = () => {
         <Link to="/m/new-story">New Story</Link>
         <Link to="">Stories</Link>
         <Link to="">Stats</Link>
-        <Link to="">Settings</Link>
+        <Link to="/me/settings">Settings</Link>
       </div>
 
       <div className="header__menu--dropdown--user--personal">

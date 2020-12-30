@@ -64,3 +64,15 @@ export const updateProfile = async (user, name, file, setUpdated) => {
     runUpdate();
   }
 };
+
+export const getAuthorDetails = async (uid, setAuthorDetails) => {
+  await db
+    .collection("users")
+    .doc(uid)
+    .get()
+    .then((doc) => {
+      if (doc.data()) {
+        setAuthorDetails(doc.data());
+      }
+    });
+};
