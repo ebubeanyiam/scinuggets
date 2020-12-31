@@ -1,6 +1,6 @@
 import React from "react";
 
-import Logo from "../assets/images/scinnuggets_logo.png";
+import Logo from "../assets/images/scinuggets_logo.png";
 
 import "../style/screen_loader.css";
 

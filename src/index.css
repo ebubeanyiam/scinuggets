@@ -68,7 +68,8 @@ button {
 }
 
 .app__caution-sign {
-  height: 30px;
+  padding: 10px;
+  height: 40px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -78,6 +79,19 @@ button {
   top: 0;
   width: 100%;
   z-index: 2;
+}
+
+.app__caution-sign span {
+  font-size: 14px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+@media screen and (max-width: 685px) {
+  .app__caution-sign span {
+    font-size: 12px;
+  }
 }
 
 .bg-mode--dark .app__caution-sign {

@@ -6,6 +6,8 @@ import { getTime } from "../static/staticData";
 import LoggedInHeader from "./header-components/LoggedInHeader";
 import LoggedOutHeader from "./header-components/LoggedOutheader";
 
+import LogoLight from "../assets/images/scinuggets_logo.png";
+
 import "../style/header.css";
 import ToggleModeSwitch from "./ToggleModeSwitch";
 
@@ -19,6 +21,18 @@ const Header = ({ dropDown, setDropDown }) => {
           <Link to="/">
             <h1>Scinuggets</h1>
           </Link>
+
+          <Link to="/">
+            <img
+              className="header__logo-light"
+              src={LogoLight}
+              alt="Scinuggets logo"
+            />
+          </Link>
+
+          <div className="header__logo--greeting__mobile">
+            <span>Open in app</span>
+          </div>
 
           {user && window.location.pathname === "/" && (
             <div className="header__logo--greeting">

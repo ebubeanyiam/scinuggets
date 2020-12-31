@@ -20,13 +20,29 @@
   display: flex;
   align-items: center;
   flex-direction: column;
+  width: 100%;
 }
 
 .footer__navlinks {
-  display: flex;
-  justify-content: center;
+  text-align: center;
+  line-height: 50px;
 }
 
 .footer__navlinks a {
   margin-right: 20px;
+  white-space: nowrap;
+  display: inline-block;
+  min-width: fit-content;
+}
+
+.footer__social > * {
+  margin-right: 15px;
+  font-size: 30px;
+  color: #64707d;
+}
+
+.footer__about,
+.footer__footer {
+  text-align: center;
+  line-height: 30px;
 }
