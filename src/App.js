@@ -62,15 +62,46 @@ const App = () => {
                 <Route path="/" exact component={HomePage} />
                 {authModal && <AuthModal setAuth={setAuthModal} />}
                 <Route path="/s/signin" exact render={() => <AuthModal />} />
-                <Route path="/m/new-story" exact component={NewStory} />
-                <Route path="/me/settings" exact component={ProfileSettings} />
+                <Route
+                  path="/m/new-story"
+                  exact
+                  render={(props) =>
+                    user ? (
+                      <NewStory {...props} />
+                    ) : (
+                      <AuthModal setAuth={setAuthModal} />
+                    )
+                  }
+                />
+                <Route
+                  path="/me/settings"
+                  exact
+                  render={() =>
+                    user ? (
+                      <ProfileSettings />
+                    ) : (
+                      <AuthModal setAuth={setAuthModal} />
+                    )
+                  }
+                />
                 <Route
                   path="/p/:id"
-                  render={(props) => <NewStory {...props} />}
+                  exact
+                  render={(props) =>
+                    user ? (
+                      <NewStory {...props} />
+                    ) : (
+                      <AuthModal setAuth={setAuthModal} />
+                    )
+                  }
+                />
+                <Route
+                  path="/:id"
+                  exact
+                  render={(props) => <Blog {...props} />}
                 />
               </>
             )}
-            <Route path="/:id" exact render={(props) => <Blog {...props} />} />
             <Route
               path="/user/action"
               exact

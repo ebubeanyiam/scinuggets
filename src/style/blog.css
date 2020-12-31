@@ -1,5 +1,5 @@
 .blog {
-  /* padding: 10px; */
+  padding: 0 10px;
 }
 
 .blog__header-container {
@@ -19,12 +19,30 @@
   margin: 100px auto 0;
   justify-content: space-between;
   align-items: center;
+  padding-top: 5px;
 }
 
 .blog__header .profile h1 {
   font-size: 20px;
   font-weight: 400;
   font-family: "Segoe UI";
+}
+
+.blog__header .header__actions button {
+  color: var(--primary-white);
+  background: var(--primary-dark);
+  border: 1px solid var(--primary-dark);
+  padding: 5px 15px;
+  border-radius: 5px;
+  font-size: 13px;
+  display: block;
+  margin-top: 5px;
+}
+
+.bg-mode--dark .header__actions button {
+  color: var(--primary-dark);
+  background: var(--primary-white);
+  border: 1px solid var(--primary-dark);
 }
 
 .blog__article-container {

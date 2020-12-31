@@ -2,11 +2,9 @@ import React, { useEffect, useRef, useState } from "react";
 import Editorjs from "react-editor-js";
 
 import { User } from "../context/UserContext";
-import { AuthModal as AM } from "../context/AuthModalContext";
 import Header from "./new-story-components/Header_";
 import { EDITOR_JS_TOOLS } from "../editor/editorConfig";
 import Publish from "./new-story-components/Publish";
-import AuthModal from "./auth/AuthModal";
 import { getDraft, saveDraft } from "./new-story-components/FunctionProvider";
 
 import "../style/new-story.css";
@@ -15,7 +13,6 @@ import ScreenLoader from "./ScreenLoader";
 
 const NewStory = (props) => {
   const user = User();
-  const [, setAuthModal] = AM();
   const instanceRef = useRef(null);
   const [title, setTitle] = useState("");
   const [saving, setSaving] = useState(false);
@@ -58,9 +55,6 @@ const NewStory = (props) => {
     getDraft(pageProps);
   }, []);
 
-  if (!user) {
-    return <AuthModal setAuth={setAuthModal} />;
-  }
   if (loading) {
     return <ScreenLoader />;
   }
@@ -102,55 +96,57 @@ const NewStory = (props) => {
         user={user}
       />
 
-      <div className="new-story__editor">
-        <div className="new-story__editor--save-btn-container">
-          {title && (
-            <button
-              className="new-story__editor--save-btn"
-              onClick={() => {
-                setPublish(true);
-                saveDraft(pageProps, title);
-              }}
-            >
-              Publish
-            </button>
-          )}
-        </div>
-
-        <div className="new-story__editor--header">
-          <input
-            type="text"
-            placeholder="Title"
-            value={title}
-            onChange={(e) => {
-              setTitle(e.target.value);
-            }}
-          />
-        </div>
-
-        {postImage && (
-          <div className="new-story__editor--featured-image">
-            <img src={postImage} alt="Featured" />
+      {!publish && (
+        <div className="new-story__editor">
+          <div className="new-story__editor--save-btn-container">
+            {title && (
+              <button
+                className="new-story__editor--save-btn"
+                onClick={() => {
+                  setPublish(true);
+                  saveDraft(pageProps, title);
+                }}
+              >
+                Publish
+              </button>
+            )}
           </div>
-        )}
 
-        <div
-          className="new-story__editor--body"
-          style={{ zIndex: dropDown ? -1 : 1 }}
-        >
-          {editorData !== null && (
-            <Editorjs
-              onChange={() => {
-                setOnChangeCount(onChangeCount + 1);
+          <div className="new-story__editor--header">
+            <input
+              type="text"
+              placeholder="Title"
+              value={title}
+              onChange={(e) => {
+                setTitle(e.target.value);
               }}
-              data={editorData}
-              instanceRef={(instance) => (instanceRef.current = instance)}
-              placeholder="Write your article"
-              tools={EDITOR_JS_TOOLS}
             />
+          </div>
+
+          {postImage && (
+            <div className="new-story__editor--featured-image">
+              <img src={postImage} alt="Featured" />
+            </div>
           )}
+
+          <div
+            className="new-story__editor--body"
+            style={{ zIndex: dropDown ? -1 : 1 }}
+          >
+            {editorData !== null && (
+              <Editorjs
+                onChange={() => {
+                  setOnChangeCount(onChangeCount + 1);
+                }}
+                data={editorData}
+                instanceRef={(instance) => (instanceRef.current = instance)}
+                placeholder="Write your article"
+                tools={EDITOR_JS_TOOLS}
+              />
+            )}
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 };

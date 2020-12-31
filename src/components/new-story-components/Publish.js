@@ -8,6 +8,15 @@ import { User } from "../../context/UserContext";
 import { ProfileReg } from "../../context/CompleteProfileContext";
 import { saveArticle, addFeaturedImage } from "./FunctionProvider";
 
+import Code from "../../assets/svg/code.svg";
+import Barbell from "../../assets/svg/barbell.svg";
+import Diet from "../../assets/svg/diet.svg";
+import Health from "../../assets/svg/health.svg";
+import MusicNote from "../../assets/svg/music-note.svg";
+import Suitcases from "../../assets/svg/suitcases.svg";
+import Sunglasses from "../../assets/svg/sunglasses.svg";
+import Technology from "../../assets/svg/technology.svg";
+
 const Publish = (props) => {
   const user = User();
   const [, setOpenProfileReg] = ProfileReg();
@@ -94,6 +103,49 @@ const Publish = (props) => {
             <h5>
               Publishing to <b></b>
             </h5>
+
+            <p>Select a category</p>
+
+            <div className="new-story__publish--publish-info__categories">
+              <div className="new-story__publish--publish-info__category">
+                <img src={Code} alt="category" />
+                <span>Programming</span>
+              </div>
+              <div className="new-story__publish--publish-info__category">
+                <img src={Barbell} alt="category" />
+                <span>Fitness</span>
+              </div>
+              <div className="new-story__publish--publish-info__category">
+                <img src={Diet} alt="category" />
+                <span>Food</span>
+              </div>
+              <div className="new-story__publish--publish-info__category">
+                <img src={Health} alt="category" />
+                <span>Lifestyle</span>
+              </div>
+              <div className="new-story__publish--publish-info__category">
+                <img src={MusicNote} alt="category" />
+                <span>Music</span>
+              </div>
+              <div className="new-story__publish--publish-info__category">
+                <img src={Suitcases} alt="category" />
+                <span>Travel</span>
+              </div>
+              <div className="new-story__publish--publish-info__category">
+                <img src={Sunglasses} alt="category" />
+                <span>Fashion</span>
+              </div>
+              <div className="new-story__publish--publish-info__category">
+                <img src={Technology} alt="category" />
+                <span>Tech</span>
+              </div>
+            </div>
+
+            <p>
+              Publishing to the right category makes it easier for readers to
+              find your post
+            </p>
+
             <p>
               Add or change tags (up to 5) so readers know what your story is
               about
