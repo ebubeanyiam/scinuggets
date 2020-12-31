@@ -99,6 +99,7 @@ const NewStory = (props) => {
         menuDropDown={menuDropDown}
         setMenuDropDown={setMenuDropDown}
         saving={saving}
+        user={user}
       />
 
       <div className="new-story__editor">

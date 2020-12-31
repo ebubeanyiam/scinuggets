@@ -29,7 +29,7 @@ const Header = (props) => {
         </div>
 
         <div style={styles}>
-          <div>
+          <div style={styles}>
             <BsThreeDots
               style={{ cursor: "pointer" }}
               onClick={() => {
@@ -41,6 +41,7 @@ const Header = (props) => {
           <LoggedInHeader
             dropDown={props.menuDropDown}
             setDropDown={props.setMenuDropDown}
+            user={props.user}
           />
           <ToggleModeSwitch />
         </div>

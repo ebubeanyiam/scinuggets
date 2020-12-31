@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { TiWarningOutline } from "react-icons/ti";
+import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 
 import HomePage from "./components/HomePage";
 import NewStory from "./components/NewStory";
@@ -40,6 +41,13 @@ const App = () => {
 
   return (
     <div className={darkMode && "bg-mode--dark"}>
+      <div className="app__caution-sign">
+        <TiWarningOutline />
+        <span>
+          Certain parts of the app are in development and will be unavailable.{" "}
+          <a href="/">Learn more</a>
+        </span>
+      </div>
       <Router>
         <ToastNotification />
         {userVerified === false &&

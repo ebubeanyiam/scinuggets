@@ -4,6 +4,7 @@ import { User } from "../context/UserContext";
 
 import Hero from "./Hero";
 import Header from "./Header";
+import Footer from "./Footer";
 
 import "../style/homepage.css";
 
@@ -22,6 +23,7 @@ const HomePage = () => {
     >
       <Header dropDown={dropDown} setDropDown={setDropDown} />
       {user === "" ? "Loading" : user === null ? <Hero /> : "For you"}
+      <Footer />
     </div>
   );
 };

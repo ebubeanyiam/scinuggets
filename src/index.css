@@ -66,3 +66,25 @@ button {
   background: var(--theme-dark);
   color: var(--theme-white);
 }
+
+.app__caution-sign {
+  height: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: var(--theme-dark);
+  color: var(--theme-white);
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 2;
+}
+
+.bg-mode--dark .app__caution-sign {
+  background: #121820;
+}
+
+.app__caution-sign svg {
+  color: #f7de0f;
+  margin: 2px 5px 0;
+}

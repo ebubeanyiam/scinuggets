@@ -9,6 +9,7 @@
   justify-content: center;
   z-index: 2;
   background: #ffffff;
+  margin-top: 30px;
 }
 
 .bg-mode--dark .header__container {
@@ -46,6 +47,7 @@
 .header__menu--container {
   display: flex;
   margin-right: 10px;
+  align-items: center;
 }
 
 .header__menu--container__link,
@@ -53,6 +55,15 @@
   position: relative;
   margin: 0 15px;
   font-size: 14px;
+}
+
+.header__menu--container__link img {
+  width: 29px;
+  height: 29px;
+  border-radius: 50%;
+  object-fit: cover;
+  cursor: pointer;
+  /* margin-top: 5px; */
 }
 
 .header__menu--container__link--icon {
@@ -74,6 +85,8 @@
   padding: 5px 15px;
   border-radius: 5px;
   font-size: 13px;
+  display: block;
+  margin-top: -4px;
 }
 
 .bg-mode--dark .header__menu--container__link--button__logged-in {

@@ -30,7 +30,11 @@ const Header = ({ dropDown, setDropDown }) => {
         {!user ? (
           <LoggedOutHeader />
         ) : (
-          <LoggedInHeader dropDown={dropDown} setDropDown={setDropDown} />
+          <LoggedInHeader
+            dropDown={dropDown}
+            setDropDown={setDropDown}
+            user={user}
+          />
         )}
 
         {user && <ToggleModeSwitch />}

@@ -32,7 +32,8 @@ const LoggedOutHeader = () => {
           </Link>
         </li>
         <li>
-          <span
+          <Link
+            to=""
             className="header__menu--container__link"
             onClick={() => {
               setAuthModal(true);
@@ -40,10 +41,11 @@ const LoggedOutHeader = () => {
             }}
           >
             Sign In
-          </span>
+          </Link>
         </li>
         <li>
-          <span
+          <Link
+            to=""
             className="header__menu--container__link--button"
             onClick={() => {
               setAuthModal(true);
@@ -51,7 +53,7 @@ const LoggedOutHeader = () => {
             }}
           >
             Get Started
-          </span>
+          </Link>
         </li>
       </ul>
     </div>

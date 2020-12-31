@@ -16,7 +16,7 @@
   height: 50px;
   display: flex;
   max-width: 1150px;
-  margin: 70px auto 0;
+  margin: 100px auto 0;
   justify-content: space-between;
   align-items: center;
 }
@@ -123,7 +123,7 @@
 .blog__story-comp-card-container {
   position: -webkit-sticky; /* Safari */
   position: sticky;
-  top: 80px;
+  top: 110px;
 }
 
 .blog__story-comp-card-container {

@@ -1,0 +1,32 @@
+.footer {
+  width: 100%;
+  padding: 50px 50px 10px;
+  border-top: 1px solid var(--theme-dark);
+  display: flex;
+  justify-content: center;
+}
+
+.bg-mode--dark .footer {
+  background: var(--theme-dark);
+  color: var(--theme-white);
+  border-top: 1px solid var(--theme-white);
+}
+
+.footer .footer__container > * {
+  margin-bottom: 20px;
+}
+
+.footer__container {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.footer__navlinks {
+  display: flex;
+  justify-content: center;
+}
+
+.footer__navlinks a {
+  margin-right: 20px;
+}

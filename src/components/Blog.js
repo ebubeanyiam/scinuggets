@@ -11,8 +11,6 @@ import { getAuthorDetails } from "./Logic";
 
 import { getPostById } from "./new-story-components/FunctionProvider";
 
-import { User } from "../context/UserContext";
-
 import PageNotFound from "./PageNotFound";
 import ScreenLoader from "./ScreenLoader";
 
@@ -20,9 +18,9 @@ import DefaultProfile from "../assets/images/default_profile-img.png";
 
 import "../style/blog.css";
 import Header from "./Header";
+import Footer from "./Footer";
 
 const Blog = (props) => {
-  const user = User();
   const [dropDown, setDropDown] = useState(false);
   const [postData, setPostData] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -99,11 +97,9 @@ const Blog = (props) => {
                   <h1>Category</h1>
                 </Link>
               </div>
-              {user && postData.postedBy === user.uid && (
-                <div className="header__actions">
-                  <button>Edit</button>
-                </div>
-              )}
+              <div className="header__actions">
+                <span>Hello</span>
+              </div>
             </div>
           </div>
 
@@ -228,6 +224,7 @@ const Blog = (props) => {
               </div>
             </aside>
           </div>
+          <Footer />
         </div>
       </>
     );
