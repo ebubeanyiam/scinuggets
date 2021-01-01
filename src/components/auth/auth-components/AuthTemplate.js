@@ -60,8 +60,8 @@ const AuthTemplate = (props) => {
       <div className="auth-modal__accept-terms">
         <p className="auth-modal__accept-terms--text">
           Click "{props.status}" to agree to Scinugget's{" "}
-          <Link>Terms of Service</Link> and acknowledge that Scinugget's{" "}
-          <Link>Privacy Policy</Link> applies to you.
+          <Link to="/">Terms of Service</Link> and acknowledge that Scinugget's{" "}
+          <Link to="/">Privacy Policy</Link> applies to you.
         </p>
       </div>
 

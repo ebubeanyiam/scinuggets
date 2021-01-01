@@ -40,7 +40,7 @@ const App = () => {
   }
 
   return (
-    <div className={darkMode && "bg-mode--dark"}>
+    <div className={darkMode ? "bg-mode--dark" : ""}>
       <div className="app__caution-sign">
         <TiWarningOutline />
         <span>
