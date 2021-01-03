@@ -53,7 +53,15 @@ export const saveDraft = async (props, title) => {
   }
 };
 
-export const saveArticle = async (user, props, title, subtitle, file, p) => {
+export const saveArticle = async (
+  user,
+  props,
+  title,
+  subtitle,
+  tags,
+  file,
+  p
+) => {
   p(true);
   let featuredImage = "";
 
@@ -75,6 +83,7 @@ export const saveArticle = async (user, props, title, subtitle, file, p) => {
         timestamp,
         postedBy: user.uid,
         featuredImage,
+        tags,
       })
       .then((res) => {
         window.location.replace(`/${slug}`);

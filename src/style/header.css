@@ -34,6 +34,11 @@
   font-weight: 600;
 }
 
+.header__logo--new-story {
+  font-size: 14px;
+  font-weight: 100;
+}
+
 .header__logo img {
   display: none;
 }
@@ -42,6 +47,14 @@
   margin-left: 10px;
   padding-left: 10px;
   border-left: 1px solid var(--primary-dark);
+}
+
+.header__logo--greeting--new-story {
+  margin-left: 10px;
+  padding-left: 10px;
+  border-left: 1px solid var(--primary-dark);
+  font-size: 10px;
+  color: rgb(0, 128, 0);
 }
 
 .header__logo--greeting__mobile {

@@ -19,10 +19,12 @@ const Header = (props) => {
     <div className="header__container">
       <nav className="header">
         <div className="header__logo">
-          <h1>Drafts</h1>
+          <h1 className="header__logo--new-story">
+            Drafts in {props.user.displayName}
+          </h1>
 
           {props.saving && (
-            <div className="header__logo--greeting">
+            <div className="header__logo--greeting--new-story">
               <h1>Saving</h1>
             </div>
           )}

@@ -8,20 +8,15 @@ import { User } from "../../context/UserContext";
 import { ProfileReg } from "../../context/CompleteProfileContext";
 import { saveArticle, addFeaturedImage } from "./FunctionProvider";
 
-import Code from "../../assets/svg/code.svg";
-import Barbell from "../../assets/svg/barbell.svg";
-import Diet from "../../assets/svg/diet.svg";
-import Health from "../../assets/svg/health.svg";
-import MusicNote from "../../assets/svg/music-note.svg";
-import Suitcases from "../../assets/svg/suitcases.svg";
-import Sunglasses from "../../assets/svg/sunglasses.svg";
-import Technology from "../../assets/svg/technology.svg";
+import TagBox from "./TagBox";
 
 const Publish = (props) => {
   const user = User();
   const [, setOpenProfileReg] = ProfileReg();
+  const [tags, setTags] = useState([]);
   const [title, setTitle] = useState(props.pageProps.title);
   const [subTitle, setSubTitle] = useState("");
+  const [displayName, setDisplayName] = useState("");
   const [publishing, setPublishing] = useState(false);
 
   useEffect(() => {
@@ -85,12 +80,12 @@ const Publish = (props) => {
               }}
               placeholder="Change your title"
             />
-            <input
+            <textarea
               type="text"
               value={subTitle}
               onChange={(e) => setSubTitle(e.target.value)}
               placeholder="Add a subtitle"
-            />
+            ></textarea>
             <p>
               <b>Note</b>: Changes here will affect how your story appears in
               public places like Scinuggets’s homepage — not the story itself.
@@ -101,50 +96,15 @@ const Publish = (props) => {
         <div className="new-story__publish--publish">
           <div className="new-story__publish--publish-info">
             <h5>
-              Publishing to <b></b>
+              Publishing to <b>{user.displayName}</b>
             </h5>
-
-            <p>Select a category</p>
-
-            <div className="new-story__publish--publish-info__categories">
-              <div className="new-story__publish--publish-info__category">
-                <img src={Code} alt="category" />
-                <span>Programming</span>
-              </div>
-              <div className="new-story__publish--publish-info__category">
-                <img src={Barbell} alt="category" />
-                <span>Fitness</span>
-              </div>
-              <div className="new-story__publish--publish-info__category">
-                <img src={Diet} alt="category" />
-                <span>Food</span>
-              </div>
-              <div className="new-story__publish--publish-info__category">
-                <img src={Health} alt="category" />
-                <span>Lifestyle</span>
-              </div>
-              <div className="new-story__publish--publish-info__category">
-                <img src={MusicNote} alt="category" />
-                <span>Music</span>
-              </div>
-              <div className="new-story__publish--publish-info__category">
-                <img src={Suitcases} alt="category" />
-                <span>Travel</span>
-              </div>
-              <div className="new-story__publish--publish-info__category">
-                <img src={Sunglasses} alt="category" />
-                <span>Fashion</span>
-              </div>
-              <div className="new-story__publish--publish-info__category">
-                <img src={Technology} alt="category" />
-                <span>Tech</span>
-              </div>
-            </div>
 
             <p>
               Publishing to the right category makes it easier for readers to
               find your post
             </p>
+
+            <TagBox tags={tags} setTags={setTags} />
 
             <p>
               Add or change tags (up to 5) so readers know what your story is
@@ -161,6 +121,7 @@ const Publish = (props) => {
                   props.pageProps,
                   title,
                   subTitle,
+                  tags,
                   props.file,
                   setPublishing
                 );

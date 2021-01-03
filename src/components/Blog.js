@@ -122,7 +122,7 @@ const Blog = (props) => {
 
                 <div className="blog__story-comp-card">
                   <BsBookmark />
-                  <span>100</span>
+                  <span>0</span>
                 </div>
               </div>
             </aside>
@@ -178,58 +178,79 @@ const Blog = (props) => {
                 className="blog__article-text"
                 dangerouslySetInnerHTML={{ __html: htmlData }}
               ></div>
-            </div>
 
-            <aside className="blog__author-component">
-              <div className="blog__author-card-container">
-                <div className="blog__author-card author__details">
-                  <div className="blog__author-card--header">
-                    {authorDetails.photoUrl ? (
-                      <img src={authorDetails.photoUrl} alt="author" />
-                    ) : (
-                      <img src={DefaultProfile} alt="author" />
-                    )}
-                    <h3>
-                      {authorDetails.displayName && authorDetails.displayName}
-                    </h3>
-                  </div>
-
-                  <div className="blog__author-card--bio">
-                    <span>{authorDetails.bio && authorDetails.bio}</span>
-                  </div>
-
-                  <div className="blog__author-card--follow">
-                    <button>Follow</button>
-                  </div>
-
-                  <div className="blog__author-card--website">
-                    <h4 className="blog__author-card--desc">WEBSITE</h4>
-                    <span>
-                      {authorDetails.website && (
-                        <a
-                          href={authorDetails.website}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                        >
-                          {authorDetails.website}
-                        </a>
-                      )}
-                    </span>
-                  </div>
-
-                  <div className="blog__author-card--date-joined">
-                    <h4 className="blog__author-card--desc">JOINED</h4>
-                    <span>Some Date</span>
-                  </div>
-                </div>
-                <div className="blog__author-card">
-                  <div className="blog__author-card--header"></div>
-                </div>
+              <div className="blog__article-tags">
+                {postData.tags &&
+                  postData.tags.map((tag, index) => (
+                    <span key={index}>{tag}</span>
+                  ))}
               </div>
-            </aside>
+            </div>
+          </div>
+
+          <div className="blog__author-component">
+            <div className="blog__author-image-container">
+              {authorDetails.photoUrl ? (
+                <img src={authorDetails.photoUrl} alt="author" />
+              ) : (
+                <img src={DefaultProfile} alt="author" />
+              )}
+            </div>
+            <div className="blog__author-about-container">
+              <div>WRITTEN BY</div>
+              <div>
+                <h3>
+                  {authorDetails.displayName && authorDetails.displayName}
+                </h3>
+                <button>Follow</button>
+              </div>
+              <div>
+                <span>{authorDetails.bio && authorDetails.bio}</span>
+              </div>
+            </div>
           </div>
           <Footer />
         </div>
+
+        {/* <div className="blog__author-card author__details">
+                <div className="blog__author-card--header">
+                  
+                  <h3>
+                    
+                  </h3>
+                </div>
+
+                <div className="blog__author-card--bio">
+                 
+                </div>
+
+                <div className="blog__author-card--follow">
+                  <button>Follow</button>
+                </div>
+
+                <div className="blog__author-card--website">
+                  <h4 className="blog__author-card--desc">WEBSITE</h4>
+                  <span>
+                    {authorDetails.website && (
+                      <a
+                        href={authorDetails.website}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        {authorDetails.website}
+                      </a>
+                    )}
+                  </span>
+                </div>
+
+                <div className="blog__author-card--date-joined">
+                  <h4 className="blog__author-card--desc">JOINED</h4>
+                  <span>Some Date</span>
+                </div>
+              </div>
+              <div className="blog__author-card">
+                <div className="blog__author-card--header"></div>
+              </div> */}
       </>
     );
   }
