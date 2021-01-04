@@ -24,7 +24,7 @@ const Publish = (props) => {
       .doc(user.uid)
       .get()
       .then((doc) => {
-        if (!doc.data()) {
+        if (doc.data().displayName === "") {
           setOpenProfileReg(true);
         }
       });
@@ -123,7 +123,8 @@ const Publish = (props) => {
                   subTitle,
                   tags,
                   props.file,
-                  setPublishing
+                  setPublishing,
+                  props.draftId
                 );
               }}
             >

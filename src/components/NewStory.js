@@ -84,6 +84,7 @@ const NewStory = (props) => {
           postImage={postImage}
           setFile={setFile}
           setPostImage={setPostImage}
+          draftId={draftId}
         />
       )}
 

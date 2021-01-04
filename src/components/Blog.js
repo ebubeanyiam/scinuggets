@@ -1,25 +1,24 @@
 import React, { useEffect, useState } from "react";
 import Moment from "react-moment";
 import readingTime from "reading-time";
-import { Link } from "react-router-dom";
-import { IoMdHeartEmpty } from "react-icons/io";
 import { BsBookmark } from "react-icons/bs";
 import { VscComment } from "react-icons/vsc";
+import { IoMdHeartEmpty } from "react-icons/io";
 
-import { db } from "../firebase/config";
 import { getAuthorDetails } from "./Logic";
 
 import { getPostById } from "./new-story-components/FunctionProvider";
 
+import Header from "./Header";
+import Footer from "./Footer";
 import PageNotFound from "./PageNotFound";
 import ScreenLoader from "./ScreenLoader";
 
 import { User } from "../context/UserContext";
+import { getHTMLData, calcLike, calcSaves } from "./blog-components/Functions";
 import DefaultProfile from "../assets/images/default_profile-img.png";
 
 import "../style/blog.css";
-import Header from "./Header";
-import Footer from "./Footer";
 
 const Blog = (props) => {
   const user = User();
@@ -27,8 +26,27 @@ const Blog = (props) => {
   const [postData, setPostData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [htmlData, setHtmlData] = useState("");
+  const [postLikes, setPostLikes] = useState(0);
+  const [postSaves, setPostSaves] = useState(0);
+  const [postComments, setPostComments] = useState(0);
+
+  const [likedPost, setLikedPost] = useState(false);
+  const [savedPost, setSavedPost] = useState(false);
 
   const [authorDetails, setAuthorDetails] = useState({});
+
+  const args = {
+    props,
+    user,
+    likedPost,
+    setLikedPost,
+    postLikes,
+    setPostLikes,
+    postSaves,
+    setPostSaves,
+    savedPost,
+    setSavedPost,
+  };
 
   useEffect(() => {
     getPostById(props.match.params.id, setPostData, setLoading);
@@ -36,45 +54,21 @@ const Blog = (props) => {
 
   useEffect(() => {
     if (postData) {
-      getHTMLData(postData);
+      getHTMLData(postData, setHtmlData);
       getAuthorDetails(postData.postedBy, setAuthorDetails);
-    }
-  }, [postData]);
+      setPostLikes(postData.likes);
+      setPostSaves(postData.saved);
+      setPostComments(postData.commentsCount);
 
-  const getHTMLData = (postData) => {
-    let html = "";
-    postData.savedData.blocks.forEach((block) => {
-      switch (block.type) {
-        case "header":
-          html += `<h${block.data.level}>${block.data.text}</h${block.data.level}>`;
-          break;
-        case "paragraph":
-          html += `<p>${block.data.text}</p>`;
-          break;
-        case "delimiter":
-          html += "<hr />";
-          break;
-        case "image":
-          html += `<img class="img-fluid" src="${block.data.file.url}" title="${block.data.caption}" /><br /><em>${block.data.caption}</em>`;
-          break;
-        case "list":
-          html += "<ul>";
-          block.data.items.forEach(function (li) {
-            html += `<li>${li}</li>`;
-          });
-          html += "</ul>";
-          break;
-        case "code":
-          html += `<code>${block.data.code}</code>`;
-          break;
-        default:
-          console.log("Unknown block type", block.type);
-          console.log(block);
-          break;
+      if (postData.likedBy.includes(user.uid)) {
+        setLikedPost(true);
       }
-    });
-    setHtmlData(html);
-  };
+
+      if (postData.savedBy.includes(user.uid)) {
+        setSavedPost(true);
+      }
+    }
+  }, [postData, user]);
 
   if (loading) {
     return <ScreenLoader />;
@@ -95,9 +89,9 @@ const Blog = (props) => {
           <div className="blog__header-container">
             <div className="blog__header">
               <div className="profile">
-                <Link to="/">
+                {/* <Link to="/">
                   <h1>Category</h1>
-                </Link>
+                </Link> */}
               </div>
               <div className="header__actions">
                 {user && user.uid === postData.postedBy && (
@@ -111,18 +105,28 @@ const Blog = (props) => {
             <aside className="blog__story-component">
               <div className="blog__story-comp-card-container">
                 <div className="blog__story-comp-card">
-                  <IoMdHeartEmpty />
-                  <span>0</span>
+                  <IoMdHeartEmpty
+                    style={{ color: likedPost && "red" }}
+                    onClick={() => {
+                      calcLike(args);
+                    }}
+                  />
+                  <span>{postLikes}</span>
                 </div>
 
                 <div className="blog__story-comp-card">
                   <VscComment />
-                  <span>0</span>
+                  <span>{postComments}</span>
                 </div>
 
                 <div className="blog__story-comp-card">
-                  <BsBookmark />
-                  <span>0</span>
+                  <BsBookmark
+                    style={{ color: savedPost && "purple" }}
+                    onClick={() => {
+                      calcSaves(args);
+                    }}
+                  />
+                  <span>{postSaves}</span>
                 </div>
               </div>
             </aside>
@@ -197,60 +201,20 @@ const Blog = (props) => {
               )}
             </div>
             <div className="blog__author-about-container">
-              <div>WRITTEN BY</div>
-              <div>
+              <span>WRITTEN BY</span>
+              <div className="blog__author-about-container__author-name">
                 <h3>
                   {authorDetails.displayName && authorDetails.displayName}
                 </h3>
                 <button>Follow</button>
               </div>
-              <div>
+              <div className="blog__author-about-container__bio">
                 <span>{authorDetails.bio && authorDetails.bio}</span>
               </div>
             </div>
           </div>
           <Footer />
         </div>
-
-        {/* <div className="blog__author-card author__details">
-                <div className="blog__author-card--header">
-                  
-                  <h3>
-                    
-                  </h3>
-                </div>
-
-                <div className="blog__author-card--bio">
-                 
-                </div>
-
-                <div className="blog__author-card--follow">
-                  <button>Follow</button>
-                </div>
-
-                <div className="blog__author-card--website">
-                  <h4 className="blog__author-card--desc">WEBSITE</h4>
-                  <span>
-                    {authorDetails.website && (
-                      <a
-                        href={authorDetails.website}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        {authorDetails.website}
-                      </a>
-                    )}
-                  </span>
-                </div>
-
-                <div className="blog__author-card--date-joined">
-                  <h4 className="blog__author-card--desc">JOINED</h4>
-                  <span>Some Date</span>
-                </div>
-              </div>
-              <div className="blog__author-card">
-                <div className="blog__author-card--header"></div>
-              </div> */}
       </>
     );
   }

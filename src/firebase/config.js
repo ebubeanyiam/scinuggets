@@ -20,6 +20,7 @@ firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
 const db = firebase.firestore();
 const store = firebase.storage();
+const fieldValue = firebase.firestore.FieldValue;
 const timestamp = firebase.firestore.FieldValue.serverTimestamp();
 
 // Auth Providers
@@ -28,7 +29,7 @@ const facebookProvider = new firebase.auth.FacebookAuthProvider();
 const twitterProvider = new firebase.auth.TwitterAuthProvider();
 const githubProvider = new firebase.auth.GithubAuthProvider();
 
-export { auth, db, store, timestamp };
+export { auth, db, store, timestamp, fieldValue };
 
 // Export Auth Providers
 export { googleProvider, facebookProvider, twitterProvider, githubProvider };

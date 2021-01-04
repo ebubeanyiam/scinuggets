@@ -60,7 +60,8 @@ export const saveArticle = async (
   subtitle,
   tags,
   file,
-  p
+  p,
+  draftId
 ) => {
   p(true);
   let featuredImage = "";
@@ -84,6 +85,13 @@ export const saveArticle = async (
         postedBy: user.uid,
         featuredImage,
         tags,
+        likes: 0,
+        likedBy: [],
+        commentsCount: 0,
+        comments: [],
+        saved: 0,
+        savedBy: [],
+        draftId,
       })
       .then((res) => {
         window.location.replace(`/${slug}`);

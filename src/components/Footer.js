@@ -17,23 +17,25 @@ const Footer = () => {
   return (
     <footer className="footer">
       <div className="footer__container">
-        <nav className="footer__navlinks">
-          <Link to="">Home</Link>
-          <Link to="">Tags</Link>
-          <Link to="">Code of Conduct</Link>
-          <Link to="">FAQ</Link>
-          <Link to="">Sponsors</Link>
-          <Link to="">About</Link>
-          <Link to="">Privacy Policy</Link>
-          <Link to="">Terms of Use</Link>
-          <Link to="">Contact</Link>
-        </nav>
+        <div className="footer__nav">
+          <nav className="footer__navlinks">
+            <Link to="">Home</Link>
+            <Link to="">Tags</Link>
+            <Link to="">Code of Conduct</Link>
+            <Link to="">FAQ</Link>
+            <Link to="">Sponsors</Link>
+            <Link to="">About</Link>
+            <Link to="">Privacy Policy</Link>
+            <Link to="">Terms of Use</Link>
+            <Link to="">Contact</Link>
+          </nav>
 
-        <div className="footer__social">
-          <AiOutlineTwitter />
-          <AiFillFacebook />
-          <AiOutlineGithub />
-          <AiOutlineInstagram />
+          <div className="footer__social">
+            <AiOutlineTwitter />
+            <AiFillFacebook />
+            <AiOutlineGithub />
+            <AiOutlineInstagram />
+          </div>
         </div>
 
         <div className="footer__about">

@@ -26,24 +26,23 @@ const TagBox = ({ tags, setTags }) => {
           </div>
         ))}
       </div>
-      {tags.length < 5 && (
-        <input
-          ref={inputRef}
-          type="text"
-          className="new-story__publish--publish-info__tag-input"
-          value={input}
-          placeholder="Add a tag"
-          onChange={(e) => {
-            setInput(e.target.value);
-          }}
-          onKeyUp={(e) => {
-            if (e.key === "Enter") {
-              setTags([...tags, e.target.value]);
-              setInput("");
-            }
-          }}
-        />
-      )}
+      <input
+        ref={inputRef}
+        type="text"
+        className="new-story__publish--publish-info__tag-input"
+        value={input}
+        placeholder="Add a tag"
+        onChange={(e) => {
+          setInput(e.target.value);
+        }}
+        style={{ display: tags.length < 5 ? "initial" : "none" }}
+        onKeyUp={(e) => {
+          if (e.key === "Enter") {
+            setTags([...tags, e.target.value]);
+            setInput("");
+          }
+        }}
+      />
     </div>
   );
 };

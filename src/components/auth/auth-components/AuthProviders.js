@@ -4,17 +4,16 @@ export const validEmail = /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/;
 export const validPassword = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/;
 
 export const authFunction = (provider, status) => {
-  console.log(status);
-  auth.signInWithRedirect(provider).then((res) => {
+  auth.signInWithPopup(provider).then((res) => {
     if (res.additionalUserInfo.isNewUser) {
       db.collection("registeredEmails").doc(res.user.email).set({
         userID: res.user.uid,
       });
       db.collection("users").doc(res.user.uid).set({
-        displayName: "",
+        displayName: res.user.displayName,
         bio: "",
         username: "",
-        photoUrl: "",
+        photoUrl: res.user.photoURL,
         website: "",
         timestamp,
       });

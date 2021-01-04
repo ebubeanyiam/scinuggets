@@ -48,14 +48,14 @@ const LoggedOutHeader = () => {
         </li>
         <li>
           <Link
-            to="/new-story"
+            to="/m/new-story"
             className="header__menu--container__link header__menu--container__link--d"
           >
             Write
           </Link>
         </li>
         <li>
-          <Link
+          <span
             to=""
             className="header__menu--container__link header__menu--container__link--d"
             onClick={() => {
@@ -64,10 +64,10 @@ const LoggedOutHeader = () => {
             }}
           >
             Sign In
-          </Link>
+          </span>
         </li>
         <li>
-          <Link
+          <span
             to=""
             className="header__menu--container__link--button"
             onClick={() => {
@@ -76,7 +76,7 @@ const LoggedOutHeader = () => {
             }}
           >
             Get Started
-          </Link>
+          </span>
         </li>
       </ul>
     </div>
