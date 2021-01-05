@@ -3,8 +3,9 @@ import { auth, db, timestamp } from "../../../firebase/config";
 export const validEmail = /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/;
 export const validPassword = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/;
 
-export const authFunction = (provider, status) => {
+export const authFunction = (provider, setAuthModal) => {
   auth.signInWithPopup(provider).then((res) => {
+    res && setAuthModal(false);
     if (res.additionalUserInfo.isNewUser) {
       db.collection("registeredEmails").doc(res.user.email).set({
         userID: res.user.uid,

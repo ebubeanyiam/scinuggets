@@ -287,6 +287,7 @@
   cursor: pointer;
   margin-right: 15px;
   color: var(--primary-dark);
+  background-clip: content-box;
 }
 
 .bg-mode--dark .blog__story-comp-card svg,

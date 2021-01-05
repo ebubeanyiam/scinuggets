@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { TiWarningOutline } from "react-icons/ti";
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
 import HomePage from "./components/HomePage";
 import NewStory from "./components/NewStory";

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { AuthStatus } from "../../../context/AuthStatusContext";
+import { AuthModal as AuthModalFunction } from "../../../context/AuthModalContext";
 import { authFunction } from "./AuthProviders";
 import { authOptions } from "./AuthOptions";
 import MailAuth from "./MailAuth";
@@ -7,6 +8,7 @@ import { Link } from "react-router-dom";
 
 const AuthTemplate = (props) => {
   const [, setAuthStatus] = AuthStatus();
+  const [, setAuthModal] = AuthModalFunction();
   const [mailAuth, setMailAuth] = useState(false);
 
   return (
@@ -25,7 +27,7 @@ const AuthTemplate = (props) => {
                 if (!option.authProvider) {
                   setMailAuth(true);
                 } else {
-                  authFunction(option.authProvider, props.status);
+                  authFunction(option.authProvider, setAuthModal);
                 }
               }}
             >

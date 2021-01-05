@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import Moment from "react-moment";
 import readingTime from "reading-time";
 import { BsBookmark } from "react-icons/bs";
-import { VscComment } from "react-icons/vsc";
+// import { VscComment } from "react-icons/vsc";
 import { IoMdHeartEmpty } from "react-icons/io";
 
 import { getAuthorDetails } from "./Logic";
@@ -15,25 +15,31 @@ import PageNotFound from "./PageNotFound";
 import ScreenLoader from "./ScreenLoader";
 
 import { User } from "../context/UserContext";
+import { AuthModal as AuthModalFunction } from "../context/AuthModalContext";
+
 import { getHTMLData, calcLike, calcSaves } from "./blog-components/Functions";
 import DefaultProfile from "../assets/images/default_profile-img.png";
 
 import "../style/blog.css";
+import AuthModal from "./auth/AuthModal";
 
 const Blog = (props) => {
   const user = User();
+  const [, setAuthModal] = AuthModalFunction();
+
   const [dropDown, setDropDown] = useState(false);
   const [postData, setPostData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [htmlData, setHtmlData] = useState("");
   const [postLikes, setPostLikes] = useState(0);
   const [postSaves, setPostSaves] = useState(0);
-  const [postComments, setPostComments] = useState(0);
+  // const [postComments, setPostComments] = useState(0);
 
   const [likedPost, setLikedPost] = useState(false);
   const [savedPost, setSavedPost] = useState(false);
 
   const [authorDetails, setAuthorDetails] = useState({});
+  const [loginAction, setLoginAction] = useState(false);
 
   const args = {
     props,
@@ -46,6 +52,7 @@ const Blog = (props) => {
     setPostSaves,
     savedPost,
     setSavedPost,
+    setLoginAction,
   };
 
   useEffect(() => {
@@ -58,14 +65,12 @@ const Blog = (props) => {
       getAuthorDetails(postData.postedBy, setAuthorDetails);
       setPostLikes(postData.likes);
       setPostSaves(postData.saved);
-      setPostComments(postData.commentsCount);
+      // setPostComments(postData.commentsCount);
 
-      if (postData.likedBy.includes(user.uid)) {
-        setLikedPost(true);
-      }
-
-      if (postData.savedBy.includes(user.uid)) {
-        setSavedPost(true);
+      if (user) {
+        postData.likedBy.includes(user.uid) && setLikedPost(true);
+        postData.savedBy.includes(user.uid) && setSavedPost(true);
+        setLoginAction(false);
       }
     }
   }, [postData, user]);
@@ -80,11 +85,15 @@ const Blog = (props) => {
         <div
           className={`${props.darkMode && "bg-mode--dark"} blog`}
           onClick={(e) => {
+            loginAction &&
+              e.target.classList.contains("auth-modal") &&
+              setLoginAction(false);
             !e.target.classList.contains("header__menu--dropdown") &&
               dropDown &&
               setDropDown(false);
           }}
         >
+          {loginAction && <AuthModal setAuth={setAuthModal} />}
           <Header dropDown={dropDown} setDropDown={setDropDown} />
           <div className="blog__header-container">
             <div className="blog__header">
@@ -114,10 +123,10 @@ const Blog = (props) => {
                   <span>{postLikes}</span>
                 </div>
 
-                <div className="blog__story-comp-card">
+                {/* <div className="blog__story-comp-card">
                   <VscComment />
                   <span>{postComments}</span>
-                </div>
+                </div> */}
 
                 <div className="blog__story-comp-card">
                   <BsBookmark

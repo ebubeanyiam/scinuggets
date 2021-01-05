@@ -39,49 +39,57 @@ export const getHTMLData = (postData, setHtmlData) => {
 };
 
 export const calcLike = async (args) => {
-  if (!args.likedPost) {
-    await db
-      .collection("posts")
-      .doc(args.props.match.params.id)
-      .update({
-        likes: fieldValue.increment(1),
-        likedBy: fieldValue.arrayUnion(args.user.uid),
-      });
-    args.setPostLikes(args.postLikes + 1);
-    args.setLikedPost(true);
+  if (args.user) {
+    if (!args.likedPost) {
+      await db
+        .collection("posts")
+        .doc(args.props.match.params.id)
+        .update({
+          likes: fieldValue.increment(1),
+          likedBy: fieldValue.arrayUnion(args.user.uid),
+        });
+      args.setPostLikes(args.postLikes + 1);
+      args.setLikedPost(true);
+    } else {
+      await db
+        .collection("posts")
+        .doc(args.props.match.params.id)
+        .update({
+          likes: fieldValue.increment(-1),
+          likedBy: fieldValue.arrayRemove(args.user.uid),
+        });
+      args.setPostLikes(args.postLikes - 1);
+      args.setLikedPost(false);
+    }
   } else {
-    await db
-      .collection("posts")
-      .doc(args.props.match.params.id)
-      .update({
-        likes: fieldValue.increment(-1),
-        likedBy: fieldValue.arrayRemove(args.user.uid),
-      });
-    args.setPostLikes(args.postLikes - 1);
-    args.setLikedPost(false);
+    args.setLoginAction(true);
   }
 };
 
 export const calcSaves = async (args) => {
-  if (!args.savedPost) {
-    await db
-      .collection("posts")
-      .doc(args.props.match.params.id)
-      .update({
-        saved: fieldValue.increment(1),
-        savedBy: fieldValue.arrayUnion(args.user.uid),
-      });
-    args.setPostSaves(args.postSaves + 1);
-    args.setSavedPost(true);
+  if (args.user) {
+    if (!args.savedPost) {
+      await db
+        .collection("posts")
+        .doc(args.props.match.params.id)
+        .update({
+          saved: fieldValue.increment(1),
+          savedBy: fieldValue.arrayUnion(args.user.uid),
+        });
+      args.setPostSaves(args.postSaves + 1);
+      args.setSavedPost(true);
+    } else {
+      await db
+        .collection("posts")
+        .doc(args.props.match.params.id)
+        .update({
+          saved: fieldValue.increment(-1),
+          savedBy: fieldValue.arrayRemove(args.user.uid),
+        });
+      args.setPostSaves(args.postSaves - 1);
+      args.setSavedPost(false);
+    }
   } else {
-    await db
-      .collection("posts")
-      .doc(args.props.match.params.id)
-      .update({
-        saved: fieldValue.increment(-1),
-        savedBy: fieldValue.arrayRemove(args.user.uid),
-      });
-    args.setPostSaves(args.postSaves - 1);
-    args.setSavedPost(false);
+    args.setLoginAction(true);
   }
 };

@@ -118,6 +118,33 @@
   border: 1px solid rgb(0, 128, 0) !important;
 }
 
+@media screen and (max-width: 750px) {
+  .profile__settings-nav {
+    display: none;
+  }
+
+  .profile__settings {
+    padding: 70px 20px;
+  }
+
+  .profile__settings--profile__component {
+    flex-direction: column;
+    justify-content: unset;
+  }
+
+  .profile__settings--profile__comp-fields {
+    width: 100%;
+  }
+
+  .profile__settings--profile__comp-edit button {
+    margin-left: unset;
+  }
+
+  .profile__settings--profile__comp-edit__save-btn {
+    margin-right: 10px;
+  }
+}
+
 .bg-mode--dark button {
   border: 1px solid #6e40c950;
 }
