@@ -2,6 +2,7 @@ import * as firebase from "firebase/app";
 import "firebase/auth";
 import "firebase/firestore";
 import "firebase/storage";
+import "firebase/analytics";
 
 var firebaseConfig = {
   apiKey: "AIzaSyDZASMXdO_usZfDp0Ogvz0mv_CfiiQ_N90",
@@ -20,6 +21,7 @@ firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
 const db = firebase.firestore();
 const store = firebase.storage();
+const analytics = firebase.analytics;
 const fieldValue = firebase.firestore.FieldValue;
 const timestamp = firebase.firestore.FieldValue.serverTimestamp();
 
@@ -29,7 +31,7 @@ const facebookProvider = new firebase.auth.FacebookAuthProvider();
 const twitterProvider = new firebase.auth.TwitterAuthProvider();
 const githubProvider = new firebase.auth.GithubAuthProvider();
 
-export { auth, db, store, timestamp, fieldValue };
+export { auth, db, store, timestamp, analytics, fieldValue };
 
 // Export Auth Providers
 export { googleProvider, facebookProvider, twitterProvider, githubProvider };

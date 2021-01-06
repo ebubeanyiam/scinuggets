@@ -79,19 +79,28 @@ export const saveArticle = async (
       .set({
         title,
         subtitle,
+        test: "hello",
         slug,
         savedData,
         timestamp,
         postedBy: user.uid,
         featuredImage,
         tags,
-        likes: 0,
-        likedBy: [],
-        commentsCount: 0,
-        comments: [],
-        saved: 0,
-        savedBy: [],
+        likes: {
+          count: 0,
+          liked_by: [],
+        },
+        comments: {
+          count: 0,
+          comments: [],
+        },
+        saved: {
+          count: 0,
+          saved_by: [],
+        },
         draftId,
+        postViews: 0,
+        authorName: user.displayName,
       })
       .then((res) => {
         window.location.replace(`/${slug}`);
@@ -165,19 +174,4 @@ export const editorImageUrl = async (url) => {
       url: url,
     },
   };
-};
-
-export const getPostById = (id, postData, loading) => {
-  db.collection("posts")
-    .doc(id)
-    .get()
-    .then((doc) => {
-      if (doc.data()) {
-        postData(doc.data());
-        loading(false);
-      } else {
-        postData(false);
-        loading(false);
-      }
-    });
 };

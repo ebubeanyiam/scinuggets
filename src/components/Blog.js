@@ -7,8 +7,6 @@ import { IoMdHeartEmpty } from "react-icons/io";
 
 import { getAuthorDetails } from "./Logic";
 
-import { getPostById } from "./new-story-components/FunctionProvider";
-
 import Header from "./Header";
 import Footer from "./Footer";
 import PageNotFound from "./PageNotFound";
@@ -17,11 +15,17 @@ import ScreenLoader from "./ScreenLoader";
 import { User } from "../context/UserContext";
 import { AuthModal as AuthModalFunction } from "../context/AuthModalContext";
 
-import { getHTMLData, calcLike, calcSaves } from "./blog-components/Functions";
+import {
+  getHTMLData,
+  calcLike,
+  calcSaves,
+  getPostById,
+} from "./blog-components/Functions";
 import DefaultProfile from "../assets/images/default_profile-img.png";
 
 import "../style/blog.css";
 import AuthModal from "./auth/AuthModal";
+import { db, fieldValue } from "../firebase/config";
 
 const Blog = (props) => {
   const user = User();
@@ -63,17 +67,23 @@ const Blog = (props) => {
     if (postData) {
       getHTMLData(postData, setHtmlData);
       getAuthorDetails(postData.postedBy, setAuthorDetails);
-      setPostLikes(postData.likes);
-      setPostSaves(postData.saved);
+      setPostLikes(postData.likes.count);
+      setPostSaves(postData.saved.count);
+
+      db.collection("posts")
+        .doc(props.match.params.id)
+        .update({
+          postViews: fieldValue.increment(1),
+        });
       // setPostComments(postData.commentsCount);
 
       if (user) {
-        postData.likedBy.includes(user.uid) && setLikedPost(true);
-        postData.savedBy.includes(user.uid) && setSavedPost(true);
+        postData.likes.liked_by.includes(user.uid) && setLikedPost(true);
+        postData.saved.saved_by.includes(user.uid) && setSavedPost(true);
         setLoginAction(false);
       }
     }
-  }, [postData, user]);
+  }, [postData, user, props.match.params.id]);
 
   if (loading) {
     return <ScreenLoader />;
@@ -86,7 +96,7 @@ const Blog = (props) => {
           className={`${props.darkMode && "bg-mode--dark"} blog`}
           onClick={(e) => {
             loginAction &&
-              e.target.classList.contains("auth-modal") &&
+              e.target.classList.contains("auth-modal__modal__close-btn") &&
               setLoginAction(false);
             !e.target.classList.contains("header__menu--dropdown") &&
               dropDown &&
@@ -199,6 +209,25 @@ const Blog = (props) => {
                   ))}
               </div>
             </div>
+          </div>
+
+          <div className="blog__story-component--after">
+            <div className="blog__story-comp-card--after">
+              <IoMdHeartEmpty
+                style={{ color: likedPost && "red" }}
+                onClick={() => {
+                  calcLike(args);
+                }}
+              />
+              <span>
+                {postLikes} {postLikes === 1 ? "like" : "likes"}
+              </span>
+            </div>
+
+            {/* <div className="blog__story-comp-card">
+                  <VscComment />
+                  <span>{postComments}</span>
+                </div> */}
           </div>
 
           <div className="blog__author-component">

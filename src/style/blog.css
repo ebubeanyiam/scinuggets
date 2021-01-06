@@ -161,6 +161,24 @@
   color: var(--theme-dark);
 }
 
+.blog__story-component--after {
+  max-width: 750px;
+  margin: auto;
+  display: flex;
+  margin-top: 20px;
+  padding: 0 10px;
+}
+
+.blog__story-comp-card--after {
+  display: flex;
+  align-items: center;
+}
+
+.blog__story-comp-card--after svg {
+  margin-right: 5px;
+  font-size: 25px;
+}
+
 .blog__author-component {
   max-width: 750px;
   margin: auto;

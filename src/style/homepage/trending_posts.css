@@ -1,0 +1,47 @@
+.homepage__trending-posts {
+  padding: 20px 50px;
+}
+
+.trending-posts__marker {
+  display: flex;
+  align-items: center;
+}
+
+.trending-posts__marker svg {
+  margin-right: 10px;
+}
+
+.trending-posts__container {
+  display: grid;
+  grid-template-columns: auto auto auto;
+}
+
+.trending-posts__post {
+  padding: 20px 0;
+}
+
+.trending-posts__post > * {
+  margin-bottom: 10px;
+}
+
+.trending-posts__author--ft-img {
+  display: flex;
+  align-items: center;
+}
+
+.trending-posts__author--ft-img img {
+  width: 20px;
+  height: 20px;
+  object-fit: cover;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+.trending-posts__author--ft-img span {
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.trending-posts__title {
+  font-size: 16px;
+}

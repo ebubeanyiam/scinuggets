@@ -18,6 +18,7 @@ const AuthModal = ({ setAuth }) => {
       style={{ background: match ? "#fff" : "" }}
       onClick={(e) => {
         !match && e.target.classList.contains("auth-modal") && setAuth(false);
+        !match && e.target.classList.contains("blog") && setAuth(false);
       }}
     >
       <div className="auth-modal__modal">

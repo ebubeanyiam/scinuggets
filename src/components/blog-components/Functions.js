@@ -1,5 +1,20 @@
 import { db, fieldValue } from "../../firebase/config";
 
+export const getPostById = (id, postData, loading) => {
+  db.collection("posts")
+    .doc(id)
+    .get()
+    .then((doc) => {
+      if (doc.data()) {
+        postData(doc.data());
+        loading(false);
+      } else {
+        postData(false);
+        loading(false);
+      }
+    });
+};
+
 export const getHTMLData = (postData, setHtmlData) => {
   let html = "";
   postData.savedData.blocks.forEach((block) => {
@@ -45,8 +60,10 @@ export const calcLike = async (args) => {
         .collection("posts")
         .doc(args.props.match.params.id)
         .update({
-          likes: fieldValue.increment(1),
-          likedBy: fieldValue.arrayUnion(args.user.uid),
+          likes: {
+            count: fieldValue.increment(1),
+            liked_by: fieldValue.arrayUnion(args.user.uid),
+          },
         });
       args.setPostLikes(args.postLikes + 1);
       args.setLikedPost(true);
@@ -55,8 +72,10 @@ export const calcLike = async (args) => {
         .collection("posts")
         .doc(args.props.match.params.id)
         .update({
-          likes: fieldValue.increment(-1),
-          likedBy: fieldValue.arrayRemove(args.user.uid),
+          likes: {
+            count: fieldValue.increment(-1),
+            liked_by: fieldValue.arrayRemove(args.user.uid),
+          },
         });
       args.setPostLikes(args.postLikes - 1);
       args.setLikedPost(false);
@@ -73,8 +92,10 @@ export const calcSaves = async (args) => {
         .collection("posts")
         .doc(args.props.match.params.id)
         .update({
-          saved: fieldValue.increment(1),
-          savedBy: fieldValue.arrayUnion(args.user.uid),
+          likes: {
+            count: fieldValue.increment(1),
+            saved_by: fieldValue.arrayUnion(args.user.uid),
+          },
         });
       args.setPostSaves(args.postSaves + 1);
       args.setSavedPost(true);
@@ -83,8 +104,10 @@ export const calcSaves = async (args) => {
         .collection("posts")
         .doc(args.props.match.params.id)
         .update({
-          saved: fieldValue.increment(-1),
-          savedBy: fieldValue.arrayRemove(args.user.uid),
+          likes: {
+            count: fieldValue.increment(-1),
+            saved_by: fieldValue.arrayRemove(args.user.uid),
+          },
         });
       args.setPostSaves(args.postSaves - 1);
       args.setSavedPost(false);
