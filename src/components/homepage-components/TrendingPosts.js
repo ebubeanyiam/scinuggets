@@ -39,15 +39,17 @@ const TrendingPosts = () => {
                   <span>{post.data().authorName}</span>
                 </div>
                 <h1 className="trending-posts__title">{post.data().title}</h1>
-                <span>
-                  {
-                    <Moment fromNow>
-                      {new Date(post.data().timestamp.seconds * 1000)}
-                    </Moment>
-                  }
-                  .
-                </span>
-                <span>{timeToRead(post.data().savedData)}</span>
+                <div className="trending-posts__time">
+                  <span>
+                    {
+                      <Moment fromNow>
+                        {new Date(post.data().timestamp.seconds * 1000)}
+                      </Moment>
+                    }
+                    .
+                  </span>
+                  <span>{timeToRead(post.data().savedData)}</span>
+                </div>
               </div>
             </Link>
           ))}
