@@ -1,30 +1,35 @@
 import React, { useEffect, useRef, useState } from "react";
 import Editorjs from "react-editor-js";
 
-import { User } from "../context/UserContext";
-import Header from "./new-story-components/Header_";
-import { EDITOR_JS_TOOLS } from "../editor/editorConfig";
-import Publish from "./new-story-components/Publish";
-import { getDraft, saveDraft } from "./new-story-components/FunctionProvider";
-
-import "../style/new-story.css";
 import PageNotFound from "./PageNotFound";
 import ScreenLoader from "./ScreenLoader";
+import Header from "./edit-story-components/Header_";
+import Publish from "./edit-story-components/Publish";
+
+import { User } from "../context/UserContext";
+import { EDITOR_JS_TOOLS } from "../editor/editorConfig";
+import { getDraft } from "./edit-story-components/FunctionProvider";
+
+import "../style/new-story.css";
 
 const NewStory = (props) => {
   const user = User();
   const instanceRef = useRef(null);
+
+  const [tags, setTags] = useState([]);
   const [title, setTitle] = useState("");
+  const [subtitle, setSubtitle] = useState("");
+  const [postImage, setPostImage] = useState(null);
+  const [draftId, setDraftId] = useState(props.match.params.id);
+
   const [saving, setSaving] = useState(false);
   const [newPost, setNewPost] = useState(true);
+
   const [dropDown, setDropDown] = useState(false);
   const [menuDropDown, setMenuDropDown] = useState(false);
   const [editorData, setEditorData] = useState(null);
-  const [draftId, setDraftId] = useState(props.match.params.id);
-  const [onChangeCount, setOnChangeCount] = useState(0);
 
   const [file, setFile] = useState(null);
-  const [postImage, setPostImage] = useState(null);
 
   const [publish, setPublish] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -37,19 +42,18 @@ const NewStory = (props) => {
     setNewPost,
     draftId,
     setDraftId,
+    tags,
+    setTags,
     title,
     setTitle,
+    subtitle,
+    setSubtitle,
+    setPostImage,
     setUserDraft,
     setEditorData,
     setLoading,
     instanceRef,
   };
-
-  useEffect(() => {
-    if (onChangeCount > 0 && onChangeCount % 5 === 0 && title !== "") {
-      saveDraft(pageProps, title);
-    }
-  }, [onChangeCount]);
 
   useEffect(() => {
     getDraft(pageProps);
@@ -105,7 +109,6 @@ const NewStory = (props) => {
                 className="new-story__editor--save-btn"
                 onClick={() => {
                   setPublish(true);
-                  saveDraft(pageProps, title);
                 }}
               >
                 Publish
@@ -114,14 +117,7 @@ const NewStory = (props) => {
           </div>
 
           <div className="new-story__editor--header">
-            <input
-              type="text"
-              placeholder="Title"
-              value={title}
-              onChange={(e) => {
-                setTitle(e.target.value);
-              }}
-            />
+            <input type="text" placeholder="Title" value={title} />
           </div>
 
           {postImage && (
@@ -136,9 +132,6 @@ const NewStory = (props) => {
           >
             {editorData !== null && (
               <Editorjs
-                onChange={() => {
-                  setOnChangeCount(onChangeCount + 1);
-                }}
                 data={editorData}
                 instanceRef={(instance) => (instanceRef.current = instance)}
                 placeholder="Write your article"

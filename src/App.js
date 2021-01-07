@@ -97,7 +97,7 @@ const App = () => {
                   }
                 />
                 <Route
-                  path="/p/:id/edit"
+                  path="/:id/edit"
                   exact
                   render={(props) =>
                     user ? (

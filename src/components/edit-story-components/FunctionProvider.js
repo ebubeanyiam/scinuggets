@@ -1,16 +1,18 @@
 import { db, store, timestamp } from "../../firebase/config";
-import slugify from "slugify";
 
 export const getDraft = (props) => {
   if (props.draftId) {
     props.setNewPost(false);
-    db.collection("drafts")
+    db.collection("posts")
       .doc(props.draftId)
       .get()
       .then((doc) => {
-        if (doc.data() && doc.data().author === props.user.uid) {
+        if (doc.data() && doc.data().postedBy === props.user.uid) {
+          props.setTags(doc.data().tags);
           props.setTitle(doc.data().title);
+          props.setSubtitle(doc.data().subtitle);
           props.setEditorData(doc.data().savedData);
+          props.setPostImage(doc.data().featuredImage);
           props.setLoading(false);
         } else {
           props.setUserDraft(false);
@@ -20,36 +22,6 @@ export const getDraft = (props) => {
   } else {
     props.setEditorData("");
     props.setLoading(false);
-  }
-};
-
-export const saveDraft = async (props, title) => {
-  props.setSaving(true);
-  const savedData = await props.instanceRef.current.save();
-  if (props.newPost) {
-    db.collection("drafts")
-      .add({
-        title,
-        savedData,
-        author: props.user.uid,
-      })
-      .then((res) => {
-        props.setSaving(false);
-        props.setNewPost(false);
-        props.setDraftId(res.id);
-        window.history.pushState({}, "", `/p/${res.id}`);
-      });
-  } else {
-    db.collection("drafts")
-      .doc(props.draftId)
-      .set({
-        title,
-        savedData,
-        author: props.user.uid,
-      })
-      .then(() => {
-        props.setSaving(false);
-      });
   }
 };
 
@@ -65,65 +37,29 @@ export const saveArticle = async (
 ) => {
   p(true);
   let featuredImage = "";
-  let authorName = "";
-  let authorImage = "";
 
   const saveData = async () => {
-    const slugifyRes = slugify(title, {
-      lower: true,
-    });
-    const slug = `${slugifyRes}-${props.draftId}`;
     const savedData = await props.instanceRef.current.save();
 
     await db
       .collection("posts")
-      .doc(slug)
-      .set({
-        authorName,
-        authorImage,
-        edited: false,
-        lastEdited: null,
+      .doc(props.draftId)
+      .update({
         title,
         subtitle,
-        slug,
         savedData,
-        timestamp,
-        postedBy: user.uid,
         featuredImage,
         tags,
-        likes: {
-          count: 0,
-          liked_by: [],
-        },
-        comments: {
-          count: 0,
-          comments: [],
-        },
-        saved: {
-          count: 0,
-          saved_by: [],
-        },
-        draftId,
-        postViews: 0,
+        edited: true,
+        lastEdited: timestamp,
       })
       .then((res) => {
-        window.location.replace(`/${slug}`);
+        window.location.replace(`/${props.draftId}`);
       })
       .catch((e) => {
         alert(e.message);
       });
   };
-
-  await db
-    .collection("users")
-    .doc(user.uid)
-    .get()
-    .then((doc) => {
-      if (doc.data()) {
-        authorName = doc.data().displayName;
-        authorImage = doc.data().photoUrl;
-      }
-    });
 
   if (file) {
     store

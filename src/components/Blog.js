@@ -115,7 +115,7 @@ const Blog = (props) => {
               </div>
               <div className="header__actions">
                 {user && user.uid === postData.postedBy && (
-                  <Link to={`/p/${postData.draftId}/edit`}>
+                  <Link to={`/${postData.slug}/edit`}>
                     <button>Edit</button>
                   </Link>
                 )}
