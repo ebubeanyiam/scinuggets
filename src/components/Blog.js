@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Moment from "react-moment";
 import readingTime from "reading-time";
+import { Link } from "react-router-dom";
 import { BsBookmark } from "react-icons/bs";
 // import { VscComment } from "react-icons/vsc";
 import { IoMdHeartEmpty } from "react-icons/io";
@@ -67,8 +68,8 @@ const Blog = (props) => {
     if (postData) {
       getHTMLData(postData, setHtmlData);
       getAuthorDetails(postData.postedBy, setAuthorDetails);
-      setPostLikes(postData.likes.count);
-      setPostSaves(postData.saved.count);
+      setPostLikes(postData.likes.liked_by.length);
+      setPostSaves(postData.saved.saved_by.length);
 
       db.collection("posts")
         .doc(props.match.params.id)
@@ -114,7 +115,9 @@ const Blog = (props) => {
               </div>
               <div className="header__actions">
                 {user && user.uid === postData.postedBy && (
-                  <button>Edit</button>
+                  <Link to={`/p/${postData.draftId}/edit`}>
+                    <button>Edit</button>
+                  </Link>
                 )}
               </div>
             </div>

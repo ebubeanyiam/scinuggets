@@ -14,19 +14,7 @@ import AllPosts from "./homepage-components/AllPosts";
 const HomePage = () => {
   const user = User();
   const [dropDown, setDropDown] = useState(false);
-
-  // db.collection("posts")
-  //   .where("featuredImage", "!=", "")
-  //   .get()
-  //   .then((querySnapshot) => {
-  //     querySnapshot.forEach(function (doc) {
-  //       // doc.data() is never undefined for query doc snapshots
-  //       console.log(doc.id, " => ", doc.data());
-  //     });
-  //   })
-  //   .catch(function (error) {
-  //     console.log("Error getting documents: ", error);
-  //   });
+  const [trend, setTrend] = useState([]);
 
   return (
     <div
@@ -39,8 +27,8 @@ const HomePage = () => {
     >
       <Header dropDown={dropDown} setDropDown={setDropDown} />
       {user === "" ? "Loading" : user === null ? <Hero /> : "For you"}
-      <TrendingPosts />
-      <AllPosts />
+      <TrendingPosts setTrend={setTrend} />
+      <AllPosts trend={trend} />
       <Footer />
     </div>
   );

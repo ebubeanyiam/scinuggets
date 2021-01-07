@@ -65,6 +65,8 @@ export const saveArticle = async (
 ) => {
   p(true);
   let featuredImage = "";
+  let authorName = "";
+  let authorImage = "";
 
   const saveData = async () => {
     const slugifyRes = slugify(title, {
@@ -77,6 +79,8 @@ export const saveArticle = async (
       .collection("posts")
       .doc(slug)
       .set({
+        authorName,
+        authorImage,
         title,
         subtitle,
         test: "hello",
@@ -100,7 +104,6 @@ export const saveArticle = async (
         },
         draftId,
         postViews: 0,
-        authorName: user.displayName,
       })
       .then((res) => {
         window.location.replace(`/${slug}`);
@@ -109,6 +112,17 @@ export const saveArticle = async (
         alert(e.message);
       });
   };
+
+  await db
+    .collection("users")
+    .doc(user.uid)
+    .get()
+    .then((doc) => {
+      if (doc.data()) {
+        authorName = doc.data().displayName;
+        authorImage = doc.data().photoUrl;
+      }
+    });
 
   if (file) {
     store
@@ -129,7 +143,9 @@ export const addFeaturedImage = (e, setFile, setPostImage) => {
   const types = [
     "image/png",
     "image/jpeg",
-    "image/jpg, image/gif, image/svg",
+    "image/jpg",
+    "image/gif",
+    "image/svg",
     "image/webp",
   ];
 

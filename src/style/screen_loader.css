@@ -9,10 +9,9 @@
 }
 
 .screen-loader-box {
-  font-family: "Light Wandals";
   position: absolute;
   /* background: #fff;s */
-  width: fit-content;
+  min-width: 50px;
   padding: 10px;
   border-radius: 5px;
   animation: 1s ease-in-out alternate infinite shadows;

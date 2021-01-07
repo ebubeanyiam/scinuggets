@@ -61,7 +61,6 @@ export const calcLike = async (args) => {
         .doc(args.props.match.params.id)
         .update({
           likes: {
-            count: fieldValue.increment(1),
             liked_by: fieldValue.arrayUnion(args.user.uid),
           },
         });
@@ -73,7 +72,6 @@ export const calcLike = async (args) => {
         .doc(args.props.match.params.id)
         .update({
           likes: {
-            count: fieldValue.increment(-1),
             liked_by: fieldValue.arrayRemove(args.user.uid),
           },
         });

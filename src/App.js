@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
 import HomePage from "./components/HomePage";
 import NewStory from "./components/NewStory";
+import EditStory from "./components/EditStory";
 import ConfirmMail from "./components/ConfirmMail";
 import Blog from "./components/Blog";
 import AuthModal from "./components/auth/AuthModal";
@@ -90,6 +91,17 @@ const App = () => {
                   render={(props) =>
                     user ? (
                       <NewStory {...props} />
+                    ) : (
+                      <AuthModal setAuth={setAuthModal} />
+                    )
+                  }
+                />
+                <Route
+                  path="/p/:id/edit"
+                  exact
+                  render={(props) =>
+                    user ? (
+                      <EditStory {...props} />
                     ) : (
                       <AuthModal setAuth={setAuthModal} />
                     )
