@@ -194,6 +194,19 @@ const Blog = (props) => {
                 <div className="blog__article-details--social"></div>
               </div>
 
+              {postData.edited && (
+                <div className="blog__article--edited">
+                  <span>
+                    Last edited{" "}
+                    {
+                      <Moment>
+                        {new Date(postData.lastEdited.seconds * 1000)}
+                      </Moment>
+                    }
+                  </span>
+                </div>
+              )}
+
               <div className="blog__article-featured-image">
                 {postData.featuredImage && (
                   <img src={postData.featuredImage} alt="featured" />

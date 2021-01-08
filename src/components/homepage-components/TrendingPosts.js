@@ -14,7 +14,7 @@ const TrendingPosts = ({ setTrend }) => {
   useEffect(() => {
     db.collection("posts")
       .orderBy("postViews", "desc")
-      .limit(3)
+      .limit(2)
       .get()
       .then((snapshots) => {
         setTrendingPosts([...snapshots.docs]);

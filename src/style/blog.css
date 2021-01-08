@@ -132,6 +132,16 @@
   margin-right: 5px;
 }
 
+.blog__article--edited {
+  margin-top: 15px;
+  font-size: 12px;
+  font-style: italic;
+}
+
+.blog__article-text {
+  margin-top: 15px;
+}
+
 .blog__article-text p {
   margin-bottom: 20px;
   line-height: 24px;

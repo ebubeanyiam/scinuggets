@@ -64,7 +64,7 @@ export const saveArticle = async (
   draftId
 ) => {
   p(true);
-  let featuredImage = "";
+  let featuredImage = null;
   let authorName = "";
   let authorImage = "";
 
