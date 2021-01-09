@@ -106,7 +106,7 @@ const ForYou = ({ trend, setCustom }) => {
             ))}
         </div>
 
-        <div className="homepage__custom-posts-container">
+        <div className="homepage__custom-posts-container-other-posts">
           {postSliced &&
             postSliced.map((post, index) => (
               <Link key={index} to={post.data().slug}>
@@ -194,6 +194,9 @@ const ForYou = ({ trend, setCustom }) => {
                 <h3>Javascript</h3>
                 <button>Follow</button>
               </div>
+              <Link to="/">
+                <span>See More</span>
+              </Link>
             </div>
           </div>
         </div>
