@@ -42,7 +42,7 @@ export const getHTMLData = (postData, setHtmlData) => {
         html += "</ul>";
         break;
       case "code":
-        html += `<code>${block.data.code}</code>`;
+        html += `<pre><code>${block.data.code}</code></pre>`;
         break;
       default:
         console.log("Unknown block type", block.type);

@@ -30,6 +30,7 @@ export const saveArticle = async (
   props,
   title,
   subtitle,
+  image,
   tags,
   file,
   p,
@@ -72,6 +73,7 @@ export const saveArticle = async (
         saveData();
       });
   } else {
+    featuredImage = image;
     saveData();
   }
 };

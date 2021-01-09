@@ -97,6 +97,7 @@ const Publish = (props) => {
                   props.pageProps,
                   title,
                   subTitle,
+                  props.postImage,
                   tags,
                   props.file,
                   setPublishing,

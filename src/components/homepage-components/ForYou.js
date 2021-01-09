@@ -11,10 +11,10 @@ import "../../style/homepage/for_you.css";
 
 const ForYou = ({ trend, setCustom }) => {
   const [posts, setPosts] = useState([]);
+  const [authors, setAuthors] = useState([]);
+  const [allAuthors, setAllAuthors] = useState([]);
   const [mainPost, setMainPost] = useState([]);
   const [postSliced, setPostSliced] = useState([]);
-
-  console.log(posts);
 
   useEffect(() => {
     if (trend.length !== 0) {
@@ -37,10 +37,29 @@ const ForYou = ({ trend, setCustom }) => {
     setPostSliced(posts.slice(1));
   }, [posts]);
 
+  useEffect(() => {
+    db.collection("users")
+      .where("postsNum", ">", 0)
+      .get()
+      .then((snapshots) => {
+        setAllAuthors([...snapshots.docs]);
+      })
+      .catch(function (error) {
+        console.log("Error getting documents: ", error);
+      });
+  }, []);
+
+  useEffect(() => {
+    if (allAuthors.length !== 0) {
+      const numStart = Math.floor(Math.random() * (allAuthors.length - 1));
+      setAuthors(allAuthors.slice(numStart, numStart + 2));
+    }
+  }, [allAuthors]);
+
   return (
     <div className="homepage__custom-posts--container">
       <div className="homepage__custom-posts">
-        <div>
+        <div className="homepage__custom-post--main-container">
           {mainPost &&
             mainPost.map((post, index) => (
               <Link key={index} to={post.data().slug}>
@@ -91,7 +110,7 @@ const ForYou = ({ trend, setCustom }) => {
           {postSliced &&
             postSliced.map((post, index) => (
               <Link key={index} to={post.data().slug}>
-                <div className="homepage__all-posts--post">
+                <div className="homepage__custom-posts--post">
                   <div className="homepage__all-posts--post-info">
                     <div className="homepage__all-posts__author--ft-img">
                       <img
@@ -104,14 +123,9 @@ const ForYou = ({ trend, setCustom }) => {
                       />
                       <span>{post.data().authorName}</span>
                     </div>
-                    <h1 className="homepage__all-posts__title">
+                    <h1 className="homepage__custom-posts__title">
                       {post.data().title}
                     </h1>
-                    {post.data().subtitle && (
-                      <p className="homepage__all-posts__subtitle">
-                        {post.data().subtitle}
-                      </p>
-                    )}
                     <div className="trending-posts__time">
                       <span>
                         {
@@ -124,7 +138,7 @@ const ForYou = ({ trend, setCustom }) => {
                       <span>{timeToRead(post.data().savedData)}</span>
                     </div>
                   </div>
-                  <div className="homepage__all-posts--post-image">
+                  <div className="homepage__custom-posts--post-image">
                     {post.data().featuredImage && (
                       <img src={post.data().featuredImage} alt="featured" />
                     )}
@@ -133,7 +147,31 @@ const ForYou = ({ trend, setCustom }) => {
               </Link>
             ))}
         </div>
-        <div>Creaators to Follow</div>
+
+        <div className="homepage__custom-posts-writers">
+          <h1 className="homepage__custom-posts--marker">WRITERS TO FOLLOW</h1>
+          <div className="homepage__custom-posts--writer-box-container">
+            {authors.length !== 0 &&
+              authors.map((author, index) => (
+                <div className="homepage__custom-posts--writer-box" key={index}>
+                  <div className="homepage__custom-posts--writer-box-bio">
+                    {author.data().photoUrl && (
+                      <img src={author.data().photoUrl} alt="writer" />
+                    )}
+                    <div className="homepage__custom-posts--writer-box-bio-about">
+                      {author.data().displayName && (
+                        <h5>{author.data().displayName}</h5>
+                      )}
+                      {author.data().bio && <span>{author.data().bio}</span>}
+                    </div>
+                  </div>
+                  <div>
+                    <button>Follow</button>
+                  </div>
+                </div>
+              ))}
+          </div>
+        </div>
       </div>
     </div>
   );
