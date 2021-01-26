@@ -12,7 +12,6 @@ import ScreenLoader from "./components/ScreenLoader";
 import PageNotFound from "./components/PageNotFound";
 import UserManagement from "./components/UserManagement";
 import CompleteRegPopUp from "./components/CompleteRegPopUp";
-import ToastNotification from "./components/ToastNotification";
 
 // Contexts
 import { User } from "./context/UserContext";
@@ -50,82 +49,78 @@ const App = () => {
         </span>
       </div>
       <Router>
-        <ToastNotification />
         {userVerified === false &&
           window.location.pathname !== userActionUrl && <ConfirmMail />}
-
         {profileReg && <CompleteRegPopUp />}
 
-        <Switch>
-          <AuthStatusProvider>
-            {userVerified !== false && (
-              <>
-                <Route path="/" exact component={HomePage} />
-                {authModal && <AuthModal setAuth={setAuthModal} />}
-                <Route
-                  path="/s/signin"
-                  exact
-                  render={() => (user ? <HomePage /> : <AuthModal />)}
-                />
-                <Route
-                  path="/m/new-story"
-                  exact
-                  render={(props) =>
-                    user ? (
-                      <NewStory {...props} />
-                    ) : (
-                      <AuthModal setAuth={setAuthModal} />
-                    )
-                  }
-                />
-                <Route
-                  path="/me/settings"
-                  exact
-                  render={() =>
-                    user ? (
-                      <ProfileSettings />
-                    ) : (
-                      <AuthModal setAuth={setAuthModal} />
-                    )
-                  }
-                />
-                <Route
-                  path="/p/:id"
-                  exact
-                  render={(props) =>
-                    user ? (
-                      <NewStory {...props} />
-                    ) : (
-                      <AuthModal setAuth={setAuthModal} />
-                    )
-                  }
-                />
-                <Route
-                  path="/:id/edit"
-                  exact
-                  render={(props) =>
-                    user ? (
-                      <EditStory {...props} />
-                    ) : (
-                      <AuthModal setAuth={setAuthModal} />
-                    )
-                  }
-                />
-                <Route
-                  path="/:id"
-                  exact
-                  render={(props) => <Blog {...props} />}
-                />
-              </>
-            )}
-            <Route
-              path="/user/action"
-              exact
-              render={(props) => <UserManagement {...props} />}
-            />
-          </AuthStatusProvider>
-          <Route path="" component={PageNotFound} />
-        </Switch>
+        <AuthStatusProvider>
+          {authModal && <AuthModal setAuth={setAuthModal} />}
+          <Switch>
+            <>
+              <Route path="/" exact component={HomePage} />
+              <Route
+                path="/s/signin"
+                exact
+                render={() => (user ? <HomePage /> : <AuthModal />)}
+              />
+              <Route
+                path="/m/new-story"
+                exact
+                render={(props) =>
+                  user ? (
+                    <NewStory {...props} />
+                  ) : (
+                    <AuthModal setAuth={setAuthModal} />
+                  )
+                }
+              />
+              <Route
+                path="/me/settings"
+                exact
+                render={() =>
+                  user ? (
+                    <ProfileSettings />
+                  ) : (
+                    <AuthModal setAuth={setAuthModal} />
+                  )
+                }
+              />
+              <Route
+                path="/p/:id"
+                exact
+                render={(props) =>
+                  user ? (
+                    <NewStory {...props} />
+                  ) : (
+                    <AuthModal setAuth={setAuthModal} />
+                  )
+                }
+              />
+              <Route
+                path="/:id/edit"
+                exact
+                render={(props) =>
+                  user ? (
+                    <EditStory {...props} />
+                  ) : (
+                    <AuthModal setAuth={setAuthModal} />
+                  )
+                }
+              />
+              <Route
+                path="/:id"
+                exact
+                render={(props) => <Blog {...props} />}
+              />
+              <Route
+                path="/user/action"
+                exact
+                render={(props) => <UserManagement {...props} />}
+              />
+            </>
+            <Route path="" component={PageNotFound} />
+          </Switch>
+        </AuthStatusProvider>
       </Router>
     </div>
   );

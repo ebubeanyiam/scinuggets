@@ -8,19 +8,16 @@ import { UserProvider } from "./context/UserContext";
 import { ThemeProvider } from "./context/ThemeContext";
 import { AuthModalProvider } from "./context/AuthModalContext";
 import { CompleteProfileProvider } from "./context/CompleteProfileContext";
-import { ToastNotificationProvider } from "./context/ToastNotificationContext";
 
 ReactDOM.render(
   <AuthModalProvider>
     <React.StrictMode>
       <UserProvider>
-        <ToastNotificationProvider>
-          <CompleteProfileProvider>
-            <ThemeProvider>
-              <App />
-            </ThemeProvider>
-          </CompleteProfileProvider>
-        </ToastNotificationProvider>
+        <CompleteProfileProvider>
+          <ThemeProvider>
+            <App />
+          </ThemeProvider>
+        </CompleteProfileProvider>
       </UserProvider>
     </React.StrictMode>
   </AuthModalProvider>,
