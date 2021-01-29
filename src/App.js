@@ -115,7 +115,9 @@ const App = () => {
               <Route
                 path="/user/action"
                 exact
-                render={(props) => <UserManagement {...props} />}
+                render={(props) =>
+                  user ? <UserManagement {...props} /> : <HomePage />
+                }
               />
             </>
             <Route path="" component={PageNotFound} />

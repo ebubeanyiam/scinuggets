@@ -18,7 +18,6 @@ const UserManagement = (props) => {
   const actionCode = new URLSearchParams(props.location.search).get("oobCode");
 
   const success = "Email Verified";
-  const error = "We couldn't verify your email.";
 
   useEffect(() => {
     db.collection("users")
@@ -38,7 +37,6 @@ const UserManagement = (props) => {
         setActionText(success);
       })
       .catch((e) => {
-        console.log(e.message);
         setActionText(e.message);
       });
   };
@@ -63,16 +61,7 @@ const UserManagement = (props) => {
     >
       <Header dropDown={dropDown} setDropDown={setDropDown} />
       <div className="user_mgmt--current_action">
-        <span
-          style={{
-            color:
-              actionText === success
-                ? "green"
-                : actionText === error
-                ? "red"
-                : "initial",
-          }}
-        >
+        <span style={{ color: actionText === success && "green" }}>
           {actionText}
         </span>
       </div>
