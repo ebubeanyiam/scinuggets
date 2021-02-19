@@ -90,6 +90,7 @@ export const saveArticle = async (
         timestamp,
         postedBy: user.uid,
         featuredImage,
+        featuredImageIsSet: featuredImage ? true : false,
         tags,
         likes: {
           count: 0,

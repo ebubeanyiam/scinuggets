@@ -19,8 +19,8 @@ const ForYou = ({ trend, setCustom }) => {
   useEffect(() => {
     if (trend.length !== 0) {
       db.collection("posts")
-        .where("featuredImage", "!=", true)
-        // .where("slug", "not-in", trend)
+        .where("slug", "not-in", trend)
+        .where("featuredImageIsSet", "==", true)
         .limit(5)
         .get()
         .then((snapshots) => {
@@ -31,6 +31,8 @@ const ForYou = ({ trend, setCustom }) => {
         });
     }
   }, [trend]);
+
+  console.log(posts);
 
   useEffect(() => {
     setMainPost(posts.slice(0, 1));

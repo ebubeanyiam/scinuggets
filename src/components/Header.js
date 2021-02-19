@@ -51,7 +51,7 @@ const Header = ({ dropDown, setDropDown }) => {
           />
         )}
 
-        {user && <ToggleModeSwitch />}
+        {/* {user && <ToggleModeSwitch />} */}
       </nav>
     </div>
   );

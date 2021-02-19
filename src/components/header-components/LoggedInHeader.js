@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { AiOutlineSearch, AiOutlineBell, AiOutlineUser } from "react-icons/ai";
+import { AiOutlineSearch, AiOutlineBell } from "react-icons/ai";
 
 import { db } from "../../firebase/config";
 
@@ -53,7 +53,9 @@ const LoggedInHeader = ({ dropDown, setDropDown, user }) => {
               alt="logged in user"
             />
             {/* <AiOutlineUser className="header__menu--container__link--icon" /> */}
-            {dropDown && <DropDown setDropDown={setDropDown} />}
+            {dropDown && (
+              <DropDown profileImage={profileImage} setDropDown={setDropDown} />
+            )}
           </span>
         </li>
       </ul>

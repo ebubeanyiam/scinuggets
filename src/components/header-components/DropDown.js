@@ -2,13 +2,20 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { AiOutlineUser } from "react-icons/ai";
 
+import DefaultUser from "../../assets/images/default_profile-img.png";
+
 import { auth } from "../../firebase/config";
 
-const DropDown = () => {
+const DropDown = ({ profileImage }) => {
   return (
     <div className="header__menu--dropdown">
       <div className="header__menu--dropdown--user">
-        <AiOutlineUser />
+        <img
+          src={profileImage !== "" ? profileImage : DefaultUser}
+          alt="logged in user"
+        />
+
+        <div className="header__menu--dropdown--user__details"></div>
       </div>
 
       <div className="header__menu--dropdown--user-options">

@@ -19,7 +19,7 @@
 
 .homepage__custom-post--post-image img {
   width: 100%;
-  height: auto;
+  max-height: 400px;
 }
 
 /* .homepage__all-posts--container {
