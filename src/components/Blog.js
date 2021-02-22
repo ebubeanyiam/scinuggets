@@ -13,6 +13,8 @@ import Footer from "./Footer";
 import PageNotFound from "./PageNotFound";
 import ScreenLoader from "./ScreenLoader";
 
+import DefaultProfile from "../assets/images/default_profile-img.png";
+
 import { User } from "../context/UserContext";
 import { AuthModal as AuthModalFunction } from "../context/AuthModalContext";
 
@@ -22,7 +24,6 @@ import {
   calcSaves,
   getPostById,
 } from "./blog-components/Functions";
-import DefaultProfile from "../assets/images/default_profile-img.png";
 
 import "../style/blog.css";
 import AuthModal from "./auth/AuthModal";

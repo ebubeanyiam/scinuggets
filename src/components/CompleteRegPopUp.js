@@ -11,9 +11,11 @@ import "../style/complete_profile.css";
 const CompleteRegPopUp = () => {
   const user = User();
   const [name, setName] = useState("");
+  const [username, setUsername] = useState("");
   const [file, setFile] = useState(null);
   const [updated, setUpdated] = useState(false);
   const [postImage, setPostImage] = useState(null);
+  const [errorMessage, setErrorMessage] = useState("");
   const [, setOpenProfileReg] = ProfileReg();
 
   useEffect(() => {
@@ -25,11 +27,17 @@ const CompleteRegPopUp = () => {
   return (
     <div className="completeregpopup">
       <div className="completeregpopup__modal">
-        <h4>Update your profile to continue publishing</h4>
+        <h4>Finish Creating your account</h4>
+
+        {errorMessage && (
+          <span className="completeregpopup__modal-errorMessage">
+            {errorMessage}
+          </span>
+        )}
 
         <form>
           <label>
-            Tell us your name
+            <b>Tell us your name</b>
             <input
               type="text"
               value={name}
@@ -40,7 +48,20 @@ const CompleteRegPopUp = () => {
           </label>
 
           <label>
-            <span>Update your profile picture (optional)</span>
+            <b>Create a username</b>
+            <input
+              type="text"
+              value={username}
+              onChange={(e) => {
+                setUsername(e.target.value);
+              }}
+            />
+          </label>
+
+          <label>
+            <span>
+              <b>Update your profile picture (optional)</b>
+            </span>
             <BiImageAdd className="new-story__image--preview-add-image" />
             <input
               type="file"
@@ -53,15 +74,19 @@ const CompleteRegPopUp = () => {
           </label>
         </form>
 
-        {name.length > 3 && (
-          <button
-            onClick={() => {
-              updateProfile(user, name, file, setUpdated);
-            }}
-          >
-            Update
-          </button>
-        )}
+        <button
+          onClick={() => {
+            if (name.length < 3 || username.length < 3) {
+              setErrorMessage(
+                "Name or Username can not be less than 3 characters"
+              );
+              return;
+            }
+            updateProfile(user, name, username, file, setUpdated);
+          }}
+        >
+          Update
+        </button>
       </div>
     </div>
   );

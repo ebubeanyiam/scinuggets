@@ -2,16 +2,19 @@ import React, { useEffect, useState } from "react";
 import { TiWarningOutline } from "react-icons/ti";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
+import Blog from "./components/Blog";
+import Header from "./components/Header";
+import Profile from "./components/Profile";
 import HomePage from "./components/HomePage";
 import NewStory from "./components/NewStory";
 import EditStory from "./components/EditStory";
 import ConfirmMail from "./components/ConfirmMail";
-import Blog from "./components/Blog";
 import AuthModal from "./components/auth/AuthModal";
 import ScreenLoader from "./components/ScreenLoader";
 import PageNotFound from "./components/PageNotFound";
 import UserManagement from "./components/UserManagement";
 import CompleteRegPopUp from "./components/CompleteRegPopUp";
+import ProfileSettings from "./components/user-components/ProfileSettings";
 
 // Contexts
 import { User } from "./context/UserContext";
@@ -19,7 +22,6 @@ import { ProfileReg } from "./context/CompleteProfileContext";
 import { AuthStatusProvider } from "./context/AuthStatusContext";
 import { AuthModal as AuthModalFunction } from "./context/AuthModalContext";
 import { Theme } from "./context/ThemeContext";
-import ProfileSettings from "./components/user-components/ProfileSettings";
 
 const App = () => {
   const user = User();
@@ -49,6 +51,8 @@ const App = () => {
         </span>
       </div>
       <Router>
+        {/* Stopped here */}
+        <Header />
         {userVerified === false &&
           window.location.pathname !== userActionUrl && <ConfirmMail />}
         {profileReg && <CompleteRegPopUp />}
@@ -62,6 +66,11 @@ const App = () => {
                 path="/s/signin"
                 exact
                 render={() => (user ? <HomePage /> : <AuthModal />)}
+              />
+              <Route
+                path="/profile/:id"
+                exact
+                render={(props) => <Profile {...props} />}
               />
               <Route
                 path="/m/new-story"

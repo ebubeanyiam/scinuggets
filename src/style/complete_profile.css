@@ -18,8 +18,21 @@
   border-radius: 5px;
 }
 
+@media screen and (max-width: 550px) {
+  .completeregpopup__modal {
+    min-width: unset;
+    max-width: 95%;
+  }
+}
+
 .completeregpopup__modal h4 {
   font-weight: 300;
+}
+
+.completeregpopup__modal-errorMessage {
+  display: inline-block;
+  margin-top: 7px;
+  color: red;
 }
 
 .completeregpopup__modal form,

@@ -68,17 +68,20 @@ const ProfileSettingsPhoto = () => {
                     .then(async (snapshot) => {
                       await snapshot.ref.getDownloadURL().then((res) => {
                         setPhotoUrl(res);
+                        user.updateProfile({
+                          photoURL: res,
+                        });
+                        db.collection("users")
+                          .doc(user.uid)
+                          .update({
+                            photoUrl: photoUrl,
+                          })
+                          .then(() => {
+                            setEditable(false);
+                          });
                       });
                     });
                 }
-                db.collection("users")
-                  .doc(user.uid)
-                  .update({
-                    photoUrl: photoUrl,
-                  })
-                  .then(() => {
-                    setEditable(false);
-                  });
               }}
             >
               Save

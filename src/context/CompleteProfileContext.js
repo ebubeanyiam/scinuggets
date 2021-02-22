@@ -1,4 +1,5 @@
-import React, { useState, createContext, useContext } from "react";
+import React, { useState, createContext, useContext, useEffect } from "react";
+import { UserData } from "./UserContext";
 
 export const CompleteProfileContext = createContext();
 
@@ -7,7 +8,15 @@ export const ProfileReg = () => {
 };
 
 export const CompleteProfileProvider = ({ children }) => {
+  const userData = UserData();
   const [openProfileReg, setOpenProfileReg] = useState(false);
+
+  useEffect(() => {
+    if (userData) {
+      console.log(userData);
+      !userData.username ? setOpenProfileReg(true) : setOpenProfileReg(false);
+    }
+  }, [userData]);
 
   return (
     <CompleteProfileContext.Provider

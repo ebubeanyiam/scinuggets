@@ -4,9 +4,11 @@ import { AiOutlineUser } from "react-icons/ai";
 
 import DefaultUser from "../../assets/images/default_profile-img.png";
 
+import { UserData } from "../../context/UserContext";
 import { auth } from "../../firebase/config";
 
 const DropDown = ({ profileImage }) => {
+  const userData = UserData();
   return (
     <div className="header__menu--dropdown">
       <div className="header__menu--dropdown--user">
@@ -14,14 +16,12 @@ const DropDown = ({ profileImage }) => {
           src={profileImage !== "" ? profileImage : DefaultUser}
           alt="logged in user"
         />
-
-        <div className="header__menu--dropdown--user__details"></div>
       </div>
 
       <div className="header__menu--dropdown--user-options">
         <Link to="/m/new-story">New Story</Link>
         <Link to="">Stories</Link>
-        <Link to="">Stats</Link>
+        <Link to={`/profile/${userData.username}`}>Profile</Link>
         <Link to="/me/settings">Settings</Link>
       </div>
 

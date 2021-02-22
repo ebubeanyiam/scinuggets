@@ -32,8 +32,6 @@ const ForYou = ({ trend, setCustom }) => {
     }
   }, [trend]);
 
-  console.log(posts);
-
   useEffect(() => {
     setMainPost(posts.slice(0, 1));
     setPostSliced(posts.slice(1));
@@ -164,7 +162,9 @@ const ForYou = ({ trend, setCustom }) => {
                   >
                     <div className="homepage__custom-posts--writer-box-bio">
                       {author.data().photoUrl && (
-                        <img src={author.data().photoUrl} alt="writer" />
+                        <Link to={`/profile/${author.data().username}`}>
+                          <img src={author.data().photoUrl} alt="writer" />
+                        </Link>
                       )}
                       <div className="homepage__custom-posts--writer-box-bio-about">
                         {author.data().displayName && (

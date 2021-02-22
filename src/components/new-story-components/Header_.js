@@ -45,7 +45,7 @@ const Header = (props) => {
             setDropDown={props.setMenuDropDown}
             user={props.user}
           />
-          <ToggleModeSwitch />
+          {/* <ToggleModeSwitch /> */}
         </div>
       </nav>
     </div>

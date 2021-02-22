@@ -9,7 +9,7 @@ import LoggedOutHeader from "./header-components/LoggedOutheader";
 import LogoLight from "../assets/images/scinuggets_logo.png";
 
 import "../style/header.css";
-import ToggleModeSwitch from "./ToggleModeSwitch";
+// import ToggleModeSwitch from "./ToggleModeSwitch";
 
 const Header = ({ dropDown, setDropDown }) => {
   const user = User();
@@ -30,9 +30,9 @@ const Header = ({ dropDown, setDropDown }) => {
             />
           </Link>
 
-          <div className="header__logo--greeting__mobile">
+          {/* <div className="header__logo--greeting__mobile">
             <span>Open in app</span>
-          </div>
+          </div> */}
 
           {user && window.location.pathname === "/" && (
             <div className="header__logo--greeting">

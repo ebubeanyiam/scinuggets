@@ -21,33 +21,20 @@ export const selectImage = (e, setFile, setPostImage) => {
   }
 };
 
-export const updateProfile = async (user, name, file, setUpdated) => {
-  let photoUrl = "";
-
-  const runUpdate = () => {
+export const updateProfile = async (user, name, username, file, setUpdated) => {
+  const runUpdate = async () => {
     user.updateProfile({
       displayName: name,
-      photoUrl,
     });
 
-    db.collection("users")
-      .doc(user.uid)
-      .get()
-      .then(async (doc) => {
-        if (doc.data()) {
-          await db.collection("users").doc(user.uid).update({
-            displayName: name,
-            photoUrl,
-          });
-          setUpdated(true);
-        } else {
-          await db.collection("users").doc(user.uid).set({
-            displayName: name,
-            photoUrl,
-          });
-          setUpdated(true);
-        }
-      });
+    await db.collection("users").doc(user.uid).set(
+      {
+        displayName: name,
+        username,
+      },
+      { merge: true }
+    );
+    setUpdated(true);
   };
 
   if (file) {
@@ -56,7 +43,15 @@ export const updateProfile = async (user, name, file, setUpdated) => {
       .put(file)
       .then(async (snapshot) => {
         await snapshot.ref.getDownloadURL().then((res) => {
-          photoUrl = res;
+          db.collection("users").doc(user.uid).set(
+            {
+              photoUrl: res,
+            },
+            { merge: true }
+          );
+          user.updateProfile({
+            photoURL: res,
+          });
         });
         runUpdate();
       });
