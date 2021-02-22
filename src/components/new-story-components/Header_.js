@@ -6,8 +6,9 @@ import DropDown from "./DropDown";
 import LoggedInHeader from "../header-components/LoggedInHeader";
 
 import "../../style/header.css";
+import ToggleModeSwitch from "../ToggleModeSwitch";
 
-const Header = ({ dropDown, setDropDown, saving, setFile, setPostImage }) => {
+const Header = (props) => {
   const styles = {
     display: "flex",
     alignItems: "center",
@@ -18,28 +19,33 @@ const Header = ({ dropDown, setDropDown, saving, setFile, setPostImage }) => {
     <div className="header__container">
       <nav className="header">
         <div className="header__logo">
-          <h1>Drafts</h1>
+          <h1 className="header__logo--new-story">
+            Drafts in {props.user.displayName}
+          </h1>
 
-          {saving && (
-            <div className="header__logo--greeting">
+          {props.saving && (
+            <div className="header__logo--greeting--new-story">
               <h1>Saving</h1>
             </div>
           )}
         </div>
 
         <div style={styles}>
-          <div>
+          <div style={styles}>
             <BsThreeDots
               style={{ cursor: "pointer" }}
               onClick={() => {
-                setDropDown(!dropDown);
+                props.setDropDown(!props.dropDown);
               }}
             />
-            {dropDown && (
-              <DropDown setFile={setFile} setPostImage={setPostImage} />
-            )}
+            {props.dropDown && <DropDown />}
           </div>
-          <LoggedInHeader />
+          <LoggedInHeader
+            dropDown={props.menuDropDown}
+            setDropDown={props.setMenuDropDown}
+            user={props.user}
+          />
+          {/* <ToggleModeSwitch /> */}
         </div>
       </nav>
     </div>

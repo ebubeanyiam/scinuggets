@@ -15,6 +15,7 @@
     "react-moment": "^1.1.1",
     "react-router-dom": "^5.2.0",
     "react-scripts": "3.4.3",
+    "react-tageditor": "^0.2.3",
     "reading-time": "^1.2.1"
   },
   "scripts": {

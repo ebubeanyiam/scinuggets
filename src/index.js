@@ -8,19 +8,16 @@ import { UserProvider } from "./context/UserContext";
 import { ThemeProvider } from "./context/ThemeContext";
 import { AuthModalProvider } from "./context/AuthModalContext";
 import { CompleteProfileProvider } from "./context/CompleteProfileContext";
-import { ToastNotificationProvider } from "./context/ToastNotificationContext";
 
 ReactDOM.render(
   <AuthModalProvider>
     <React.StrictMode>
       <UserProvider>
-        <ToastNotificationProvider>
-          <CompleteProfileProvider>
-            <ThemeProvider>
-              <App />
-            </ThemeProvider>
-          </CompleteProfileProvider>
-        </ToastNotificationProvider>
+        <CompleteProfileProvider>
+          <ThemeProvider>
+            <App />
+          </ThemeProvider>
+        </CompleteProfileProvider>
       </UserProvider>
     </React.StrictMode>
   </AuthModalProvider>,
@@ -30,4 +27,4 @@ ReactDOM.render(
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.
 // Learn more about service workers: https://bit.ly/CRA-PWA
-serviceWorker.unregister();
+serviceWorker.register();

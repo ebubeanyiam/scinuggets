@@ -1,11 +1,28 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { AiOutlineSearch, AiOutlineBell, AiOutlineUser } from "react-icons/ai";
+import { AiOutlineSearch, AiOutlineBell } from "react-icons/ai";
+
+import { db } from "../../firebase/config";
+
+import DefaultUser from "../../assets/images/default_profile-img.png";
 
 // import { auth } from "../../firebase/config";
 import DropDown from "./DropDown";
 
-const LoggedInHeader = ({ dropDown, setDropDown }) => {
+const LoggedInHeader = ({ dropDown, setDropDown, user }) => {
+  const [profileImage, setProfileImage] = useState("");
+
+  useEffect(() => {
+    db.collection("users")
+      .doc(user.uid)
+      .get()
+      .then((doc) => {
+        if (doc.data()) {
+          setProfileImage(doc.data().photoUrl);
+        }
+      });
+  }, [user]);
+
   return (
     <div className="header__menu">
       <ul className="header__menu--container">
@@ -31,8 +48,14 @@ const LoggedInHeader = ({ dropDown, setDropDown }) => {
               setDropDown(!dropDown);
             }}
           >
-            <AiOutlineUser className="header__menu--container__link--icon" />
-            {dropDown && <DropDown setDropDown={setDropDown} />}
+            <img
+              src={profileImage !== "" ? profileImage : DefaultUser}
+              alt="logged in user"
+            />
+            {/* <AiOutlineUser className="header__menu--container__link--icon" /> */}
+            {dropDown && (
+              <DropDown profileImage={profileImage} setDropDown={setDropDown} />
+            )}
           </span>
         </li>
       </ul>

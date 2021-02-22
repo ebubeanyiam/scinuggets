@@ -8,11 +8,15 @@ import { User } from "../../context/UserContext";
 import { ProfileReg } from "../../context/CompleteProfileContext";
 import { saveArticle, addFeaturedImage } from "./FunctionProvider";
 
+import TagBox from "./TagBox";
+
 const Publish = (props) => {
   const user = User();
   const [, setOpenProfileReg] = ProfileReg();
+  const [tags, setTags] = useState([]);
   const [title, setTitle] = useState(props.pageProps.title);
   const [subTitle, setSubTitle] = useState("");
+  const [displayName, setDisplayName] = useState("");
   const [publishing, setPublishing] = useState(false);
 
   useEffect(() => {
@@ -20,7 +24,7 @@ const Publish = (props) => {
       .doc(user.uid)
       .get()
       .then((doc) => {
-        if (!doc.data()) {
+        if (doc.data().displayName === "") {
           setOpenProfileReg(true);
         }
       });
@@ -76,12 +80,12 @@ const Publish = (props) => {
               }}
               placeholder="Change your title"
             />
-            <input
+            <textarea
               type="text"
               value={subTitle}
               onChange={(e) => setSubTitle(e.target.value)}
               placeholder="Add a subtitle"
-            />
+            ></textarea>
             <p>
               <b>Note</b>: Changes here will affect how your story appears in
               public places like Scinuggets’s homepage — not the story itself.
@@ -92,8 +96,16 @@ const Publish = (props) => {
         <div className="new-story__publish--publish">
           <div className="new-story__publish--publish-info">
             <h5>
-              Publishing to <b></b>
+              Publishing to <b>{user.displayName}</b>
             </h5>
+
+            <p>
+              Publishing to the right category makes it easier for readers to
+              find your post
+            </p>
+
+            <TagBox tags={tags} setTags={setTags} />
+
             <p>
               Add or change tags (up to 5) so readers know what your story is
               about
@@ -109,8 +121,10 @@ const Publish = (props) => {
                   props.pageProps,
                   title,
                   subTitle,
+                  tags,
                   props.file,
-                  setPublishing
+                  setPublishing,
+                  props.draftId
                 );
               }}
             >

@@ -2,26 +2,31 @@ import React, { useState } from "react";
 
 import { User } from "../context/UserContext";
 
-import Hero from "./Hero";
+import Hero from "./homepage-components/Hero";
 import Header from "./Header";
+import Footer from "./Footer";
+import TrendingPosts from "./homepage-components/TrendingPosts";
 
 import "../style/homepage.css";
+import AllPosts from "./homepage-components/AllPosts";
+import ForYou from "./homepage-components/ForYou";
 
 const HomePage = () => {
   const user = User();
   const [dropDown, setDropDown] = useState(false);
+  const [trend, setTrend] = useState([]);
+  const [custom, setCustom] = useState([]);
 
   return (
-    <div
-      className="homepage"
-      onClick={(e) => {
-        !e.target.classList.contains("header__menu--dropdown") &&
-          dropDown &&
-          setDropDown(false);
-      }}
-    >
-      <Header dropDown={dropDown} setDropDown={setDropDown} />
-      {user === "" ? "Loading" : user === null ? <Hero /> : "For you"}
+    <div className="homepage">
+      {user === null ? (
+        <Hero />
+      ) : (
+        <ForYou trend={trend} setCustom={setCustom} />
+      )}
+      <TrendingPosts setTrend={setTrend} />
+      <AllPosts custom={custom} trend={trend} />
+      <Footer />
     </div>
   );
 };

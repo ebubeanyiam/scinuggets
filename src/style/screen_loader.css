@@ -9,18 +9,17 @@
 }
 
 .screen-loader-box {
-  font-family: "Light Wandals";
   position: absolute;
-  background: #fff;
-  height: 50px;
-  width: fit-content;
+  /* background: #fff;s */
+  min-width: 50px;
   padding: 10px;
   border-radius: 5px;
   animation: 1s ease-in-out alternate infinite shadows;
 }
 
-.screen-loader-box span {
-  font-size: 12px;
+.screen-loader-box img {
+  width: 50px;
+  height: 50px;
 }
 
 @keyframes shadows {

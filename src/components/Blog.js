@@ -2,29 +2,64 @@ import React, { useEffect, useState } from "react";
 import Moment from "react-moment";
 import readingTime from "reading-time";
 import { Link } from "react-router-dom";
-import { IoMdHeartEmpty } from "react-icons/io";
 import { BsBookmark } from "react-icons/bs";
-import { VscComment } from "react-icons/vsc";
+// import { VscComment } from "react-icons/vsc";
+import { IoMdHeartEmpty } from "react-icons/io";
 
-import { db } from "../firebase/config";
+import { getAuthorDetails } from "./Logic";
 
-import { getPostById } from "./new-story-components/FunctionProvider";
-
+import Header from "./Header";
+import Footer from "./Footer";
 import PageNotFound from "./PageNotFound";
 import ScreenLoader from "./ScreenLoader";
 
 import DefaultProfile from "../assets/images/default_profile-img.png";
 
+import { User } from "../context/UserContext";
+import { AuthModal as AuthModalFunction } from "../context/AuthModalContext";
+
+import {
+  getHTMLData,
+  calcLike,
+  calcSaves,
+  getPostById,
+} from "./blog-components/Functions";
+
 import "../style/blog.css";
-import Header from "./Header";
+import AuthModal from "./auth/AuthModal";
+import { db, fieldValue } from "../firebase/config";
 
 const Blog = (props) => {
+  const user = User();
+  const [, setAuthModal] = AuthModalFunction();
+
   const [dropDown, setDropDown] = useState(false);
   const [postData, setPostData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [htmlData, setHtmlData] = useState("");
-  const [author, setAuthor] = useState("");
-  const [photoUrl, setPhotoUrl] = useState("");
+  const [postLikes, setPostLikes] = useState(0);
+  const [postSaves, setPostSaves] = useState(0);
+  // const [postComments, setPostComments] = useState(0);
+
+  const [likedPost, setLikedPost] = useState(false);
+  const [savedPost, setSavedPost] = useState(false);
+
+  const [authorDetails, setAuthorDetails] = useState({});
+  const [loginAction, setLoginAction] = useState(false);
+
+  const args = {
+    props,
+    user,
+    likedPost,
+    setLikedPost,
+    postLikes,
+    setPostLikes,
+    postSaves,
+    setPostSaves,
+    savedPost,
+    setSavedPost,
+    setLoginAction,
+  };
 
   useEffect(() => {
     getPostById(props.match.params.id, setPostData, setLoading);
@@ -32,60 +67,25 @@ const Blog = (props) => {
 
   useEffect(() => {
     if (postData) {
-      getHTMLData(postData);
-    }
+      getHTMLData(postData, setHtmlData);
+      getAuthorDetails(postData.postedBy, setAuthorDetails);
+      setPostLikes(postData.likes.liked_by.length);
+      setPostSaves(postData.saved.saved_by.length);
 
-    const photoUrl = async (uid) => {
-      await db
-        .collection("users")
-        .doc(uid)
-        .get()
-        .then((doc) => {
-          if (doc.data()) {
-            setPhotoUrl(doc.data().photoUrl);
-            setAuthor(doc.data().displayName);
-          }
+      db.collection("posts")
+        .doc(props.match.params.id)
+        .update({
+          postViews: fieldValue.increment(1),
         });
-    };
-    if (postData) {
-      photoUrl(postData.postedBy);
-    }
-  }, [postData]);
+      // setPostComments(postData.commentsCount);
 
-  const getHTMLData = (postData) => {
-    let html = "";
-    postData.savedData.blocks.forEach((block) => {
-      switch (block.type) {
-        case "header":
-          html += `<h${block.data.level}>${block.data.text}</h${block.data.level}>`;
-          break;
-        case "paragraph":
-          html += `<p>${block.data.text}</p>`;
-          break;
-        case "delimiter":
-          html += "<hr />";
-          break;
-        case "image":
-          html += `<img class="img-fluid" src="${block.data.file.url}" title="${block.data.caption}" /><br /><em>${block.data.caption}</em>`;
-          break;
-        case "list":
-          html += "<ul>";
-          block.data.items.forEach(function (li) {
-            html += `<li>${li}</li>`;
-          });
-          html += "</ul>";
-          break;
-        case "code":
-          html += `<code>${block.data.code}</code>`;
-          break;
-        default:
-          console.log("Unknown block type", block.type);
-          console.log(block);
-          break;
+      if (user) {
+        postData.likes.liked_by.includes(user.uid) && setLikedPost(true);
+        postData.saved.saved_by.includes(user.uid) && setSavedPost(true);
+        setLoginAction(false);
       }
-    });
-    setHtmlData(html);
-  };
+    }
+  }, [postData, user, props.match.params.id]);
 
   if (loading) {
     return <ScreenLoader />;
@@ -97,21 +97,29 @@ const Blog = (props) => {
         <div
           className={`${props.darkMode && "bg-mode--dark"} blog`}
           onClick={(e) => {
+            loginAction &&
+              e.target.classList.contains("auth-modal__modal__close-btn") &&
+              setLoginAction(false);
             !e.target.classList.contains("header__menu--dropdown") &&
               dropDown &&
               setDropDown(false);
           }}
         >
+          {loginAction && <AuthModal setAuth={setAuthModal} />}
           <Header dropDown={dropDown} setDropDown={setDropDown} />
           <div className="blog__header-container">
             <div className="blog__header">
               <div className="profile">
-                <Link to="/">
+                {/* <Link to="/">
                   <h1>Category</h1>
-                </Link>
+                </Link> */}
               </div>
               <div className="header__actions">
-                <span>Hello</span>
+                {user && user.uid === postData.postedBy && (
+                  <Link to={`/${postData.slug}/edit`}>
+                    <button>Edit</button>
+                  </Link>
+                )}
               </div>
             </div>
           </div>
@@ -120,18 +128,28 @@ const Blog = (props) => {
             <aside className="blog__story-component">
               <div className="blog__story-comp-card-container">
                 <div className="blog__story-comp-card">
-                  <IoMdHeartEmpty />
-                  <span>0</span>
+                  <IoMdHeartEmpty
+                    style={{ color: likedPost && "red" }}
+                    onClick={() => {
+                      calcLike(args);
+                    }}
+                  />
+                  <span>{postLikes}</span>
                 </div>
 
-                <div className="blog__story-comp-card">
+                {/* <div className="blog__story-comp-card">
                   <VscComment />
-                  <span>0</span>
-                </div>
+                  <span>{postComments}</span>
+                </div> */}
 
                 <div className="blog__story-comp-card">
-                  <BsBookmark />
-                  <span>100000</span>
+                  <BsBookmark
+                    style={{ color: savedPost && "purple" }}
+                    onClick={() => {
+                      calcSaves(args);
+                    }}
+                  />
+                  <span>{postSaves}</span>
                 </div>
               </div>
             </aside>
@@ -148,15 +166,17 @@ const Blog = (props) => {
               <div className="blog__article-details">
                 <div className="blog__article-details--user">
                   <div className="user-image">
-                    {photoUrl ? (
-                      <img src={photoUrl} alt="author" />
+                    {authorDetails.photoUrl ? (
+                      <img src={authorDetails.photoUrl} alt="author" />
                     ) : (
                       <img src={DefaultProfile} alt="author" />
                     )}
                   </div>
                   <div className="article-time-details">
                     <div className="article-time-details--author">
-                      <span>{author}</span>
+                      <span>
+                        {authorDetails.displayName && authorDetails.displayName}
+                      </span>
                     </div>
                     <div className="article-time-details--time">
                       <span>
@@ -175,27 +195,80 @@ const Blog = (props) => {
                 <div className="blog__article-details--social"></div>
               </div>
 
+              {postData.edited && (
+                <div className="blog__article--edited">
+                  <span>
+                    Last edited{" "}
+                    {
+                      <Moment>
+                        {new Date(postData.lastEdited.seconds * 1000)}
+                      </Moment>
+                    }
+                  </span>
+                </div>
+              )}
+
               <div className="blog__article-featured-image">
-                <img src={postData.featuredImage} alt="featured" />
+                {postData.featuredImage && (
+                  <img src={postData.featuredImage} alt="featured" />
+                )}
               </div>
 
               <div
                 className="blog__article-text"
                 dangerouslySetInnerHTML={{ __html: htmlData }}
               ></div>
+
+              <div className="blog__article-tags">
+                {postData.tags &&
+                  postData.tags.map((tag, index) => (
+                    <span key={index}>{tag}</span>
+                  ))}
+              </div>
+            </div>
+          </div>
+
+          <div className="blog__story-component--after">
+            <div className="blog__story-comp-card--after">
+              <IoMdHeartEmpty
+                style={{ color: likedPost && "red" }}
+                onClick={() => {
+                  calcLike(args);
+                }}
+              />
+              <span>
+                {postLikes} {postLikes === 1 ? "like" : "likes"}
+              </span>
             </div>
 
-            <aside className="blog__author-component">
-              <div className="blog__author-card-container">
-                <div className="blog__author-card">
-                  <div className="blog__author-card--header"></div>
-                </div>
-                <div className="blog__author-card">
-                  <div className="blog__author-card--header"></div>
-                </div>
-              </div>
-            </aside>
+            {/* <div className="blog__story-comp-card">
+                  <VscComment />
+                  <span>{postComments}</span>
+                </div> */}
           </div>
+
+          <div className="blog__author-component">
+            <div className="blog__author-image-container">
+              {authorDetails.photoUrl ? (
+                <img src={authorDetails.photoUrl} alt="author" />
+              ) : (
+                <img src={DefaultProfile} alt="author" />
+              )}
+            </div>
+            <div className="blog__author-about-container">
+              <span>WRITTEN BY</span>
+              <div className="blog__author-about-container__author-name">
+                <h3>
+                  {authorDetails.displayName && authorDetails.displayName}
+                </h3>
+                <button>Follow</button>
+              </div>
+              <div className="blog__author-about-container__bio">
+                <span>{authorDetails.bio && authorDetails.bio}</span>
+              </div>
+            </div>
+          </div>
+          <Footer />
         </div>
       </>
     );

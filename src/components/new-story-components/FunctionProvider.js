@@ -3,15 +3,12 @@ import slugify from "slugify";
 
 export const getDraft = (props) => {
   if (props.draftId) {
-    console.log("====================================");
-    console.log(props.user.uid);
-    console.log("====================================");
     props.setNewPost(false);
     db.collection("drafts")
       .doc(props.draftId)
       .get()
       .then((doc) => {
-        if (doc && doc.data().author === props.user.uid) {
+        if (doc.data() && doc.data().author === props.user.uid) {
           props.setTitle(doc.data().title);
           props.setEditorData(doc.data().savedData);
           props.setLoading(false);
@@ -56,9 +53,20 @@ export const saveDraft = async (props, title) => {
   }
 };
 
-export const saveArticle = async (user, props, title, subtitle, file, p) => {
+export const saveArticle = async (
+  user,
+  props,
+  title,
+  subtitle,
+  tags,
+  file,
+  p,
+  draftId
+) => {
   p(true);
-  let featuredImage = "";
+  let featuredImage = null;
+  let authorName = "";
+  let authorImage = "";
 
   const saveData = async () => {
     const slugifyRes = slugify(title, {
@@ -71,6 +79,10 @@ export const saveArticle = async (user, props, title, subtitle, file, p) => {
       .collection("posts")
       .doc(slug)
       .set({
+        authorName,
+        authorImage,
+        edited: false,
+        lastEdited: null,
         title,
         subtitle,
         slug,
@@ -78,6 +90,22 @@ export const saveArticle = async (user, props, title, subtitle, file, p) => {
         timestamp,
         postedBy: user.uid,
         featuredImage,
+        featuredImageIsSet: featuredImage ? true : false,
+        tags,
+        likes: {
+          count: 0,
+          liked_by: [],
+        },
+        comments: {
+          count: 0,
+          comments: [],
+        },
+        saved: {
+          count: 0,
+          saved_by: [],
+        },
+        draftId,
+        postViews: 0,
       })
       .then((res) => {
         window.location.replace(`/${slug}`);
@@ -86,6 +114,17 @@ export const saveArticle = async (user, props, title, subtitle, file, p) => {
         alert(e.message);
       });
   };
+
+  await db
+    .collection("users")
+    .doc(user.uid)
+    .get()
+    .then((doc) => {
+      if (doc.data()) {
+        authorName = doc.data().displayName;
+        authorImage = doc.data().photoUrl;
+      }
+    });
 
   if (file) {
     store
@@ -106,7 +145,9 @@ export const addFeaturedImage = (e, setFile, setPostImage) => {
   const types = [
     "image/png",
     "image/jpeg",
-    "image/jpg, image/gif, image/svg",
+    "image/jpg",
+    "image/gif",
+    "image/svg",
     "image/webp",
   ];
 
@@ -151,19 +192,4 @@ export const editorImageUrl = async (url) => {
       url: url,
     },
   };
-};
-
-export const getPostById = (id, postData, loading) => {
-  db.collection("posts")
-    .doc(id)
-    .get()
-    .then((doc) => {
-      if (doc.data()) {
-        postData(doc.data());
-        loading(false);
-      } else {
-        postData(false);
-        loading(false);
-      }
-    });
 };

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { AuthStatus } from "../../../context/AuthStatusContext";
+import { AuthModal as AuthModalFunction } from "../../../context/AuthModalContext";
 import { authFunction } from "./AuthProviders";
 import { authOptions } from "./AuthOptions";
 import MailAuth from "./MailAuth";
@@ -7,6 +8,7 @@ import { Link } from "react-router-dom";
 
 const AuthTemplate = (props) => {
   const [, setAuthStatus] = AuthStatus();
+  const [, setAuthModal] = AuthModalFunction();
   const [mailAuth, setMailAuth] = useState(false);
 
   return (
@@ -25,7 +27,7 @@ const AuthTemplate = (props) => {
                 if (!option.authProvider) {
                   setMailAuth(true);
                 } else {
-                  authFunction(option.authProvider, props.status);
+                  authFunction(option.authProvider, setAuthModal);
                 }
               }}
             >
@@ -60,8 +62,8 @@ const AuthTemplate = (props) => {
       <div className="auth-modal__accept-terms">
         <p className="auth-modal__accept-terms--text">
           Click "{props.status}" to agree to Scinugget's{" "}
-          <Link>Terms of Service</Link> and acknowledge that Scinugget's{" "}
-          <Link>Privacy Policy</Link> applies to you.
+          <Link to="/">Terms of Service</Link> and acknowledge that Scinugget's{" "}
+          <Link to="/">Privacy Policy</Link> applies to you.
         </p>
       </div>
 
