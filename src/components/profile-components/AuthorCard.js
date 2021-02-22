@@ -5,25 +5,12 @@ import { UserData } from "../../context/UserContext";
 
 import "../../style/profile/authorcard.css";
 
-const AuthorCard = ({ id }) => {
+const AuthorCard = ({ data }) => {
   const userData = UserData();
-  const [profileData, setProfileData] = useState({});
-
-  useEffect(() => {
-    db.collection("users")
-      .where("username", "===", id)
-      .get()
-      .then((docs) => {
-        docs.forEach((doc) => {
-          console.log(doc.id, "==>", doc.data());
-          setProfileData(doc.data());
-        });
-      });
-  }, []);
 
   return (
     <div className="profile__authorcard">
-      <img src={profileData.photoUrl} alt="user" />
+      <img src={data.photoUrl} alt="user" />
     </div>
   );
 };

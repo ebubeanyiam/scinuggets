@@ -82,7 +82,7 @@ const CompleteRegPopUp = () => {
               );
               return;
             }
-            updateProfile(user, name, username, file, setUpdated);
+            updateProfile(user, name, username, file, setErrorMessage, setUpdated);
           }}
         >
           Update

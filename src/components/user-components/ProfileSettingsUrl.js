@@ -9,6 +9,7 @@ const ProfileSettingsUrl = () => {
   const [url, setUrl] = useState("");
   const [userUrl, setUserUrl] = useState("");
   const inputEl = useRef(null);
+  const [errorMessage, setErrorMessage] = useState("");
 
   useEffect(() => {
     db.collection("users")
@@ -33,6 +34,7 @@ const ProfileSettingsUrl = () => {
             setUserUrl(e.target.value);
           }}
         />
+        <span style={{ color: "red" }}>{errorMessage}</span>
         <span>
           Your profile will be available at{" "}
           <b>scinnugets.com/profile/{userUrl}</b>.
@@ -55,14 +57,28 @@ const ProfileSettingsUrl = () => {
           <>
             <button
               className="profile__settings--profile__comp-edit__save-btn"
-              onClick={() => {
-                db.collection("users")
-                  .doc(user.uid)
-                  .update({
-                    url: userUrl,
-                  })
-                  .then(() => {
-                    setEditable(false);
+              onClick={async () => {
+                db.collection("usernames")
+                  .doc(userUrl)
+                  .get()
+                  .then((doc) => {
+                    if (doc.exists) {
+                      setErrorMessage("Username is taken");
+                      return;
+                    } else {
+                      db.collection("usernames").doc(userUrl).set({
+                        userEmail: user.email,
+                        userId: user.uid,
+                      });
+                      db.collection("users")
+                        .doc(user.uid)
+                        .update({
+                          username: userUrl,
+                        })
+                        .then(() => {
+                          setEditable(false);
+                        });
+                    }
                   });
               }}
             >
