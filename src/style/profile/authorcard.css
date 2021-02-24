@@ -1,0 +1,23 @@
+.profile__authorcard {
+  display: flex;
+  justify-content: space-between;
+  padding: 50px 0;
+}
+
+.profile__authorcard-image,
+.profile_authorcard-details {
+  width: 50%;
+}
+
+.profile__authorcard-image img {
+  width: 120px;
+  height: 120px;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+.profile_authorcard-details__username span {
+  font-size: 28px;
+  font-weight: 300;
+  margin-right: 20px;
+}

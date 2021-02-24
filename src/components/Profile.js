@@ -3,6 +3,7 @@ import { getUserId } from "./profile-components/ProfileProviders";
 
 import AuthorCard from "./profile-components/AuthorCard";
 import ScreenLoader from "./ScreenLoader";
+import PageNotFound from "./PageNotFound";
 
 import "../style/profile.css";
 
@@ -17,12 +18,15 @@ const Profile = (props) => {
 
   if (loading) {
     return <ScreenLoader />;
+  } else if (profileData === false) {
+    return <PageNotFound warning={"User Not Found"} />;
   }
 
   return (
     <div className="profile">
-      <AuthorCard data={profileData} />
-      Hello World
+      <div className="profile-container">
+        <AuthorCard data={profileData} />
+      </div>
     </div>
   );
 };

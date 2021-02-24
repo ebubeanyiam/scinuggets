@@ -18,5 +18,9 @@ export const getUserId = async (username, setter, loading) => {
     .get()
     .then((doc) => {
       getUserInfo(doc.data().userId);
+    })
+    .catch((e) => {
+      setter(false);
+      loading(false);
     });
 };
