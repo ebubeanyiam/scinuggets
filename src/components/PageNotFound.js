@@ -1,13 +1,11 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import Header from "./Header";
 
 import "../style/page_not_found.css";
 
 const PageNotFound = (props) => {
   return (
     <>
-      <Header />
       <div className="page-not-found">
         <div className="page-not-found__error-warning">
           <h3>{props.warning ? props.warning : "Page Not Found"}</h3>

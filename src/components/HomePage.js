@@ -18,15 +18,7 @@ const HomePage = () => {
   const [custom, setCustom] = useState([]);
 
   return (
-    <div
-      className="homepage"
-      onClick={(e) => {
-        !e.target.classList.contains("header__menu--dropdown") &&
-          dropDown &&
-          setDropDown(false);
-      }}
-    >
-      <Header dropDown={dropDown} setDropDown={setDropDown} />
+    <div className="homepage">
       {user === null ? (
         <Hero />
       ) : (

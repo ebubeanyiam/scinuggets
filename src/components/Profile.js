@@ -1,23 +1,32 @@
 import React, { useState, useEffect } from "react";
+import { getUserId } from "./profile-components/ProfileProviders";
 
-import Header from "./Header";
 import AuthorCard from "./profile-components/AuthorCard";
+import ScreenLoader from "./ScreenLoader";
+import PageNotFound from "./PageNotFound";
 
 import "../style/profile.css";
 
 const Profile = (props) => {
+  const [profileData, setProfileData] = useState({});
   const [id, setId] = useState(props.match.params.id);
-  const [dropDown, setDropDown] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    console.log(id);
+    getUserId(id, setProfileData, setLoading);
   }, [id]);
+
+  if (loading) {
+    return <ScreenLoader />;
+  } else if (profileData === false) {
+    return <PageNotFound warning={"User Not Found"} />;
+  }
 
   return (
     <div className="profile">
-      <Header dropDown={dropDown} setDropDown={setDropDown} />
-      <AuthorCard />
-      Hello World
+      <div className="profile-container">
+        <AuthorCard data={profileData} />
+      </div>
     </div>
   );
 };

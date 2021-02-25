@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { TiWarningOutline } from "react-icons/ti";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { paths } from "./components/Logic";
 
 import Blog from "./components/Blog";
 import Header from "./components/Header";
@@ -28,6 +29,7 @@ const App = () => {
   const [profileReg] = ProfileReg();
   const userActionUrl = "/user/action";
   const [darkMode] = Theme();
+  const [dropDown, setDropDown] = useState(false);
   const [authModal, setAuthModal] = AuthModalFunction();
   const [userVerified, setUserVerified] = useState(null);
 
@@ -42,7 +44,14 @@ const App = () => {
   }
 
   return (
-    <div className={darkMode ? "bg-mode--dark" : ""}>
+    <div
+      className={darkMode ? "bg-mode--dark" : ""}
+      onClick={(e) => {
+        !e.target.classList.contains("header__menu--dropdown") &&
+          dropDown &&
+          setDropDown(false);
+      }}
+    >
       <div className="app__caution-sign">
         <TiWarningOutline />
         <span>
@@ -51,8 +60,9 @@ const App = () => {
         </span>
       </div>
       <Router>
-        {/* Stopped here */}
-        <Header />
+        {!paths.includes(window.location.pathname) && (
+          <Header dropDown={dropDown} setDropDown={setDropDown} />
+        )}
         {userVerified === false &&
           window.location.pathname !== userActionUrl && <ConfirmMail />}
         {profileReg && <CompleteRegPopUp />}

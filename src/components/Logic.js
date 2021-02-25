@@ -1,4 +1,7 @@
 import { db, store } from "../firebase/config";
+
+export const paths = ["/m/new-story"];
+
 export const selectImage = (e, setFile, setPostImage) => {
   const types = [
     "image/png",
@@ -21,7 +24,14 @@ export const selectImage = (e, setFile, setPostImage) => {
   }
 };
 
-export const updateProfile = async (user, name, username, file, setUpdated) => {
+export const updateProfile = async (
+  user,
+  name,
+  username,
+  file,
+  error,
+  setUpdated
+) => {
   const runUpdate = async () => {
     user.updateProfile({
       displayName: name,
@@ -37,27 +47,46 @@ export const updateProfile = async (user, name, username, file, setUpdated) => {
     setUpdated(true);
   };
 
-  if (file) {
-    await store
-      .ref(file.name)
-      .put(file)
-      .then(async (snapshot) => {
-        await snapshot.ref.getDownloadURL().then((res) => {
-          db.collection("users").doc(user.uid).set(
-            {
-              photoUrl: res,
-            },
-            { merge: true }
-          );
-          user.updateProfile({
-            photoURL: res,
+  const checkImage = async () => {
+    if (file) {
+      await store
+        .ref(file.name)
+        .put(file)
+        .then(async (snapshot) => {
+          await snapshot.ref.getDownloadURL().then((res) => {
+            db.collection("users").doc(user.uid).set(
+              {
+                photoUrl: res,
+              },
+              { merge: true }
+            );
+            user.updateProfile({
+              photoURL: res,
+            });
           });
+          runUpdate();
         });
-        runUpdate();
-      });
-  } else {
-    runUpdate();
-  }
+    } else {
+      runUpdate();
+    }
+  };
+
+  await db
+    .collection("usernames")
+    .doc(username)
+    .get()
+    .then((doc) => {
+      if (doc.exists) {
+        error("Username is taken");
+        return;
+      } else {
+        checkImage();
+        db.collection("usernames").doc(username).set({
+          userEmail: user.email,
+          userId: user.uid,
+        });
+      }
+    });
 };
 
 export const getAuthorDetails = async (uid, setAuthorDetails) => {

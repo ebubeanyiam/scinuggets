@@ -21,7 +21,7 @@ const DropDown = ({ profileImage }) => {
       <div className="header__menu--dropdown--user-options">
         <Link to="/m/new-story">New Story</Link>
         <Link to="">Stories</Link>
-        <Link to={`/profile/${userData.username}`}>Profile</Link>
+        <Link to={`/profile/${userData && userData.username}`}>Profile</Link>
         <Link to="/me/settings">Settings</Link>
       </div>
 
