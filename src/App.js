@@ -60,14 +60,14 @@ const App = () => {
         </span>
       </div>
       <Router>
-        {!paths.includes(window.location.pathname) && (
-          <Header dropDown={dropDown} setDropDown={setDropDown} />
-        )}
         {userVerified === false &&
           window.location.pathname !== userActionUrl && <ConfirmMail />}
         {profileReg && <CompleteRegPopUp />}
 
         <AuthStatusProvider>
+          {!paths.includes(window.location.pathname) && (
+            <Header dropDown={dropDown} setDropDown={setDropDown} />
+          )}
           {authModal && <AuthModal setAuth={setAuthModal} />}
           <Switch>
             <>

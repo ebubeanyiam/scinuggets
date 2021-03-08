@@ -1,8 +1,13 @@
 import React from "react";
 
+import { AuthStatus } from "../../context/AuthStatusContext";
+import { AuthModal } from "../../context/AuthModalContext";
+
 import "../../style/homepage/hero.css";
 
 const Hero = () => {
+  const [, setAuthStatus] = AuthStatus();
+  const [, setAuthModal] = AuthModal();
   return (
     <div className="hero">
       <div className="hero-content">
@@ -13,7 +18,14 @@ const Hero = () => {
           welcome. Learn more.
         </p>
 
-        <button>Get Started</button>
+        <button
+          onClick={() => {
+            setAuthModal(true);
+            setAuthStatus("Signup");
+          }}
+        >
+          Get Started
+        </button>
       </div>
     </div>
   );

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import Moment from "react-moment";
 
@@ -10,14 +10,47 @@ import "../../style/homepage/all_posts.css";
 
 const AllPosts = ({ trend }) => {
   const [posts, setPosts] = useState([]);
+  const [lastPost, setLastPost] = useState();
+  const [hasMore, setHasMore] = useState(true);
+
+  const observer = useRef();
+  const lastPostRef = useCallback(
+    (node) => {
+      if (observer.current) observer.current.disconnect();
+      observer.current = new IntersectionObserver((entries) => {
+        if (entries[0].isIntersecting && hasMore) {
+          db.collection("posts")
+            .where("slug", "not-in", trend)
+            .startAfter(lastPost)
+            .limit(5)
+            .get()
+            .then((snapshots) => {
+              setPosts((posts) => [...posts, ...snapshots.docs]);
+              if (snapshots.docs.length > 0) {
+                setLastPost(snapshots.docs[snapshots.docs.length - 1]);
+              } else {
+                setHasMore(false);
+              }
+            })
+            .catch(function (error) {
+              console.log("Error getting documents: ", error);
+            });
+        }
+      });
+      if (node) observer.current.observe(node);
+    },
+    [trend, lastPost, hasMore]
+  );
 
   useEffect(() => {
     if (trend.length !== 0) {
       db.collection("posts")
         .where("slug", "not-in", trend)
+        .limit(5)
         .get()
         .then((snapshots) => {
           setPosts([...snapshots.docs]);
+          setLastPost(snapshots.docs[snapshots.docs.length - 1]);
         })
         .catch(function (error) {
           console.log("Error getting documents: ", error);
@@ -30,49 +63,21 @@ const AllPosts = ({ trend }) => {
       <div className="homepage__all-posts">
         <div className="homepage__all-posts--container">
           {posts &&
-            posts.map((post, index) => (
-              <Link key={index} to={post.data().slug}>
-                <div className="homepage__all-posts--post">
-                  <div className="homepage__all-posts--post-info">
-                    <div className="homepage__all-posts__author--ft-img">
-                      <img
-                        src={
-                          post.data().authorImage !== ""
-                            ? post.data().authorImage
-                            : DefaultUser
-                        }
-                        alt="author"
-                      />
-                      <span>{post.data().authorName}</span>
-                    </div>
-                    <h1 className="homepage__all-posts__title">
-                      {post.data().title}
-                    </h1>
-                    {post.data().subtitle && (
-                      <p className="homepage__all-posts__subtitle">
-                        {post.data().subtitle}
-                      </p>
-                    )}
-                    <div className="trending-posts__time">
-                      <span>
-                        {
-                          <Moment fromNow>
-                            {new Date(post.data().timestamp.seconds * 1000)}
-                          </Moment>
-                        }
-                        .
-                      </span>
-                      <span>{timeToRead(post.data().savedData)}</span>
-                    </div>
-                  </div>
-                  <div className="homepage__all-posts--post-image">
-                    {post.data().featuredImage && (
-                      <img src={post.data().featuredImage} alt="featured" />
-                    )}
-                  </div>
-                </div>
-              </Link>
-            ))}
+            posts.map((post, index) => {
+              if (posts.length === index + 1) {
+                return (
+                  <Link key={index} to={post.data().slug} ref={lastPostRef}>
+                    <PostDiv post={post} />
+                  </Link>
+                );
+              } else {
+                return (
+                  <Link key={index} to={post.data().slug}>
+                    <PostDiv post={post} />
+                  </Link>
+                );
+              }
+            })}
         </div>
 
         <div className="homepage__all-posts--discover__container">
@@ -113,6 +118,50 @@ const AllPosts = ({ trend }) => {
             </div>
           </div>
         </div>
+      </div>
+    </div>
+  );
+};
+
+const PostDiv = (props) => {
+  return (
+    <div className="homepage__all-posts--post">
+      <div className="homepage__all-posts--post-info">
+        <div className="homepage__all-posts__author--ft-img">
+          <img
+            src={
+              props.post.data().authorImage !== ""
+                ? props.post.data().authorImage
+                : DefaultUser
+            }
+            alt="author"
+          />
+          <span>{props.post.data().authorName}</span>
+        </div>
+        <h1 className="homepage__all-posts__title">
+          {props.post.data().title}
+        </h1>
+        {props.post.data().subtitle && (
+          <p className="homepage__all-posts__subtitle">
+            {props.post.data().subtitle}
+          </p>
+        )}
+        <div className="trending-posts__time">
+          <span>
+            {
+              <Moment fromNow>
+                {new Date(props.post.data().timestamp.seconds * 1000)}
+              </Moment>
+            }
+            .
+          </span>
+          <span>{timeToRead(props.post.data().savedData)}</span>
+        </div>
+      </div>
+      <div className="homepage__all-posts--post-image">
+        {props.post.data().featuredImage && (
+          <img src={props.post.data().featuredImage} alt="featured" />
+        )}
       </div>
     </div>
   );

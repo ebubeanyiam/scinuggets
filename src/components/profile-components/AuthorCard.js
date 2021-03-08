@@ -17,7 +17,7 @@ const AuthorCard = ({ data }) => {
       <div className="profile__authorcard-details">
         <div className="profile_authorcard-details__username">
           <span>{data.username}</span>
-          {userData.username === data.username ? (
+          {userData && userData.username === data.username ? (
             <Link to="/me/settings">
               <button>Edit</button>
             </Link>
@@ -35,8 +35,10 @@ const AuthorCard = ({ data }) => {
         </div>
 
         {data.website && (
-          <div className="profile_authorcard-details__bio">
-            <p>{data.website}</p>
+          <div className="profile_authorcard-details__website">
+            <a href={`http://${data.website}`}>
+              <p>{data.website}</p>
+            </a>
           </div>
         )}
       </div>

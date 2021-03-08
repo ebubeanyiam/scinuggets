@@ -47,6 +47,8 @@ const Blog = (props) => {
   const [authorDetails, setAuthorDetails] = useState({});
   const [loginAction, setLoginAction] = useState(false);
 
+  const [morePosts, setMorePosts] = useState([]);
+
   const args = {
     props,
     user,
@@ -86,6 +88,27 @@ const Blog = (props) => {
       }
     }
   }, [postData, user, props.match.params.id]);
+
+  useEffect(() => {
+    if (!postData) {
+      return;
+    }
+
+    const uid = postData.postedBy;
+    const slug = postData.slug;
+
+    db.collection("posts")
+      .where("slug", "!=", slug)
+      .where("postedBy", "==", uid)
+      .limit(3)
+      .get()
+      .then((snapshots) => {
+        setMorePosts([...snapshots.docs]);
+      })
+      .catch((e) => {
+        console.log("Error", e);
+      });
+  }, [postData]);
 
   if (loading) {
     return <ScreenLoader />;
@@ -249,11 +272,13 @@ const Blog = (props) => {
 
           <div className="blog__author-component">
             <div className="blog__author-image-container">
-              {authorDetails.photoUrl ? (
-                <img src={authorDetails.photoUrl} alt="author" />
-              ) : (
-                <img src={DefaultProfile} alt="author" />
-              )}
+              <Link to={`/profile/${authorDetails.username}`}>
+                {authorDetails.photoUrl ? (
+                  <img src={authorDetails.photoUrl} alt="author" />
+                ) : (
+                  <img src={DefaultProfile} alt="author" />
+                )}
+              </Link>
             </div>
             <div className="blog__author-about-container">
               <span>WRITTEN BY</span>
@@ -268,6 +293,18 @@ const Blog = (props) => {
               </div>
             </div>
           </div>
+
+          {morePosts && (
+            <div className="blog__more-author-posts">
+              <h3>More Posts from {authorDetails.displayName}</h3>
+              {morePosts.map((post, index) => {
+                // <Link to={post.data().slug} key={index}>
+                //   <h1>{post.data().title}</h1>
+                // </Link>;
+              })}
+            </div>
+          )}
+
           <Footer />
         </div>
       </>

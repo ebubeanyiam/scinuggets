@@ -25,6 +25,7 @@
 
 .new-story__editor--body #editor-js {
   z-index: inherit;
+  padding-bottom: 20px;
 }
 
 #editor-js .codex-editor {

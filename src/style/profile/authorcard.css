@@ -4,20 +4,58 @@
   padding: 50px 0;
 }
 
-.profile__authorcard-image,
-.profile_authorcard-details {
-  width: 50%;
+.profile__authorcard-image {
+  width: 40%;
+  display: flex;
+  justify-content: center;
 }
 
 .profile__authorcard-image img {
-  width: 120px;
-  height: 120px;
+  width: 150px;
+  height: 150px;
   object-fit: cover;
   border-radius: 50%;
+}
+
+.profile_authorcard-details__username {
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
 }
 
 .profile_authorcard-details__username span {
   font-size: 28px;
   font-weight: 300;
   margin-right: 20px;
+}
+
+.profile_authorcard-details__username button {
+  background: #116466;
+  padding: 4px 12px 6px;
+  font-size: 14px;
+  border-radius: 4px;
+  color: #fff;
+  border: none;
+  outline: none;
+}
+
+.profile_authorcard-details__website a {
+  color: #23527f;
+  font-weight: 700;
+}
+
+.profile_authorcard-details__name,
+.profile_authorcard-details__bio,
+.profile_authorcard-details__website {
+  margin-bottom: 20px;
+}
+
+@media screen and (max-width: 700px) {
+  .profile__authorcard {
+    flex-direction: column;
+  }
+
+  .profile__authorcard-image {
+    width: 100%;
+  }
 }

@@ -13,7 +13,6 @@ export const CompleteProfileProvider = ({ children }) => {
 
   useEffect(() => {
     if (userData) {
-      console.log(userData);
       !userData.username ? setOpenProfileReg(true) : setOpenProfileReg(false);
     }
   }, [userData]);
