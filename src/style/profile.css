@@ -2,9 +2,19 @@
   margin-top: 110px;
   min-height: calc(100vh - 110px);
   border-top: 1px solid rgb(219, 219, 219);
+  padding: 0 15px;
+  margin-bottom: 30px;
 }
 
 .profile-container {
   max-width: 736px;
   margin: auto;
+}
+
+.profile__postFetch {
+  text-align: center;
+  color: #116466;
+  font-weight: bolder;
+  display: block;
+  cursor: pointer;
 }

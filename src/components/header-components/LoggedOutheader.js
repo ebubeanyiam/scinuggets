@@ -89,8 +89,12 @@ const DropDown = () => {
       <div className="header__menu--dropdown--user-options">
         <span>Our Story</span>
         <span>Membership</span>
-        <span>Write</span>
-        <span>Sign In</span>
+        <Link to="/m/new-story">
+          <span>Write</span>
+        </Link>
+        <Link to="/s/signin">
+          <span>Sign In</span>
+        </Link>
       </div>
     </div>
   );

@@ -49,3 +49,13 @@
 .profile_authorcard-details__website {
   margin-bottom: 20px;
 }
+
+@media screen and (max-width: 700px) {
+  .profile__authorcard {
+    flex-direction: column;
+  }
+
+  .profile__authorcard-image {
+    width: 100%;
+  }
+}

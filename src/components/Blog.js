@@ -249,11 +249,13 @@ const Blog = (props) => {
 
           <div className="blog__author-component">
             <div className="blog__author-image-container">
-              {authorDetails.photoUrl ? (
-                <img src={authorDetails.photoUrl} alt="author" />
-              ) : (
-                <img src={DefaultProfile} alt="author" />
-              )}
+              <Link to={`/profile/${authorDetails.username}`}>
+                {authorDetails.photoUrl ? (
+                  <img src={authorDetails.photoUrl} alt="author" />
+                ) : (
+                  <img src={DefaultProfile} alt="author" />
+                )}
+              </Link>
             </div>
             <div className="blog__author-about-container">
               <span>WRITTEN BY</span>
