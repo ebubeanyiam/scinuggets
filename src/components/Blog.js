@@ -47,6 +47,8 @@ const Blog = (props) => {
   const [authorDetails, setAuthorDetails] = useState({});
   const [loginAction, setLoginAction] = useState(false);
 
+  const [morePosts, setMorePosts] = useState([]);
+
   const args = {
     props,
     user,
@@ -86,6 +88,27 @@ const Blog = (props) => {
       }
     }
   }, [postData, user, props.match.params.id]);
+
+  useEffect(() => {
+    if (!postData) {
+      return;
+    }
+
+    const uid = postData.postedBy;
+    const slug = postData.slug;
+
+    db.collection("posts")
+      .where("slug", "!=", slug)
+      .where("postedBy", "==", uid)
+      .limit(3)
+      .get()
+      .then((snapshots) => {
+        setMorePosts([...snapshots.docs]);
+      })
+      .catch((e) => {
+        console.log("Error", e);
+      });
+  }, [postData]);
 
   if (loading) {
     return <ScreenLoader />;
@@ -270,6 +293,33 @@ const Blog = (props) => {
               </div>
             </div>
           </div>
+
+          {morePosts.length > 0 && (
+            <div className="blog__more-author-posts">
+              <h3 className="blog__more-author-posts-title">More Reading</h3>
+              <div className="blog__more-author-posts--container">
+                {morePosts.map((post, index) => (
+                  <Link to={`${post.data().slug}#`} key={index}>
+                    <div className="blog__more-author-post">
+                      <img
+                        className="blog__more-author-post--author"
+                        src={authorDetails.photoUrl}
+                        alt="author"
+                      />
+                      <img
+                        className="blog__more-author-post--featuredImage"
+                        src={post.data().featuredImage}
+                        alt="featured"
+                      />
+                      <h4>{post.data().title}</h4>
+                      <p>{post.data().subtitle}</p>
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            </div>
+          )}
+
           <Footer />
         </div>
       </>
