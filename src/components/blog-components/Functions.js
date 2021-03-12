@@ -7,6 +7,7 @@ export const getPostById = (id, postData, loading) => {
     .then((doc) => {
       if (doc.data()) {
         postData(doc.data());
+        window.scrollTo(0, 0);
         loading(false);
       } else {
         postData(false);

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import { User } from "../context/UserContext";
 
@@ -13,9 +13,12 @@ import ForYou from "./homepage-components/ForYou";
 
 const HomePage = () => {
   const user = User();
-  const [dropDown, setDropDown] = useState(false);
   const [trend, setTrend] = useState([]);
   const [custom, setCustom] = useState([]);
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   return (
     <div className="homepage">

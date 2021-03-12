@@ -64,6 +64,14 @@ const Blog = (props) => {
   };
 
   useEffect(() => {
+    let title = "";
+    const slug = props.match.params.id.split("-");
+    slug.pop();
+    slug.forEach((word, index) => {
+      if (index === 0) word = word.charAt(0).toUpperCase() + word.slice(1);
+      title = title + word + " ";
+    });
+    document.title = title;
     getPostById(props.match.params.id, setPostData, setLoading);
   }, [props.match.params.id]);
 
@@ -294,14 +302,29 @@ const Blog = (props) => {
             </div>
           </div>
 
-          {morePosts && (
+          {morePosts.length > 0 && (
             <div className="blog__more-author-posts">
-              <h3>More Posts from {authorDetails.displayName}</h3>
-              {morePosts.map((post, index) => {
-                // <Link to={post.data().slug} key={index}>
-                //   <h1>{post.data().title}</h1>
-                // </Link>;
-              })}
+              <h3 className="blog__more-author-posts-title">More Reading</h3>
+              <div className="blog__more-author-posts--container">
+                {morePosts.map((post, index) => (
+                  <Link to={`${post.data().slug}#`} key={index}>
+                    <div className="blog__more-author-post">
+                      <img
+                        className="blog__more-author-post--author"
+                        src={authorDetails.photoUrl}
+                        alt="author"
+                      />
+                      <img
+                        className="blog__more-author-post--featuredImage"
+                        src={post.data().featuredImage}
+                        alt="featured"
+                      />
+                      <h4>{post.data().title}</h4>
+                      <p>{post.data().subtitle}</p>
+                    </div>
+                  </Link>
+                ))}
+              </div>
             </div>
           )}
 
