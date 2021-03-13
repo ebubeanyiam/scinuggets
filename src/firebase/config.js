@@ -21,7 +21,7 @@ firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
 const db = firebase.firestore();
 const store = firebase.storage();
-const analytics = firebase.analytics;
+const analytics = firebase.analytics();
 const fieldValue = firebase.firestore.FieldValue;
 const timestamp = firebase.firestore.FieldValue.serverTimestamp();
 

@@ -100,3 +100,18 @@ export const getAuthorDetails = async (uid, setAuthorDetails) => {
       }
     });
 };
+
+export const copyFunction = (link) => {
+  const text = `scinuggets.com/${link}`;
+
+  let input = document.createElement("input");
+  input.setAttribute("value", text);
+  document.body.appendChild(input);
+
+  input.select();
+  input.setSelectionRange(0, 99999);
+
+  document.execCommand("copy");
+  alert("Link Copied");
+  input.parentNode.removeChild(input);
+};
