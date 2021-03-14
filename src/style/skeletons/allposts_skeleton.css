@@ -1,0 +1,77 @@
+.all-posts_skeleton {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.all-posts_skeleton--flex {
+  display: flex;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.all-posts_skeleton--flex > * {
+  margin-right: 10px;
+}
+
+@media screen and (max-width: 1035px) {
+  .all-posts_skeleton .skeleton-title {
+    width: 240px;
+  }
+
+  .all-posts_skeleton .skeleton-subtitle {
+    width: 210px;
+  }
+}
+
+@media screen and (max-width: 910px) {
+  .all-posts_skeleton .skeleton-title {
+    width: 400px;
+  }
+
+  .all-posts_skeleton .skeleton-subtitle {
+    width: 450px;
+  }
+}
+
+@media screen and (max-width: 745px) {
+  .all-posts_skeleton .skeleton-title {
+    width: 250px;
+  }
+
+  .all-posts_skeleton .skeleton-subtitle {
+    width: 300px;
+  }
+}
+
+@media screen and (max-width: 520px) {
+  .all-posts_skeleton .skeleton-image-article {
+    width: 120px;
+    height: 120px;
+  }
+
+  .all-posts_skeleton .skeleton-subtitle {
+    width: 270px;
+  }
+}
+
+@media screen and (max-width: 460px) {
+  .all-posts_skeleton .skeleton-name {
+    width: 100px;
+  }
+
+  .all-posts_skeleton .skeleton-image-article {
+    width: 100px;
+    height: 100px;
+  }
+
+  .all-posts_skeleton .skeleton-title {
+    width: 220px;
+    height: 18px;
+  }
+
+  .all-posts_skeleton .skeleton-subtitle {
+    width: 210px;
+    height: 14px;
+  }
+}

@@ -1,0 +1,29 @@
+.for-you_skeleton {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 30px;
+}
+
+.for-you_skeleton--flex {
+  display: flex;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.for-you_skeleton--flex > * {
+  margin-right: 10px;
+}
+
+.for-you_skeleton .skeleton-name {
+  width: 100px;
+}
+
+.for-you_skeleton .skeleton-title-small {
+  width: 200px;
+}
+
+@media screen and (max-width: 410px) {
+  .for-you_skeleton .skeleton-name {
+    width: 150px;
+  }
+}

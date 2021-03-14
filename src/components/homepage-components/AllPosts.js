@@ -7,6 +7,7 @@ import { timeToRead } from "./Functions";
 
 import DefaultUser from "../../assets/images/default_profile-img.png";
 import "../../style/homepage/all_posts.css";
+import AllPostsSkeleton from "../skeletons/AllPostsSkeleton";
 
 const AllPosts = ({ trend }) => {
   const [posts, setPosts] = useState([]);
@@ -62,22 +63,25 @@ const AllPosts = ({ trend }) => {
     <div className="homepage__all-posts_top-container">
       <div className="homepage__all-posts">
         <div className="homepage__all-posts--container">
-          {posts &&
-            posts.map((post, index) => {
-              if (posts.length === index + 1) {
-                return (
-                  <Link key={index} to={post.data().slug} ref={lastPostRef}>
-                    <PostDiv post={post} />
-                  </Link>
-                );
-              } else {
-                return (
-                  <Link key={index} to={post.data().slug}>
-                    <PostDiv post={post} />
-                  </Link>
-                );
-              }
-            })}
+          {posts.length > 0
+            ? posts.map((post, index) => {
+                if (posts.length === index + 1) {
+                  return (
+                    <Link key={index} to={post.data().slug} ref={lastPostRef}>
+                      <PostDiv post={post} />
+                    </Link>
+                  );
+                } else {
+                  return (
+                    <Link key={index} to={post.data().slug}>
+                      <PostDiv post={post} />
+                    </Link>
+                  );
+                }
+              })
+            : [1, 2, 3, 4, 5].map((skeleton) => (
+                <AllPostsSkeleton key={skeleton} />
+              ))}
         </div>
 
         <div className="homepage__all-posts--discover__container">

@@ -1,0 +1,21 @@
+.trending_skeleton--flex {
+  display: flex;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.trending_skeleton--flex > * {
+  margin-right: 10px;
+}
+
+@media screen and (max-width: 730px) {
+  .trending_skeleton .skeleton-title-small {
+    width: 270px;
+  }
+}
+
+@media screen and (max-width: 650px) {
+  .trending_skeleton .skeleton-title-small {
+    width: 300px;
+  }
+}
