@@ -3,10 +3,18 @@ import Moment from "react-moment";
 import readingTime from "reading-time";
 import { Link } from "react-router-dom";
 import { BsBookmark } from "react-icons/bs";
+import { RiWhatsappFill } from "react-icons/ri";
+import {
+  IoLogoFacebook,
+  IoLogoTwitter,
+  IoMdHeartEmpty,
+  IoLogoLinkedin,
+  IoIosLink,
+} from "react-icons/io";
+import { WhatsappShareButton } from "react-share";
 // import { VscComment } from "react-icons/vsc";
-import { IoMdHeartEmpty } from "react-icons/io";
 
-import { getAuthorDetails } from "./Logic";
+import { getAuthorDetails, copyFunction } from "./Logic";
 
 import Header from "./Header";
 import Footer from "./Footer";
@@ -223,7 +231,20 @@ const Blog = (props) => {
                   </div>
                 </div>
 
-                <div className="blog__article-details--social"></div>
+                <div className="blog__article-details--social">
+                  <WhatsappShareButton
+                    url={`scinuggets.com/${props.match.params.id}`}
+                    title={postData.title}
+                  >
+                    <RiWhatsappFill className="blog__article-details--social__whatsapp" />
+                  </WhatsappShareButton>
+                  <IoLogoTwitter />
+                  <IoLogoFacebook />
+                  <IoLogoLinkedin />
+                  <IoIosLink
+                    onClick={() => copyFunction(props.match.params.id)}
+                  />
+                </div>
               </div>
 
               {postData.edited && (

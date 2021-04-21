@@ -7,6 +7,7 @@ import { db } from "../../firebase/config";
 import { timeToRead } from "./Functions";
 
 import "../../style/homepage/trending_posts.css";
+import TrendingSkeleton from "../skeletons/TrendingSkeleton";
 
 const TrendingPosts = ({ setTrend }) => {
   const [trendingPosts, setTrendingPosts] = useState([]);
@@ -37,31 +38,36 @@ const TrendingPosts = ({ setTrend }) => {
           <h3>TRENDING</h3>
         </div>
         <div className="trending-posts__container">
-          {trendingPosts &&
-            trendingPosts.map((post, index) => (
-              <Link key={index} to={post.data().slug}>
-                <div className="trending-posts__post">
-                  <div className="trending-posts__author--ft-img">
-                    {post.data().featuredImage !== "" && (
-                      <img src={post.data().featuredImage} alt="" />
-                    )}
-                    <span>{post.data().authorName}</span>
+          {trendingPosts.length > 0
+            ? trendingPosts.map((post, index) => (
+                <Link key={index} to={post.data().slug}>
+                  <div className="trending-posts__post">
+                    <div className="trending-posts__author--ft-img">
+                      {post.data().featuredImage !== "" && (
+                        <img src={post.data().featuredImage} alt="" />
+                      )}
+                      <span>{post.data().authorName}</span>
+                    </div>
+                    <h1 className="trending-posts__title">
+                      {post.data().title}
+                    </h1>
+                    <div className="trending-posts__time">
+                      <span>
+                        {
+                          <Moment fromNow>
+                            {new Date(post.data().timestamp.seconds * 1000)}
+                          </Moment>
+                        }
+                        .
+                      </span>
+                      <span>{timeToRead(post.data().savedData)}</span>
+                    </div>
                   </div>
-                  <h1 className="trending-posts__title">{post.data().title}</h1>
-                  <div className="trending-posts__time">
-                    <span>
-                      {
-                        <Moment fromNow>
-                          {new Date(post.data().timestamp.seconds * 1000)}
-                        </Moment>
-                      }
-                      .
-                    </span>
-                    <span>{timeToRead(post.data().savedData)}</span>
-                  </div>
-                </div>
-              </Link>
-            ))}
+                </Link>
+              ))
+            : [1, 2, 3, 4, 5, 6].map((skeleton) => (
+                <TrendingSkeleton key={skeleton} />
+              ))}
         </div>
       </div>
     </div>
